@@ -1,5 +1,5 @@
 const assert = require('assert');
-const { split, parseTime } = require('../../parser/helpers');
+const { split, splitBy, parseTime } = require('../../parser/helpers');
 const { weekdays, workdays } = require('../../parser/constants');
 
 describe('helpers', function() {
@@ -21,11 +21,29 @@ describe('helpers', function() {
       assert.deepEqual(result, expected);
     });
 
-    it('should return the text as the first element when separator does not exists', function() {
+    it('should throw if the separator does not exists', function() {
       const text = 'a text without a dash';
-      const expected = ['a text without a dash', undefined];
-      const result = split(text, '-');
+      assert.throws(() => {
+        split(text, '-');
+      }, 'could not find "-"');
+    });
+  });
+
+  describe('splitBy', function() {
+    it('should split the text by a list of separators', function() {
+      const text = 'schedule artris with @alireza.eva.u23 everyday at 6am';
+      const separators = [' ', 'with', 'every'];
+      const expected = ['schedule', 'artris', '@alireza.eva.u23', 'day at 6am'];
+      const result = splitBy(text, separators);
       assert.deepEqual(result, expected);
+    });
+
+    it('should throw if one of the separators does not exists', function() {
+      const text = 'schedule artris with @alireza.eva.u23 everyday at 6am';
+      const separators = [' ', 'an invalid separator', 'every'];
+      assert.throws(() => {
+        split(text, separators);
+      }, 'could not find "an invalid separator"');
     });
   });
 
@@ -48,6 +66,20 @@ describe('helpers', function() {
       };
       const result = parseTime(text);
       assert.deepEqual(result, expected);
+    });
+
+    it('should throw if it cannot find "at" keyword', function() {
+      const text = 'workday around 6am';
+      assert.throws(() => {
+        parseTime(text);
+      }, 'could not find "at"');
+    });
+
+    it('should throw if frequency identifier does not match "everyday" or "every workday"', function() {
+      const text = 'workday around 6am';
+      assert.throws(() => {
+        parseTime(text);
+      }, 'Invalid frequency, expected "everyday" or "every workday" keywords');
     });
   });
 });

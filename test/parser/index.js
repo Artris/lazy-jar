@@ -21,8 +21,8 @@ describe('parseCommand', function() {
   it('should return an empty Object if the command is unknown', function() {
     const message =
       'UnkownCommand artris with @alireza.eva.u23 everyday at 6am';
-    const expected = {};
-    const result = parseCommand(message);
-    assert.deepEqual(result, expected);
+    assert.throws(() => {
+      parseCommand(text);
+    }, 'unknown command');
   });
 });

@@ -7,7 +7,7 @@ function parseCommand(command) {
     case 'schedule':
       return parseScheduleMessage(message);
     default:
-      return {};
+      throw Error('unkown command')
   }
 }
 

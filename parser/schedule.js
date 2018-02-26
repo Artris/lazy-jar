@@ -1,11 +1,9 @@
-const { parseTime, split } = require('./helpers');
+const { parseTime, splitBy } = require('./helpers');
 
 function parseScheduleMessage(message) {
-  const [name, rest] = split(message, 'with');
-  const [participants, time] = split(rest, 'every');
-
-  const when = parseTime(time);
+  const [name, participants, time] = splitBy(message, ['with', 'every']);
   const usernames = participants.split(' ');
+  const when = parseTime(time);
 
   return {
     type: 'schedule',
