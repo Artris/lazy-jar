@@ -14,7 +14,7 @@ describe('parseCommand', function() {
         weekdays: weekdays
       }
     };
-    const result = parseCommand(message);
+    const result = parseCommand(message, { myUsername: '@alireza.eva.u23' });
     assert.deepEqual(result, expected);
   });
 
@@ -22,7 +22,7 @@ describe('parseCommand', function() {
     const message =
       'UnkownCommand artris with @alireza.eva.u23 everyday at 6am';
     assert.throws(() => {
-      parseCommand(text);
+      parseCommand(text, { myUsername: '@alireza.eva.u23' });
     }, 'unknown command');
   });
 });
