@@ -1,0 +1,11 @@
+sudo: enabled
+dist: trusty
+
+language: node_js
+node_js:
+  - "node"
+install:
+  - npm install
+  - npm test
+notifications:
+  slack: artris:fjIt73ICT1EVM4sZNwbBElXx
