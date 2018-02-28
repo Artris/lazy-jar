@@ -68,15 +68,15 @@ describe('helpers', function() {
       assert.deepEqual(result, expected);
     });
 
-    it('should throw if it cannot find "at" keyword', function() {
-      const text = 'workday around 6am';
-      assert.throws(() => {
-        parseTime(text);
-      }, 'could not find "at"');
+    it('should throw if days are not specified, it should return the text as time', function() {
+      const text = '6am';
+      const expected = { time: '6am' };
+      const result = parseTime(text);
+      assert.deepEqual(result, expected);
     });
 
     it('should throw if frequency identifier does not match "everyday" or "every workday"', function() {
-      const text = 'workday around 6am';
+      const text = 'monday at 6am';
       assert.throws(() => {
         parseTime(text);
       }, 'Invalid frequency, expected "everyday" or "every workday" keywords');

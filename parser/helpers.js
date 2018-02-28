@@ -49,13 +49,21 @@ function toWeekdays(identifier) {
 }
 
 function parseTime(text) {
-  const [frequencyIdentifier, time] = split(text, 'at');
-  const weekdays = toWeekdays(frequencyIdentifier);
+  const withoutPrefix = text.replace('every', '');
+  const specifiesDays = withoutPrefix.indexOf(' at ') !== -1;
+  if (specifiesDays) {
+    const [frequencyIdentifier, time] = split(withoutPrefix, ' at ');
+    const weekdays = toWeekdays(frequencyIdentifier);
 
-  return {
-    weekdays,
-    time
-  };
+    return {
+      weekdays,
+      time
+    };
+  } else {
+    return {
+      time: withoutPrefix
+    };
+  }
 }
 
 module.exports = { split, splitBy, parseTime };
