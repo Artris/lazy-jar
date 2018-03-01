@@ -1,5 +1,10 @@
 const assert = require('assert');
-const { split, splitBy, parseTime } = require('../../parser/helpers');
+const {
+  split,
+  splitBy,
+  parseTime,
+  parseTimeRange
+} = require('../../parser/helpers');
 const { weekdays, workdays } = require('../../parser/constants');
 
 describe('helpers', function() {
@@ -80,6 +85,25 @@ describe('helpers', function() {
       assert.throws(() => {
         parseTime(text);
       }, 'Invalid frequency, expected "everyday" or "every workday" keywords');
+    });
+  });
+
+  describe('parseTimeRange', function() {
+    it('should split the text into period and count fields', function() {
+      const text = 'for 4 weeks';
+      const expected = {
+        period: 'week',
+        count: '4'
+      };
+      const result = parseTimeRange(text);
+      assert.deepEqual(result, expected);
+    });
+
+    it('should throw if both period and count are not present', function() {
+      const text = 'for tomorrow';
+      assert.throws(() => {
+        parseTimeRange(text);
+      }, 'could not find " "');
     });
   });
 });
