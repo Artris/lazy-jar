@@ -1,26 +1,15 @@
 const assert = require('assert');
-const { parseRemoveMessage } = require('../../parser/remove');
+const { parseRemoveCommand, REMOVE } = require('../../parser/remove');
 
-describe('parseRemoveMessage', function() {
-  it('should split a valid remove command into action parameters', function() {
-    const message = '@dtoki from artris';
+describe('parseRemoveCommand', function() {
+  it('should handle ",", "and", and "me" keywords', function() {
+    const command = 'remove @dtoki, @alireza.eva.u23, and me from artris';
     const expected = {
-      type: 'remove',
+      type: REMOVE,
       from: 'artris',
-      username: '@dtoki'
+      usernames: ['@dtoki', '@alireza.eva.u23', 'me']
     };
-    const result = parseRemoveMessage(message, '@alireza.eva.u23');
-    assert.deepEqual(result, expected);
-  });
-
-  it('should map "me" to the username', function() {
-    const message = 'me from artris';
-    const expected = {
-      type: 'remove',
-      from: 'artris',
-      username: '@alireza.eva.u23'
-    };
-    const result = parseRemoveMessage(message, '@alireza.eva.u23');
+    const result = parseRemoveCommand(command);
     assert.deepEqual(result, expected);
   });
 });

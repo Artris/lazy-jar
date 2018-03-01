@@ -66,4 +66,13 @@ function parseTime(text) {
   }
 }
 
-module.exports = { split, splitBy, parseTime };
+function parseTimeRange(text) {
+  const withoutPrefix = text.replace('for', '').trim();
+  const [count, period] = split(withoutPrefix, ' ');
+  return {
+    count,
+    period: period.slice(-1) === 's' ? period.slice(0, -1) : period
+  };
+}
+
+module.exports = { split, splitBy, parseTime, parseTimeRange };

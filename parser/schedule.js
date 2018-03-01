@@ -1,16 +1,22 @@
 const { parseTime, splitBy } = require('./helpers');
 
-function parseScheduleMessage(message) {
-  const [name, participants, time] = splitBy(message, ['with', 'every']);
-  const usernames = participants.split(' ');
+const SCHEDULE = 'SCHEDULE';
+
+function parseScheduleCommand(command) {
+  const withoutPrefix = command.slice(SCHEDULE.length + 1);
+  const [event, who, time] = splitBy(withoutPrefix, ['with', 'every']);
+  const usernames = who
+    .replace(/,/g, ' ')
+    .replace(/and/g, ' ')
+    .split(/\s+/);
   const when = parseTime(time);
 
   return {
-    type: 'schedule',
-    name,
+    type: SCHEDULE,
+    event,
     usernames,
     when
   };
 }
 
-module.exports = { parseScheduleMessage };
+module.exports = { parseScheduleCommand, SCHEDULE };

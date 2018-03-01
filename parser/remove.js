@@ -1,12 +1,20 @@
 const { split } = require('./helpers');
 
-function parseRemoveMessage(message, myUsername) {
-  const [who, name] = split(message, 'from');
+const REMOVE = 'REMOVE';
+
+function parseRemoveCommand(command, myUsername) {
+  const withoutPrefix = command.slice(REMOVE.length + 1);
+  const [who, from] = split(withoutPrefix, ' from ');
+  const usernames = who
+    .replace(/,/g, ' ')
+    .replace(/and/g, ' ')
+    .split(/\s+/);
+
   return {
-    type: 'remove',
-    username: who === 'me' ? myUsername : who,
-    from: name
+    type: REMOVE,
+    usernames,
+    from
   };
 }
 
-module.exports = { parseRemoveMessage };
+module.exports = { parseRemoveCommand, REMOVE };

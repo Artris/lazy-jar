@@ -1,32 +1,32 @@
 const assert = require('assert');
-const { parseMoveMessage } = require('../../parser/move');
+const { parseMoveCommand, MOVE } = require('../../parser/move');
 const { workdays } = require('../../parser/constants');
 
-describe('parseMoveMessage', function() {
+describe('parseMoveCommand', function() {
   it('should split a valid move command into action parameters', function() {
-    const message = 'artris to 6am';
+    const message = 'move artris to 6am';
     const expected = {
-      type: 'move',
-      name: 'artris',
+      type: MOVE,
+      event: 'artris',
       to: {
         time: '6am'
       }
     };
-    const result = parseMoveMessage(message);
+    const result = parseMoveCommand(message);
     assert.deepEqual(result, expected);
   });
 
   it('should handle change in week days', function() {
-    const message = 'artris to every workday at 6am';
+    const message = 'move artris to every workday at 6am';
     const expected = {
-      type: 'move',
-      name: 'artris',
+      type: MOVE,
+      event: 'artris',
       to: {
         weekdays: workdays,
         time: '6am'
       }
     };
-    const result = parseMoveMessage(message);
+    const result = parseMoveCommand(message);
     assert.deepEqual(result, expected);
   });
 });
