@@ -6,6 +6,8 @@ const { parseMoveCommand } = require('./move');
 const { parseSkipCommand } = require('./skip');
 const { parsePaidCommand } = require('./paid');
 const { parseStatusCommand } = require('./status');
+const { parseHaltCommand } = require('./halt');
+
 
 function parseCommand(command, { myUsername }) {
   const [type, message] = split(command);
@@ -18,6 +20,8 @@ function parseCommand(command, { myUsername }) {
       return parseAddCommand(command);
     case 'remove':
       return parseRemoveCommand(command);
+    case 'halt':
+      return parseHaltCommand(command)
     case 'status':
       return parseStatusCommand(command)
     default:
