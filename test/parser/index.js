@@ -3,6 +3,7 @@ const { parseCommand } = require('../../parser');
 const { ADD } = require('../../parser/add');
 const { REMOVE } = require('../../parser/remove');
 const { MOVE } = require('../../parser/move');
+const { PAID } = require('../../parser/paid');
 const { SCHEDULE } = require('../../parser/schedule');
 const { weekdays } = require('../../parser/constants');
 
@@ -60,9 +61,9 @@ describe('parseCommand', function() {
   it('should parse paid command', function() {
     const message = 'I paid @dtoki $10';
     const expected = {
-      type: 'paid',
+      type: PAID,
       to: '@dtoki',
-      from: '@alireza.eva.u23',
+      from: 'I',
       some: '$10'
     };
     const result = parseCommand(message, { myUsername: '@alireza.eva.u23' });

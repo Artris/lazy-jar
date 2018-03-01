@@ -1,15 +1,17 @@
 const { splitBy } = require('./helpers');
 
-function parsePaidMessage(command, myUsername) {
+const PAID = 'PAID';
+
+function parsePaidCommand(command) {
   const withoutInfix = command.replace(' paid ', ' ');
   const [from, to, some] = splitBy(withoutInfix, [' ', ' ']);
 
   return {
-    type: 'paid',
-    from: from === 'I' ? myUsername : from,
-    to: to === 'me' ? myUsername : to,
+    type: PAID,
+    from,
+    to,
     some
   };
 }
 
-module.exports = { parsePaidMessage };
+module.exports = { parsePaidCommand, PAID };
