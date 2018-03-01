@@ -3,7 +3,7 @@ const { parseScheduleCommand } = require('./schedule');
 const { parseAddCommand } = require('./add');
 const { parseRemoveCommand } = require('./remove');
 const { parseMoveCommand } = require('./move');
-const { parseSkipMessage } = require('./skip');
+const { parseSkipCommand } = require('./skip');
 const { parsePaidCommand } = require('./paid');
 
 function parseCommand(command, { myUsername }) {
@@ -21,7 +21,7 @@ function parseCommand(command, { myUsername }) {
       const isPaidCommand = command.indexOf(' paid ') !== -1;
       const isSkipCommand = command.indexOf(' will skip ') !== -1;
       if (isPaidCommand) return parsePaidCommand(command);
-      if (isSkipCommand) return parseSkipMessage(command, myUsername);
+      if (isSkipCommand) return parseSkipCommand(command, myUsername);
       throw Error('unkown command');
   }
 }

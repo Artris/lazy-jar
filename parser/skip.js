@@ -1,15 +1,17 @@
 const { splitBy, parseTimeRange } = require('./helpers');
 
-function parseSkipMessage(command, myUsername) {
+const SKIP = 'SKIP';
+
+function parseSkipCommand(command) {
   const withoutInfix = command.replace(' will skip ', ' ');
-  const [who, name, timeRange] = splitBy(withoutInfix, [' ', ' ']);
+  const [username, name, timeRange] = splitBy(withoutInfix, [' ', ' ']);
 
   return {
-    type: 'skip',
+    type: SKIP,
     when: parseTimeRange(timeRange),
-    username: who === 'I' ? myUsername : who,
+    username,
     name
   };
 }
 
-module.exports = { parseSkipMessage };
+module.exports = { parseSkipCommand, SKIP };

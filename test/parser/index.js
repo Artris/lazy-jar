@@ -5,6 +5,7 @@ const { REMOVE } = require('../../parser/remove');
 const { MOVE } = require('../../parser/move');
 const { PAID } = require('../../parser/paid');
 const { SCHEDULE } = require('../../parser/schedule');
+const { SKIP } = require('../../parser/skip');
 const { weekdays } = require('../../parser/constants');
 
 describe('parseCommand', function() {
@@ -73,8 +74,8 @@ describe('parseCommand', function() {
   it('should parse skip command', function() {
     const message = 'I will skip artris for 2 months';
     const expected = {
-      type: 'skip',
-      username: '@alireza.eva.u23',
+      type: SKIP,
+      username: 'I',
       name: 'artris',
       when: {
         count: '2',
