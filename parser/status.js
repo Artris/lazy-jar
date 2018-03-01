@@ -1,5 +1,3 @@
-const { split } = require('./helpers');
-
 const STATUS = 'status'
 
 function parseStatusCommand(command) {

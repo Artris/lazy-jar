@@ -10,6 +10,9 @@ const { parseHaltCommand } = require('./halt');
 
 
 function parseCommand(command, { myUsername }) {
+  const isStatusCommand = command.indexOf('status') !== -1;
+  if (isStatusCommand) return parseStatusCommand(command);
+
   const [type, message] = split(command);
   switch (type) {
     case 'schedule':
@@ -22,8 +25,6 @@ function parseCommand(command, { myUsername }) {
       return parseRemoveCommand(command);
     case 'halt':
       return parseHaltCommand(command)
-    case 'status':
-      return parseStatusCommand(command)
     default:
       const isPaidCommand = command.indexOf(' paid ') !== -1;
       const isSkipCommand = command.indexOf(' will skip ') !== -1;
