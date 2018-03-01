@@ -9,8 +9,8 @@ an slack app for scheduling remote stand-ups and track participation
 * `/lj schedule [name] with [list of @hacker] [when]`
   Schedule a new stand-up with a group of hackers
   * When there is a confilict, the hacker will not be added to the new stand-up and a warning will be displayed
-* `/lj add [me or @hacker] to [name]`
-  Add a new hacker to an existing stand-up
+* `/lj add [me or list of @hacker] to [name]`
+  Add hackers to an existing stand-up
   * When there is a confilict, the hacker will not be added to the new stand-up and a warning will be displayed
 * `/lj remove [me or @hacker] from [name]`
   Remove a hacker from an existing stand-up

@@ -1,5 +1,6 @@
 const assert = require('assert');
 const { parseCommand } = require('../../parser');
+const { ADD } = require('../../parser/add');
 const { weekdays } = require('../../parser/constants');
 
 describe('parseCommand', function() {
@@ -21,9 +22,9 @@ describe('parseCommand', function() {
   it('should parse add command', function() {
     const message = 'add @dtoki to artris';
     const expected = {
-      type: 'add',
+      type: ADD,
       to: 'artris',
-      username: '@dtoki'
+      usernames: ['@dtoki']
     };
     const result = parseCommand(message, { myUsername: '@alireza.eva.u23' });
     assert.deepEqual(result, expected);

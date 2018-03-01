@@ -1,6 +1,6 @@
 const { split } = require('./helpers');
 const { parseScheduleMessage } = require('./schedule');
-const { parseAddMessage } = require('./add');
+const { parseAddCommand } = require('./add');
 const { parseRemoveMessage } = require('./remove');
 const { parseSkipMessage } = require('./skip');
 const { parsePaidMessage } = require('./paid');
@@ -11,7 +11,7 @@ function parseCommand(command, { myUsername }) {
     case 'schedule':
       return parseScheduleMessage(message);
     case 'add':
-      return parseAddMessage(message, myUsername);
+      return parseAddCommand(command);
     case 'remove':
       return parseRemoveMessage(message, myUsername);
     default:

@@ -1,12 +1,20 @@
 const { split } = require('./helpers');
 
-function parseAddMessage(message, myUsername) {
-  const [who, to] = split(message, ' to ');
+const ADD = 'ADD';
+
+function parseAddCommand(command) {
+  const withoutPrefix = command.slice(ADD.length + 1);
+  const [who, to] = split(withoutPrefix, ' to ');
+  const usernames = who
+    .replace(/,/g, ' ')
+    .replace(/and/g, ' ')
+    .split(/\s+/);
+
   return {
-    type: 'add',
-    username: who === 'me' ? myUsername : who,
+    type: ADD,
+    usernames,
     to
   };
 }
 
-module.exports = { parseAddMessage };
+module.exports = { parseAddCommand, ADD };

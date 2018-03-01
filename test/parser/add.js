@@ -1,26 +1,15 @@
 const assert = require('assert');
-const { parseAddMessage } = require('../../parser/add');
+const { parseAddCommand, ADD } = require('../../parser/add');
 
-describe('parseAddMessage', function() {
-  it('should split a valid add command into action parameters', function() {
-    const message = '@dtoki to artris';
+describe('parseAddCommand', function() {
+  it('should handle ",", "and", and "me" keywords', function() {
+    const command = 'add @dtoki, @alireza.eva.u23, and me to artris';
     const expected = {
-      type: 'add',
+      type: ADD,
       to: 'artris',
-      username: '@dtoki'
+      usernames: ['@dtoki', '@alireza.eva.u23', 'me']
     };
-    const result = parseAddMessage(message, '@alireza.eva.u23');
-    assert.deepEqual(result, expected);
-  });
-
-  it('should map "me" to the username', function() {
-    const message = 'me to artris';
-    const expected = {
-      type: 'add',
-      to: 'artris',
-      username: '@alireza.eva.u23'
-    };
-    const result = parseAddMessage(message, '@alireza.eva.u23');
+    const result = parseAddCommand(command);
     assert.deepEqual(result, expected);
   });
 });
