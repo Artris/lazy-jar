@@ -9,7 +9,7 @@ const { weekdays, workdays } = require('./constants');
 function split(text, separator = ' ') {
   const indexOfSeparator = text.indexOf(separator);
   if (indexOfSeparator === -1) {
-    throw Error(`could not find "${separator}"`);
+    return [text,' ']
   }
   return [
     text.slice(0, indexOfSeparator).trim(),
