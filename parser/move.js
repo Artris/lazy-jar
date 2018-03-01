@@ -1,14 +1,17 @@
 const { parseTime, split } = require('./helpers');
 
-function parseMoveMessage(message) {
-  const [name, time] = split(message, ' to ');
+const MOVE = 'MOVE';
+
+function parseMoveCommand(command) {
+  const withoutPrefix = command.slice(MOVE.length + 1);
+  const [event, time] = split(withoutPrefix, ' to ');
   const to = parseTime(time);
 
   return {
-    type: 'move',
-    name,
+    type: MOVE,
+    event,
     to
   };
 }
 
-module.exports = { parseMoveMessage };
+module.exports = { parseMoveCommand, MOVE };

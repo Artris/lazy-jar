@@ -2,7 +2,7 @@ const assert = require('assert');
 const { parseScheduleCommand, SCHEDULE } = require('../../parser/schedule');
 const { weekdays } = require('../../parser/constants');
 
-describe('parseScheduleMessage', function() {
+describe('parseScheduleCommand', function() {
   it('should split a valid schedule command into action parameters', function() {
     const message =
       'schedule artris with @alireza.eva.u23, and me everyday at 6am';

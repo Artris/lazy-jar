@@ -2,6 +2,7 @@ const assert = require('assert');
 const { parseCommand } = require('../../parser');
 const { ADD } = require('../../parser/add');
 const { REMOVE } = require('../../parser/remove');
+const { MOVE } = require('../../parser/move');
 const { SCHEDULE } = require('../../parser/schedule');
 const { weekdays } = require('../../parser/constants');
 
@@ -38,6 +39,19 @@ describe('parseCommand', function() {
       type: REMOVE,
       from: 'artris',
       usernames: ['@dtoki']
+    };
+    const result = parseCommand(message, { myUsername: '@alireza.eva.u23' });
+    assert.deepEqual(result, expected);
+  });
+
+  it('should parse move command', function() {
+    const message = 'move artris to 10am';
+    const expected = {
+      type: MOVE,
+      event: 'artris',
+      to: {
+        time: '10am'
+      }
     };
     const result = parseCommand(message, { myUsername: '@alireza.eva.u23' });
     assert.deepEqual(result, expected);

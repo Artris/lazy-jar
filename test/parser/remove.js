@@ -1,7 +1,7 @@
 const assert = require('assert');
 const { parseRemoveCommand, REMOVE } = require('../../parser/remove');
 
-describe('parseAddCommand', function() {
+describe('parseRemoveCommand', function() {
   it('should handle ",", "and", and "me" keywords', function() {
     const command = 'remove @dtoki, @alireza.eva.u23, and me from artris';
     const expected = {
