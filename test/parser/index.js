@@ -8,6 +8,8 @@ const { SCHEDULE } = require('../../parser/schedule');
 const { SKIP } = require('../../parser/skip');
 const { STATUS } = require('../../parser/status');
 const { HALT } = require('../../parser/halt');
+const { TERMINATE } = require('../../parser/terminate');
+
 const { weekdays } = require('../../parser/constants');
 
 describe('parseCommand', function() {
@@ -79,6 +81,16 @@ describe('parseCommand', function() {
           period: 'day',
           count: '10'
       }
+    };
+    const result = parseCommand(message, { myUsername: '@alireza.eva.u23' });
+    assert.deepEqual(result, expected);
+  });
+
+  it('should parse terminate command', function() {
+    const message = 'terminate artris';
+    const expected = {
+      type: TERMINATE,
+      name: 'artris',
     };
     const result = parseCommand(message, { myUsername: '@alireza.eva.u23' });
     assert.deepEqual(result, expected);

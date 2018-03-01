@@ -7,6 +7,7 @@ const { parseSkipCommand } = require('./skip');
 const { parsePaidCommand } = require('./paid');
 const { parseStatusCommand } = require('./status');
 const { parseHaltCommand } = require('./halt');
+const { parseTerminateCommand } = require('./terminate');
 
 
 function parseCommand(command, { myUsername }) {
@@ -25,6 +26,8 @@ function parseCommand(command, { myUsername }) {
       return parseRemoveCommand(command);
     case 'halt':
       return parseHaltCommand(command)
+    case 'terminate':
+      return parseTerminateCommand(command)
     default:
       const isPaidCommand = command.indexOf(' paid ') !== -1;
       const isSkipCommand = command.indexOf(' will skip ') !== -1;
