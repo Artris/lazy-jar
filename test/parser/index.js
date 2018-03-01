@@ -2,14 +2,15 @@ const assert = require('assert');
 const { parseCommand } = require('../../parser');
 const { ADD } = require('../../parser/add');
 const { REMOVE } = require('../../parser/remove');
+const { SCHEDULE } = require('../../parser/schedule');
 const { weekdays } = require('../../parser/constants');
 
 describe('parseCommand', function() {
   it('should parse a schedule command', function() {
     const message = 'schedule artris with @alireza.eva.u23 everyday at 6am';
     const expected = {
-      type: 'schedule',
-      name: 'artris',
+      type: SCHEDULE,
+      event: 'artris',
       usernames: ['@alireza.eva.u23'],
       when: {
         time: '6am',

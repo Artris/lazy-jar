@@ -1,20 +1,21 @@
 const assert = require('assert');
-const { parseScheduleMessage } = require('../../parser/schedule');
+const { parseScheduleCommand, SCHEDULE } = require('../../parser/schedule');
 const { weekdays } = require('../../parser/constants');
 
 describe('parseScheduleMessage', function() {
   it('should split a valid schedule command into action parameters', function() {
-    const message = 'artris with @alireza.eva.u23 everyday at 6am';
+    const message =
+      'schedule artris with @alireza.eva.u23, and me everyday at 6am';
     const expected = {
-      type: 'schedule',
-      name: 'artris',
-      usernames: ['@alireza.eva.u23'],
+      type: SCHEDULE,
+      event: 'artris',
+      usernames: ['@alireza.eva.u23', 'me'],
       when: {
         time: '6am',
         weekdays: weekdays
       }
     };
-    const result = parseScheduleMessage(message);
+    const result = parseScheduleCommand(message);
     assert.deepEqual(result, expected);
   });
 });
