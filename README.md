@@ -12,8 +12,8 @@ an slack app for scheduling remote stand-ups and track participation
 * `/lj add [me or list of @hacker] to [name]`
   Add hackers to an existing stand-up
   * When there is a confilict, the hacker will not be added to the new stand-up and a warning will be displayed
-* `/lj remove [me or @hacker] from [name]`
-  Remove a hacker from an existing stand-up
+* `/lj remove [me or a list @hacker] from [name]`
+  Remove hackers from an existing stand-up
 * `/lj move [name] to [when]`
   Reschedule a stand-up
 * `/lj terminate [name]`

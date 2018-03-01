@@ -1,6 +1,7 @@
 const assert = require('assert');
 const { parseCommand } = require('../../parser');
 const { ADD } = require('../../parser/add');
+const { REMOVE } = require('../../parser/remove');
 const { weekdays } = require('../../parser/constants');
 
 describe('parseCommand', function() {
@@ -33,9 +34,9 @@ describe('parseCommand', function() {
   it('should parse remove command', function() {
     const message = 'remove @dtoki from artris';
     const expected = {
-      type: 'remove',
+      type: REMOVE,
       from: 'artris',
-      username: '@dtoki'
+      usernames: ['@dtoki']
     };
     const result = parseCommand(message, { myUsername: '@alireza.eva.u23' });
     assert.deepEqual(result, expected);
