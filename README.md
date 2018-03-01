@@ -8,31 +8,39 @@ an slack app for scheduling remote stand-ups and track participation
 
 * `/lj schedule [name] with [list of @hacker] [when]`
   Schedule a new stand-up with a group of hackers
+  * e.g. "schedule artris with @dtoki, and @alireza everyday at 6am"
   * When there is a confilict, the hacker will not be added to the new stand-up and a warning will be displayed
 * `/lj add [me or list of @hacker] to [name]`
   Add hackers to an existing stand-up
+  * e.g. "add @dtoki, and @alireza to artris"
   * When there is a confilict, the hacker will not be added to the new stand-up and a warning will be displayed
 * `/lj remove [me or a list @hacker] from [name]`
   Remove hackers from an existing stand-up
+  * e.g. "remove me from artris"
 * `/lj move [name] to [when]`
   Reschedule a stand-up
+  * e.g. "move artris to 7am"
 * `/lj terminate [name]`
   Terminate a stand-up
-* `lj halt [name] [when or a time range]`
+  * e.g. "terminate artris"
+* `lj halt [name] [time range]`
   Nofity the bot when the team is on a break
+  * e.g. "halt artris for 10 days"
 * `/lj status`
   Display info about the active stand-up and how much each person owe
 * `/lj [I or @hacker] will skip [name] [time range]`
   Notify the bot before taking a break
   * At least 8h before the stand-up
+  * e.g. "I will skip artris for 2 weeks"
 * `/lj [I or @hacker] paid [me or @hacker] [$total]` Notify the bot when you have made a payment
   * You can't pay yourself
   * A confirmation message will be sent to the recepient
+  * e.g. "I paid @dtoki $40"
 
 ## how does it work?
 
 A slash command goes through the following steps
 
-1. **Pasring**: transforms a textual command into an action that is easily consumed by the other modules in the system
-2. **Validation**: validates an action
+1. **Pasring**: transforms a textual command into an action (JSON representation) that is easily consumed by the other modules in the system
+2. **Validation / Transformation**: validates an action and transform its properties
 3. **Reducer**: given the current state for a team and a valid action, returns the next state
