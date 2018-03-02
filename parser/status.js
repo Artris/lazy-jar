@@ -1,8 +1,8 @@
-const STATUS = 'status'
+const STATUS = 'STATUS'
 
 function parseStatusCommand(command) {
     return {
-        type: STATUS,
+        type: STATUS
     };
 }
 
