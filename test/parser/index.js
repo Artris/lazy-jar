@@ -6,6 +6,10 @@ const { MOVE } = require('../../parser/move');
 const { PAID } = require('../../parser/paid');
 const { SCHEDULE } = require('../../parser/schedule');
 const { SKIP } = require('../../parser/skip');
+const { STATUS } = require('../../parser/status');
+const { HALT } = require('../../parser/halt');
+const { TERMINATE } = require('../../parser/terminate');
+
 const { weekdays } = require('../../parser/constants');
 
 describe('parseCommand', function() {
@@ -54,6 +58,39 @@ describe('parseCommand', function() {
       to: {
         time: '10am'
       }
+    };
+    const result = parseCommand(message, { myUsername: '@alireza.eva.u23' });
+    assert.deepEqual(result, expected);
+  });
+
+  it('should parse status command', function() {
+    const message = 'status';
+    const expected = {
+      type: STATUS
+    };
+    const result = parseCommand(message, { myUsername: '@alireza.eva.u23' });
+    assert.deepEqual(result, expected);
+  });
+
+  it('should parse halt command', function() {
+    const message = 'halt artris for 10 days';
+    const expected = {
+      type: HALT,
+      event: 'artris',
+      when: {
+          period: 'day',
+          count: '10'
+      }
+    };
+    const result = parseCommand(message, { myUsername: '@alireza.eva.u23' });
+    assert.deepEqual(result, expected);
+  });
+
+  it('should parse terminate command', function() {
+    const message = 'terminate artris';
+    const expected = {
+      type: TERMINATE,
+      event: 'artris',
     };
     const result = parseCommand(message, { myUsername: '@alireza.eva.u23' });
     assert.deepEqual(result, expected);
