@@ -2,10 +2,10 @@ const assert = require('assert');
 const { parseStatusCommand, STATUS } = require('../../parser/status');
 
 describe('parseStatusCommand', function () {
-    it('should split valid status command in action parameters', function () {
+    it('should split valid status command', function () {
         const command = 'status';
         const expected = {
-            type: STATUS,
+            type: STATUS
         };
         const result = parseStatusCommand(command);
         assert.deepEqual(result, expected);

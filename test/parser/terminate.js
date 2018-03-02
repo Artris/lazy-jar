@@ -6,7 +6,7 @@ describe('parseTerminateCommand', function () {
         const message = 'terminate artris';
         const expected = {
             type: TERMINATE,
-            name: 'artris'
+            event: 'artris'
         };
         const result = parseTerminateCommand(message);
         assert.deepEqual(result, expected);

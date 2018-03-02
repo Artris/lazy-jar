@@ -4,10 +4,10 @@ const HALT = 'HALT';
 
 function parseHaltCommand(command) {
     const withoutPrefix = command.slice(HALT.length + 1);
-    const [name, timeRange] = split(withoutPrefix, ' ');
+    const [event, timeRange] = split(withoutPrefix, ' ');
     return {
         type: HALT,
-        name,
+        event,
         when: parseTimeRange(timeRange)
     };
 }

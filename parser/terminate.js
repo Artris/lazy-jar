@@ -3,10 +3,10 @@ const { split } = require('./helpers');
 const TERMINATE = 'TERMINATE'
 
 function parseTerminateCommand(command) {
-    const [type, name] = split(command)
+    const [type, event] = split(command)
     return {
         type: TERMINATE,
-        name
+        event
     };
 }
 

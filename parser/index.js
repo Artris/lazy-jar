@@ -11,8 +11,7 @@ const { parseTerminateCommand } = require('./terminate');
 
 
 function parseCommand(command, { myUsername }) {
-  const isStatusCommand = command.indexOf('status') !== -1;
-  if (isStatusCommand) return parseStatusCommand(command);
+  if (command.trim() == 'status') return parseStatusCommand(command);
 
   const [type, message] = split(command);
   switch (type) {

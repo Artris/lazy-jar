@@ -76,7 +76,7 @@ describe('parseCommand', function() {
     const message = 'halt artris for 10 days';
     const expected = {
       type: HALT,
-      name: 'artris',
+      event: 'artris',
       when: {
           period: 'day',
           count: '10'
@@ -90,7 +90,7 @@ describe('parseCommand', function() {
     const message = 'terminate artris';
     const expected = {
       type: TERMINATE,
-      name: 'artris',
+      event: 'artris',
     };
     const result = parseCommand(message, { myUsername: '@alireza.eva.u23' });
     assert.deepEqual(result, expected);

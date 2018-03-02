@@ -6,7 +6,7 @@ describe('parseHaltCommand', function () {
         const message = 'halt feelinglucky for 2 months';
         const expected = {
             type: HALT,
-            name: 'feelinglucky',
+            event: 'feelinglucky',
             when: {
                 period: 'month',
                 count: '2'
