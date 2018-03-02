@@ -12,4 +12,4 @@ function parseHaltCommand(command) {
     };
 }
 
-module.exports = { parseHaltCommand,HALT };
+module.exports = { parseHaltCommand, HALT };
