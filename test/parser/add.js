@@ -1,5 +1,6 @@
 const assert = require('assert');
-const { parseAddCommand, ADD } = require('../../parser/add');
+const { ADD } = require('../../src/commands');
+const { parseAddCommand } = require('../../src/parser/add');
 
 describe('parseAddCommand', function() {
   it('should handle ",", "and", and "me" keywords', function() {

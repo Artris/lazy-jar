@@ -4,7 +4,13 @@ an slack app for scheduling remote stand-ups and track participation
 
 ## commands
 
-`name` is a unique identifier for a stand-up
+### definitions
+
+* `name` is a unique identifier for a stand-up
+* `when` identifies when and how often an event should happen such as "everyday at 6pm", or "every workday at 4:30pm"
+* `time range` identifies a period of time such as "1 week", or "3 days"
+
+### slash commands
 
 * `/lj schedule [name] with [list of @hacker] [when]`
   Schedule a new stand-up with a group of hackers
@@ -23,11 +29,14 @@ an slack app for scheduling remote stand-ups and track participation
 * `/lj terminate [name]`
   Terminate a stand-up
   * e.g. "terminate artris"
-* `lj halt [name] [time range]`
+* `lj halt [name]`
   Nofity the bot when the team is on a break
-  * e.g. "halt artris for 10 days"
+  * e.g. "halt artris"
+* `lj resume [name]`
+  Nofity the bot when you want to restart the stand-ups
+  * e.g. "resume artris"
 * `/lj status`
-  Display info about the active stand-up and how much each person owe
+  Display info about the active stand-ups and how much each person owe
 * `/lj [I or @hacker] will skip [name] [time range]`
   Notify the bot before taking a break
   * At least 8h before the stand-up
@@ -41,6 +50,6 @@ an slack app for scheduling remote stand-ups and track participation
 
 A slash command goes through the following steps
 
-1. **Pasring**: transforms a textual command into an action (JSON representation) that is easily consumed by the other modules in the system
-2. **Validation / Transformation**: validates an action and transform its properties
-3. **Reducer**: given the current state for a team and a valid action, returns the next state
+1.  **Pasring**: transforms a textual command into an action (JSON representation) that is easily consumed by the other modules in the system
+2.  **Validation / Transformation**: validates an action and transform its properties
+3.  **Reducer**: given the current state for a team and a valid action, returns the next state

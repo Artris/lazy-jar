@@ -1,15 +1,10 @@
-const { split } = require('./helpers');
-
-const REMOVE = 'REMOVE';
+const { split, splitUsernames } = require('./helpers');
+const { REMOVE } = require('../commands');
 
 function parseRemoveCommand(command, myUsername) {
   const withoutPrefix = command.slice(REMOVE.length + 1);
   const [who, from] = split(withoutPrefix, ' from ');
-  const usernames = who
-    .replace(/,/g, ' ')
-    .replace(/and/g, ' ')
-    .split(/\s+/);
-
+  const usernames = splitUsernames(who);
   return {
     type: REMOVE,
     usernames,
@@ -17,4 +12,4 @@ function parseRemoveCommand(command, myUsername) {
   };
 }
 
-module.exports = { parseRemoveCommand, REMOVE };
+module.exports = { parseRemoveCommand };

@@ -1,6 +1,6 @@
 const assert = require('assert');
-const { parseScheduleCommand, SCHEDULE } = require('../../parser/schedule');
-const { weekdays } = require('../../parser/constants');
+const { SCHEDULE } = require('../../src/commands');
+const { parseScheduleCommand } = require('../../src/parser/schedule');
 
 describe('parseScheduleCommand', function() {
   it('should split a valid schedule command into action parameters', function() {
@@ -10,10 +10,7 @@ describe('parseScheduleCommand', function() {
       type: SCHEDULE,
       event: 'artris',
       usernames: ['@alireza.eva.u23', 'me'],
-      when: {
-        time: '6am',
-        weekdays: weekdays
-      }
+      when: 'everyday at 6am'
     };
     const result = parseScheduleCommand(message);
     assert.deepEqual(result, expected);
