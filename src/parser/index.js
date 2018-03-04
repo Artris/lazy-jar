@@ -7,10 +7,10 @@ const { parseSkipCommand } = require('./skip');
 const { parsePaidCommand } = require('./paid');
 const { parseStatusCommand } = require('./status');
 const { parseHaltCommand } = require('./halt');
+const { parseResumeCommand } = require('./resume');
 const { parseTerminateCommand } = require('./terminate');
 
-
-function parseCommand(command, { myUsername }) {
+function parseCommand(command) {
   if (command.trim() == 'status') return parseStatusCommand(command);
 
   const [type, message] = split(command);
@@ -24,14 +24,16 @@ function parseCommand(command, { myUsername }) {
     case 'remove':
       return parseRemoveCommand(command);
     case 'halt':
-      return parseHaltCommand(command)
+      return parseHaltCommand(command);
+    case 'resume':
+      return parseResumeCommand(command);
     case 'terminate':
-      return parseTerminateCommand(command)
+      return parseTerminateCommand(command);
     default:
       const isPaidCommand = command.indexOf(' paid ') !== -1;
       const isSkipCommand = command.indexOf(' will skip ') !== -1;
       if (isPaidCommand) return parsePaidCommand(command);
-      if (isSkipCommand) return parseSkipCommand(command, myUsername);
+      if (isSkipCommand) return parseSkipCommand(command);
       throw Error('unkown command');
   }
 }

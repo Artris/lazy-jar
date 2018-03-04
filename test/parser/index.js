@@ -1,16 +1,16 @@
 const assert = require('assert');
-const { parseCommand } = require('../../parser');
-const { ADD } = require('../../parser/add');
-const { REMOVE } = require('../../parser/remove');
-const { MOVE } = require('../../parser/move');
-const { PAID } = require('../../parser/paid');
-const { SCHEDULE } = require('../../parser/schedule');
-const { SKIP } = require('../../parser/skip');
-const { STATUS } = require('../../parser/status');
-const { HALT } = require('../../parser/halt');
-const { TERMINATE } = require('../../parser/terminate');
-
-const { weekdays } = require('../../parser/constants');
+const { parseCommand } = require('../../src/parser');
+const {
+  ADD,
+  REMOVE,
+  MOVE,
+  PAID,
+  SCHEDULE,
+  SKIP,
+  STATUS,
+  HALT,
+  TERMINATE
+} = require('../../src/commands');
 
 describe('parseCommand', function() {
   it('should parse a schedule command', function() {
@@ -19,12 +19,9 @@ describe('parseCommand', function() {
       type: SCHEDULE,
       event: 'artris',
       usernames: ['@alireza.eva.u23'],
-      when: {
-        time: '6am',
-        weekdays: weekdays
-      }
+      when: 'everyday at 6am'
     };
-    const result = parseCommand(message, { myUsername: '@alireza.eva.u23' });
+    const result = parseCommand(message);
     assert.deepEqual(result, expected);
   });
 
@@ -35,7 +32,7 @@ describe('parseCommand', function() {
       to: 'artris',
       usernames: ['@dtoki']
     };
-    const result = parseCommand(message, { myUsername: '@alireza.eva.u23' });
+    const result = parseCommand(message);
     assert.deepEqual(result, expected);
   });
 
@@ -46,7 +43,7 @@ describe('parseCommand', function() {
       from: 'artris',
       usernames: ['@dtoki']
     };
-    const result = parseCommand(message, { myUsername: '@alireza.eva.u23' });
+    const result = parseCommand(message);
     assert.deepEqual(result, expected);
   });
 
@@ -55,11 +52,9 @@ describe('parseCommand', function() {
     const expected = {
       type: MOVE,
       event: 'artris',
-      to: {
-        time: '10am'
-      }
+      to: '10am'
     };
-    const result = parseCommand(message, { myUsername: '@alireza.eva.u23' });
+    const result = parseCommand(message);
     assert.deepEqual(result, expected);
   });
 
@@ -68,21 +63,17 @@ describe('parseCommand', function() {
     const expected = {
       type: STATUS
     };
-    const result = parseCommand(message, { myUsername: '@alireza.eva.u23' });
+    const result = parseCommand(message);
     assert.deepEqual(result, expected);
   });
 
   it('should parse halt command', function() {
-    const message = 'halt artris for 10 days';
+    const message = 'halt artris';
     const expected = {
       type: HALT,
-      event: 'artris',
-      when: {
-          period: 'day',
-          count: '10'
-      }
+      event: 'artris'
     };
-    const result = parseCommand(message, { myUsername: '@alireza.eva.u23' });
+    const result = parseCommand(message);
     assert.deepEqual(result, expected);
   });
 
@@ -90,9 +81,9 @@ describe('parseCommand', function() {
     const message = 'terminate artris';
     const expected = {
       type: TERMINATE,
-      event: 'artris',
+      event: 'artris'
     };
-    const result = parseCommand(message, { myUsername: '@alireza.eva.u23' });
+    const result = parseCommand(message);
     assert.deepEqual(result, expected);
   });
 
@@ -101,10 +92,10 @@ describe('parseCommand', function() {
     const expected = {
       type: PAID,
       to: '@dtoki',
-      from: 'I',
+      who: 'I',
       some: '$10'
     };
-    const result = parseCommand(message, { myUsername: '@alireza.eva.u23' });
+    const result = parseCommand(message);
     assert.deepEqual(result, expected);
   });
 
@@ -114,12 +105,9 @@ describe('parseCommand', function() {
       type: SKIP,
       username: 'I',
       name: 'artris',
-      when: {
-        count: '2',
-        period: 'month'
-      }
+      for: '2 months'
     };
-    const result = parseCommand(message, { myUsername: '@alireza.eva.u23' });
+    const result = parseCommand(message);
     assert.deepEqual(result, expected);
   });
 

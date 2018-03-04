@@ -2,10 +2,9 @@ const assert = require('assert');
 const {
   split,
   splitBy,
-  parseTime,
-  parseTimeRange
-} = require('../../parser/helpers');
-const { weekdays, workdays } = require('../../parser/constants');
+  splitAt,
+  splitUsernames
+} = require('../../src/parser/helpers');
 
 describe('helpers', function() {
   describe('split', function() {
@@ -52,58 +51,42 @@ describe('helpers', function() {
     });
   });
 
-  describe('parseTime', function() {
-    it('should return a list of weekdays when message starts with "day"', function() {
-      const text = 'day at 6am';
-      const expected = {
-        time: '6am',
-        weekdays: weekdays
-      };
-      const result = parseTime(text);
+  describe('splitAt', function() {
+    it('should split the text and trim the each segment', function() {
+      const text = '@alireza.eva.u23 everyday at 6am';
+      const expected = ['@alireza.eva.u23', 'everyday at 6am'];
+      const result = splitAt(text, 'every');
       assert.deepEqual(result, expected);
     });
 
-    it('should return a list of workdays when message starts with "workday"', function() {
-      const text = 'workday at 6am';
-      const expected = {
-        time: '6am',
-        weekdays: workdays
-      };
-      const result = parseTime(text);
-      assert.deepEqual(result, expected);
-    });
-
-    it('should throw if days are not specified, it should return the text as time', function() {
-      const text = '6am';
-      const expected = { time: '6am' };
-      const result = parseTime(text);
-      assert.deepEqual(result, expected);
-    });
-
-    it('should throw if frequency identifier does not match "everyday" or "every workday"', function() {
-      const text = 'monday at 6am';
+    it('should throw if the separator does not exists', function() {
+      const text = 'a text without a dash';
       assert.throws(() => {
-        parseTime(text);
-      }, 'Invalid frequency, expected "everyday" or "every workday" keywords');
+        splitAt(text, '-');
+      }, 'could not find "-"');
     });
   });
 
-  describe('parseTimeRange', function() {
-    it('should split the text into period and count fields', function() {
-      const text = 'for 4 weeks';
-      const expected = {
-        period: 'week',
-        count: '4'
-      };
-      const result = parseTimeRange(text);
+  describe('splitUsernames', function() {
+    it('should split the usernames by ","', function() {
+      const text = '@alireza.eva.u23, me';
+      const expected = ['@alireza.eva.u23', 'me'];
+      const result = splitUsernames(text);
       assert.deepEqual(result, expected);
     });
 
-    it('should throw if both period and count are not present', function() {
-      const text = 'for tomorrow';
-      assert.throws(() => {
-        parseTimeRange(text);
-      }, 'could not find " "');
+    it('should split the usernames by " "', function() {
+      const text = '@alireza.eva.u23  me';
+      const expected = ['@alireza.eva.u23', 'me'];
+      const result = splitUsernames(text);
+      assert.deepEqual(result, expected);
+    });
+
+    it('should handle "and"', function() {
+      const text = '@alireza.eva.u23, and  me';
+      const expected = ['@alireza.eva.u23', 'me'];
+      const result = splitUsernames(text);
+      assert.deepEqual(result, expected);
     });
   });
 });
