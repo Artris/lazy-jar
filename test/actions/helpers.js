@@ -21,6 +21,16 @@ describe('helpers', function () {
       const mapping = mapUsernameToIDs(usernames, usernameToIds, myUserID)
       assert.deepEqual(expected, mapping)
     });
+
+    it('should throw an error given a username that does not exist', function () {
+      const usernameToIds = new Map([
+        ['@alireza.eva.u23', 1],
+        ['@grace', 2]
+      ])
+      usernames = ['@dtoki', 'me']
+      const myUserID = 2
+      assert.throws(() => mapUsernameToIDs(usernames, usernameToIds, myUserID), Error)
+    });
   });
 
   describe('mapToTime', function () {
