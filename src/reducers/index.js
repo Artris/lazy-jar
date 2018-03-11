@@ -3,40 +3,50 @@ const {
     REMOVE,
     HALT,
     MOVE,
-    PAID,
     RESUME,
     SCHEDULE,
-    SKIP,
-    STATUS,
     TERMINATE
 } = require('../commands')
 
 function lazyJar(state = {}, action) {
-    const { event } = action
+    const {
+        event
+    } = action
     switch (action.type) {
         case SCHEDULE:
             return Object.assign({}, state, {
                 [event]: {
-                    "userIds": action.userIds,
-                    "frequency": action.frequency,
-                    "time": action.time,
-                    "halted": false
+                    userIds: action.userIds,
+                    frequency: action.frequency,
+                    time: action.time,
+                    halted: false
                 }
             })
         case TERMINATE:
             const newState = Object.assign({}, state)
             delete newState[event]
             return newState
-        default:
-            const { userIds, frequency, time, halted } = state[event]
+        case ADD:
+        case REMOVE:
+        case MOVE:
+        case HALT:
+        case RESUME:
+            const {
+                userIds,
+                frequency,
+                time,
+                halted
+            } = state[event]
             return Object.assign({}, state, {
                 [event]: {
-                    "userIds": processUserIds(userIds, action),
-                    "frequency": processFrequency(frequency, action),
-                    "time": processTime(time, action),
-                    "halted": isHalted(halted, action)
+                    userIds: processUserIds(userIds, action),
+                    frequency: processFrequency(frequency, action),
+                    time: processTime(time, action),
+                    halted: isHalted(halted, action)
                 }
             })
+        defualt:
+            return state
     }
 }
 

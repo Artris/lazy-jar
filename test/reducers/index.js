@@ -16,9 +16,8 @@ const {
     TERMINATE
 } = require('../../src/commands')
 
-describe('validate reducers', function () {
+describe('reducers', function () {
     it('should correctly add a new event to the state from SCHEDULE action', function () {
-
         const state = {
             "lazy-jar": {
                 "userIds": [0, 2],
@@ -31,7 +30,6 @@ describe('validate reducers', function () {
                 "halted": false
             }
         }
-
         const action = {
             "type": SCHEDULE,
             "event": 'artris',
@@ -43,7 +41,6 @@ describe('validate reducers', function () {
                 "zone": "UTC"
             }
         }
-
         const expected = {
             "lazy-jar": {
                 "userIds": [0, 2],
@@ -66,7 +63,6 @@ describe('validate reducers', function () {
                 "halted": false
             }
         }
-
         const newState = lazyJar(state, action)
         assert.deepEqual(expected, newState)
     })
@@ -94,12 +90,10 @@ describe('validate reducers', function () {
                 "halted": false
             }
         }
-
         const action = {
             "type": TERMINATE,
             "event": 'artris'
         }
-
         const expected = {
             "lazy-jar": {
                 "userIds": [0, 2],
@@ -112,13 +106,11 @@ describe('validate reducers', function () {
                 "halted": false
             }
         }
-
         const newState = lazyJar(state, action)
         assert.deepEqual(expected, newState)
     })
 
     it('should correctly add new ids to project given ADD action', function () {
-
         const state = {
             "lazy-jar": {
                 "userIds": [0, 2],
@@ -141,13 +133,11 @@ describe('validate reducers', function () {
                 "halted": false
             }
         }
-
         const action = {
             "type": ADD,
             "event": 'artris',
             "userIds": [1, 2]
         }
-
         const expected = {
             "lazy-jar": {
                 "userIds": [0, 2],
@@ -170,13 +160,11 @@ describe('validate reducers', function () {
                 "halted": false
             }
         }
-
         const newState = lazyJar(state, action)
         assert.deepEqual(expected, newState)
     })
 
-    it('should correctly add new ids to project given REMOVE action', function () {
-
+    it('should correctly remove ids from project given REMOVE action', function () {
         const state = {
             "artris": {
                 "userIds": [0, 2],
@@ -189,13 +177,11 @@ describe('validate reducers', function () {
                 "halted": false
             }
         }
-
         const action = {
             "type": REMOVE,
             "event": 'artris',
             "userIds": [0]
         }
-
         const expected = {
             "artris": {
                 "userIds": [2],
@@ -208,13 +194,11 @@ describe('validate reducers', function () {
                 "halted": false
             }
         }
-
         const newState = lazyJar(state, action)
         assert.deepEqual(expected, newState)
     })
 
     it('should correctly set halted to true given HALT action', function () {
-
         const state = {
             "lazy-jar": {
                 "userIds": [0, 2],
@@ -227,12 +211,10 @@ describe('validate reducers', function () {
                 "halted": false
             }
         }
-
         const action = {
             "type": HALT,
             "event": 'lazy-jar',
         }
-
         const expected = {
             "lazy-jar": {
                 "userIds": [0, 2],
@@ -245,13 +227,11 @@ describe('validate reducers', function () {
                 "halted": true
             }
         }
-
         const newState = lazyJar(state, action)
         assert.deepEqual(expected, newState)
     })
 
     it('should correctly set halted to false given RESUME action', function () {
-
         const state = {
             "lazy-jar": {
                 "userIds": [0, 2],
@@ -261,7 +241,7 @@ describe('validate reducers', function () {
                     "mm": 10,
                     "zone": "UTC"
                 },
-                "halted": false
+                "halted": true
             }
         }
 
@@ -269,7 +249,6 @@ describe('validate reducers', function () {
             "type": RESUME,
             "event": 'lazy-jar',
         }
-
         const expected = {
             "lazy-jar": {
                 "userIds": [0, 2],
@@ -282,13 +261,11 @@ describe('validate reducers', function () {
                 "halted": false
             }
         }
-
         const newState = lazyJar(state, action)
         assert.deepEqual(expected, newState)
     })
 
     it('should correctly change time and frequency of project given MOVE action', function () {
-
         const state = {
             "lazy-jar": {
                 "userIds": [0, 2],
@@ -301,7 +278,6 @@ describe('validate reducers', function () {
                 "halted": false
             }
         }
-
         const action = {
             "type": MOVE,
             "event": 'lazy-jar',
@@ -312,7 +288,6 @@ describe('validate reducers', function () {
                 "zone": "UTC"
             }
         }
-
         const expected = {
             "lazy-jar": {
                 "userIds": [0, 2],
@@ -325,17 +300,7 @@ describe('validate reducers', function () {
                 "halted": false
             }
         }
-
         const newState = lazyJar(state, action)
         assert.deepEqual(expected, newState)
-    })
-
-
-
-
-
-
-
-
-
-})
+    });
+});
