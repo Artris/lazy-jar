@@ -1,7 +1,7 @@
 /**
  * Checks if a given username exists in a map of usernames
  * @param {String} username
- * @param {Map([key,value])} mapOfUserNameToIds
+ * @param {Map([key,value])} usernameToIds
  */
 function usernameExists(username, usernameToIds) {
     const validUsername = username === 'me' || username === 'I' || usernameToIds.has(username)
@@ -10,8 +10,8 @@ function usernameExists(username, usernameToIds) {
 
 /**
  * Checks if a given event exists in a list of events
- * @param {String} event name
- * @param {List[String]} mapOfUserNameToIds
+ * @param {String} event
+ * @param {List[String]} events
  */
 function eventExists(event, events) {
     if (!events.has(event)) throw Error('the project specified does not exist')
@@ -19,8 +19,8 @@ function eventExists(event, events) {
 
 /**
  * Checks if an event is not in a list if events
- * @param {String} event name
- * @param {List[String]} list of events
+ * @param {String} event
+ * @param {List[String]} events
  */
 function eventAlreadyExists(event, events) {
     if (events.has(event)) throw Error(`the project ${event} already exists`)
@@ -29,8 +29,8 @@ function eventAlreadyExists(event, events) {
 /**
  * Maps a list of usernames into a list of corresponding userIds
  * @param {List[String]} usernames
- * @param {Map([key,value])} map of userId to username pairs
- * @return {List[Number]} list of mapped userIds
+ * @param {Map([key,value])} usernameToIds
+ * @return {Number} myUserID
  */
 function mapUsernameToIDs(usernames, usernameToIds, myUserID) {
     return usernames.map(username => {
@@ -41,10 +41,10 @@ function mapUsernameToIDs(usernames, usernameToIds, myUserID) {
 }
 
 /**
- * Checks if 
- * @param {String} string containing time of event in format hh:mm am/pm
- * @param {String} the team's time zone 
- * @return {Object} an object representing the time 
+ * Maps time into an JSON object 
+ * @param {String} time
+ * @param {String} zone
+ * @return {Object} a JSON object representing the time 
  */
 function mapToTime(time, zone) {
     let hh = time.match((/\d\d?/))
@@ -70,9 +70,9 @@ function mapToTime(time, zone) {
 }
 
 /**
- * Checks if 
- * @param {String} string containing the frequency of the event 
- * @return {String} keyword that describes the frequency 
+ * Maps frequency into an a keyword
+ * @param {String} period 
+ * @return {String} frequency keyword 
  */
 function mapToFrequency(period) {
     const daysOfWeek = ['MONDAYS', 'TUESDAYS', 'WEDNESDAYS', 'THURSDAYS', 'FRIDAYS', 'SATURDAYS', 'SUNDAYS', 'WEEKENDS']
