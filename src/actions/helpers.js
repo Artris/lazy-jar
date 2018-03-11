@@ -30,7 +30,8 @@ function eventAlreadyExists(event, events) {
  * Maps a list of usernames into a list of corresponding userIds
  * @param {List[String]} usernames
  * @param {Map([key,value])} usernameToIds
- * @return {Number} myUserID
+ * @param {Number} myUserID
+ * @return {List[Number]} list of userIds
  */
 function mapUsernameToIDs(usernames, usernameToIds, myUserID) {
     return usernames.map(username => {
