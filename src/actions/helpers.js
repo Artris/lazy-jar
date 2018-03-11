@@ -18,7 +18,7 @@ function eventExists(event, events) {
 }
 
 /**
- * Checks if an event is not in a list if events
+ * Checks if an event is not in a list of events
  * @param {String} event
  * @param {List[String]} events
  */
@@ -42,7 +42,7 @@ function mapUsernameToIDs(usernames, usernameToIds, myUserID) {
 }
 
 /**
- * Maps time into an JSON object 
+ * Maps a string that specifies a time into an JSON object 
  * @param {String} time
  * @param {String} zone
  * @return {Object} a JSON object representing the time 
@@ -71,7 +71,7 @@ function mapToTime(time, zone) {
 }
 
 /**
- * Maps frequency into an a keyword
+ * Maps a string that specifies a frequency into a keyword
  * @param {String} period 
  * @return {String} frequency keyword 
  */
