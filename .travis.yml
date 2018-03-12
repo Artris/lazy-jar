@@ -1,11 +1,13 @@
 sudo: enabled
 dist: trusty
-
 language: node_js
 node_js:
-  - "node"
+- node
 install:
-  - npm install
-  - npm test
+- npm install
+- npm test
 notifications:
-  slack: artris:fjIt73ICT1EVM4sZNwbBElXx
+  slack: artris:SLACK_KEY
+env:
+  global:
+    secure: iSaWJXCp5GIohthu5hE4nZq/8UAycT85s53dlBf7mBs7wFJX8gulQW4EoqOPN/z9I84lK2WW5Dtzi3ffP5kq8ijf8tQdwpdn5awxYWKnndtMfODpfh4DRqpR1X/JZ6NZxQZLAkGyLTLeytWeTUfGJ8IX6hWfhwlJwkssYbfJ59MP9b7ujEMIfHxdF/FbHtAuQGCact9g2fNXBfaSaqnbgqKe/39zC5QyZ8KdpWZpA2ncxBeGsEHTlKlpdK5GbWXR6r8NT9QfowRyIvG7XJJoxxPVbO1EVqDDVHxxISL9lHfLCKFkszwVYkk/I16iBnVjIVhPIbx7Wd2+4breLYoH0fN81iBpfFYPjsy1DxAtwUewjsfPYAFUFIPZHYNqtyWovOcTjiq5ts/XB7Kkwau2DoaCMaqI9XduCcpLFYUOakNTZmGU6GdunB8y8/LZ90FdqO16F7y3cwb8ZRD7LpTQaAkesAd7fM+kj7bNZpg53rSFJJB8XyzpE124CwYyAJ1T84BUZNF66GSN+zF7KNXq77pw+Ujk1uP391oerLvVgoKetCmvN4AId4M7AKwvtegh451P6/VaD5VqiM+eI5KXgYCgvtoWS6dP6oh/9afaOfzUaRfL13c2ysbK59Ed3k7KSK/+bhPccl2RacPkKWNYBzM7PzmUzpWHnXGHBwptvW0=
