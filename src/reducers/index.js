@@ -45,7 +45,7 @@ function lazyJar(state = {}, action) {
                     halted: isHalted(halted, action)
                 }
             })
-        defualt:
+        default:
             return state
     }
 }

@@ -27,6 +27,6 @@ describe('resume action', function () {
             type: RESUME,
             event: 'artris',
         };
-        assert.throws(() => resume(parsedCommand, events), Error)
+        assert.throws(() => resume(parsedCommand, events), /the project specified does not exist/)
     });
 });

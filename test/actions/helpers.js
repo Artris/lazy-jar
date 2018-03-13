@@ -4,7 +4,8 @@ const {
   eventAlreadyExists,
   mapUsernameToIDs,
   mapToFrequency,
-  mapToTime
+  mapToTime,
+  mapPeriodtoDays
 } = require('../../src/actions/helpers');
 
 describe('helpers', function () {
@@ -29,7 +30,7 @@ describe('helpers', function () {
       ])
       usernames = ['@dtoki', 'me']
       const myUserID = 2
-      assert.throws(() => mapUsernameToIDs(usernames, usernameToIds, myUserID), Error)
+      assert.throws(() => mapUsernameToIDs(usernames, usernameToIds, myUserID), /the user @dtoki does not exist/)
     });
   });
 
@@ -80,82 +81,82 @@ describe('helpers', function () {
 
     it('should throw an error given incorrect time format -format hh:mmam', function () {
       const timeString = '12:30am everyday'
-      assert.throws(() => mapToTime(timeString, 'UTC'), Error)
+      assert.throws(() => mapToTime(timeString, 'UTC'), /please specify a date in the format/)
     });
 
     it('should throw an error given incorrect time format -format hh:mmpm', function () {
       const timeString = '12:30pm everyday'
-      assert.throws(() => mapToTime(timeString, 'UTC'), Error)
+      assert.throws(() => mapToTime(timeString, 'UTC'), /please specify a date in the format/)
     });
 
     it('should throw an error given incorrect time format -format hh pm', function () {
       const timeString = '12 pm everyday'
-      assert.throws(() => mapToTime(timeString, 'UTC'), Error)
+      assert.throws(() => mapToTime(timeString, 'UTC'), /please specify a date in the format/)
     });
 
     it('should throw an error given incorrect time format -format hh am', function () {
       const timeString = '11 am everyday'
-      assert.throws(() => mapToTime(timeString, 'UTC'), Error)
+      assert.throws(() => mapToTime(timeString, 'UTC'), /please specify a date in the format/)
     });
 
     it('should throw an error given incorrect time format -format hh:mm', function () {
       const timeString = '12:30 everyday'
-      assert.throws(() => mapToTime(timeString, 'UTC'), Error)
+      assert.throws(() => mapToTime(timeString, 'UTC'), /please specify a date in the format/)
     });
 
     it('should throw an error given incorrect time format -format h', function () {
       const timeString = '6 everyday'
-      assert.throws(() => mapToTime(timeString, 'UTC'), Error)
+      assert.throws(() => mapToTime(timeString, 'UTC'), /please specify a date in the format/)
     });
 
     it('should throw an error given incorrect time format -format hh:mmmm am', function () {
       const timeString = '6:2020 am everyday'
-      assert.throws(() => mapToTime(timeString, 'UTC'), Error)
+      assert.throws(() => mapToTime(timeString, 'UTC'), /please specify a date in the format/)
     });
 
     it('should throw an error given incorrect time format -format hh:mmm am', function () {
       const timeString = '6:000 am everyday'
-      assert.throws(() => mapToTime(timeString, 'UTC'), Error)
+      assert.throws(() => mapToTime(timeString, 'UTC'), /please specify a date in the format/)
     });
 
     it('should throw an error given incorrect time format -format hh:m am', function () {
       const timeString = '6:2 am everyday'
-      assert.throws(() => mapToTime(timeString, 'UTC'), Error)
+      assert.throws(() => mapToTime(timeString, 'UTC'), /please specify a date in the format/)
     });
 
     it('should throw an error given incorrect time format -format :mmm am', function () {
       const timeString = ':120 am everyday'
-      assert.throws(() => mapToTime(timeString, 'UTC'), Error)
+      assert.throws(() => mapToTime(timeString, 'UTC'), /please specify a date in the format/)
     });
 
     it('should throw an error given incorrect time format -format hhhh am', function () {
       const timeString = '6000 am everyday'
-      assert.throws(() => mapToTime(timeString, 'UTC'), Error)
+      assert.throws(() => mapToTime(timeString, 'UTC'), /please specify a date in the format/)
     });
 
     it('should throw an error given correct format but illegal times -format hh:mm am where hh > 12', function () {
       const timeString = '13:00 am everyday'
-      assert.throws(() => mapToTime(timeString, 'UTC'), Error)
+      assert.throws(() => mapToTime(timeString, 'UTC'), /please specify a date in the format/)
     });
 
     it('should throw an error given correct format but illegal times -format hh:mm pm where hh > 12', function () {
       const timeString = '13:00 pm everyday'
-      assert.throws(() => mapToTime(timeString, 'UTC'), Error)
+      assert.throws(() => mapToTime(timeString, 'UTC'), /please specify a date in the format/)
     });
 
     it('should throw an error given correct format but illegal times -format hh:mm pm where mm > 59', function () {
       const timeString = '1:60 pm everyday'
-      assert.throws(() => mapToTime(timeString, 'UTC'), Error)
+      assert.throws(() => mapToTime(timeString, 'UTC'), /please specify a date in the format/)
     });
 
     it('should throw an error given no time', function () {
       const timeString = 'everyday'
-      assert.throws(() => mapToTime(timeString, 'UTC'), Error)
+      assert.throws(() => mapToTime(timeString, 'UTC'), /please specify a date in the format/)
     });
 
     it('should throw an error given an empty string', function () {
       const timeString = ''
-      assert.throws(() => mapToTime(timeString, 'UTC'), Error)
+      assert.throws(() => mapToTime(timeString, 'UTC'), /please specify a date in the format/)
     });
   });
 
@@ -218,12 +219,12 @@ describe('helpers', function () {
 
     it('should throw an error given an incorrect frequency', function () {
       const period = 'once every blue moon at 4am'
-      assert.throws(() => mapToFrequency(period), Error)
+      assert.throws(() => mapToFrequency(period), /please specify when you want the meetings to happen eg. weekdays, everyday, Saturdays .../)
     });
 
     it('should throw an error given an incorrect frequency', function () {
       const period = 'never - I dont want to work'
-      assert.throws(() => mapToFrequency(period), Error)
+      assert.throws(() => mapToFrequency(period), /please specify when you want the meetings to happen eg. weekdays, everyday, Saturdays .../)
     });
   });
 
@@ -235,7 +236,7 @@ describe('helpers', function () {
 
     it('should throw an error given an event that does not exist', function () {
       const events = new Set(['lazy-jar'])
-      assert.throws(() => eventExists('artris'), Error)
+      assert.throws(() => eventExists('artris', events), /the project specified does not exist/)
     });
   });
 
@@ -247,7 +248,20 @@ describe('helpers', function () {
 
     it('should throw an error given an event that already exists', function () {
       const events = new Set(['artris', 'lazy-jar'])
-      assert.throws(() => eventAlreadyExists('artris'), Error)
+      assert.throws(() => eventAlreadyExists('artris', events), /the project artris already exists/)
+    });
+  })
+
+  describe('mapToPeriod', function () {
+    it('should correctly validate a string specifying days to a number', function () {
+      const period = '3 days'
+      const expected = 3
+      const frequency = mapPeriodtoDays(period)
+      assert.deepEqual(expected, frequency)
+    })
+
+    it('should throw an error with an incorrectly formatted string', function () {
+      assert.throws(() => mapPeriodtoDays('2 months'), /please specify the period in days e.g ...for 2 days/)
     });
   })
 })

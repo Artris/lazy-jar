@@ -42,7 +42,7 @@ describe('remove action', function () {
             event: 'artris',
             usernames: ['me']
         };
-        assert.throws(() => remove(parsedCommand, usernameToIds, myUserId, events), Error)
+        assert.throws(() => remove(parsedCommand, usernameToIds, myUserId, events), /the project specified does not exist/)
     })
 
     it('should throw an error given a username that does not exist', function () {
@@ -57,6 +57,6 @@ describe('remove action', function () {
             event: 'artris',
             usernames: ['@grace']
         };
-        assert.throws(() => remove(parsedCommand, usernameToIds, myUserId, events), Error)
+        assert.throws(() => remove(parsedCommand, usernameToIds, myUserId, events), /the user @grace does not exist/)
     })
 });

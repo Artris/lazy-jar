@@ -27,6 +27,6 @@ describe('halt action', function () {
             type: HALT,
             event: 'artris',
         };
-        assert.throws(() => halt(parsedCommand, events), Error)
+        assert.throws(() => halt(parsedCommand, events), /the project specified does not exist/)
     });
 });

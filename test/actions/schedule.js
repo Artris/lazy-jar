@@ -52,7 +52,7 @@ describe('schedule action', function () {
             usernames: ['@alireza.eva.u23', 'me'],
             when: 'everyday at 6:00 am'
         };
-        assert.throws(() => schedule(parsedCommand, usernameToIds, myUserID, events), Error)
+        assert.throws(() => schedule(parsedCommand, usernameToIds, myUserID, events), /the project artris already exists/)
     });
 
     it('should throw an error given a username that does not exist', function () {
@@ -68,7 +68,7 @@ describe('schedule action', function () {
             usernames: ['@grace', 'me'],
             when: 'everyday at 6:00 am'
         };
-        assert.throws(() => schedule(parsedCommand, usernameToIds, myUserID, events), Error)
+        assert.throws(() => schedule(parsedCommand, usernameToIds, myUserID, events), /the user @grace does not exist/)
     });
 
     it('should throw an error given an incorrect time', function () {
@@ -85,7 +85,7 @@ describe('schedule action', function () {
             usernames: ['@alireza.eva.u23', 'me'],
             when: 'everyday at 6'
         };
-        assert.throws(() => schedule(parsedCommand, usernameToIds, myUserID, events), Error)
+        assert.throws(() => schedule(parsedCommand, usernameToIds, myUserID, events), /please specify a date in the format/)
     });
 
     it('should throw an error given incorrect frequency', function () {
@@ -102,6 +102,6 @@ describe('schedule action', function () {
             usernames: ['@alireza.eva.u23', 'me'],
             when: 'once at 6:00 am'
         };
-        assert.throws(() => schedule(parsedCommand, usernameToIds, myUserID, events), Error)
+        assert.throws(() => schedule(parsedCommand, usernameToIds, myUserID, events), /please specify when you want the meetings to happen eg. weekdays, everyday, Saturdays .../)
     });
 });

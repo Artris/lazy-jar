@@ -39,11 +39,10 @@ describe('add action', function () {
         const myUserID = 2
         const parsedCommand = {
             type: ADD,
-            event: 'artris',
             to: 'artris',
             usernames: ['@dtoki', '@alireza.eva.u23', 'me']
         };
-        assert.throws(() => add(parsedCommand, usernameToIds, myUserID, events), Error)
+        assert.throws(() => add(parsedCommand, usernameToIds, myUserID, events), /the project specified does not exist/)
     })
 
     it('should correctly throw an error given a username that does not exist', function () {
@@ -55,10 +54,9 @@ describe('add action', function () {
         const myUserID = 1
         const parsedCommand = {
             type: ADD,
-            event: 'artris',
-            to: 'artris',
+            to: 'lazy-jar',
             usernames: ['@dtoki', '@grace', 'me']
         };
-        assert.throws(() => add(parsedCommand, usernameToIds, myUserID, events), Error)
+        assert.throws(() => add(parsedCommand, usernameToIds, myUserID, events), /the user @grace does not exist/)
     })
 });

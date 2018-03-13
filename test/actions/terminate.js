@@ -27,6 +27,6 @@ describe('terminate action', function () {
             type: TERMINATE,
             event: 'artris',
         };
-        assert.throws(() => terminate(parsedCommand, events), Error)
+        assert.throws(() => terminate(parsedCommand, events), /the project specified does not exist/)
     });
 });

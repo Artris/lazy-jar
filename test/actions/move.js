@@ -35,7 +35,7 @@ describe('move action', function () {
             event: 'artris',
             to: '6 everyday'
         };
-        assert.throws(() => move(parsedCommand, events), Error)
+        assert.throws(() => move(parsedCommand, events), /please specify a date in the format/)
     });
 
     it('should throw an error given incorrect frequency', function () {
@@ -45,7 +45,7 @@ describe('move action', function () {
             event: 'artris',
             to: '6:00 am once in a while'
         };
-        assert.throws(() => move(parsedCommand, events), Error)
+        assert.throws(() => move(parsedCommand, events), /please specify when you want the meetings to happen eg. weekdays, everyday, Saturdays .../)
     });
 
     it('should throw an error given an event that does not exist', function () {
@@ -55,6 +55,6 @@ describe('move action', function () {
             event: 'artris',
             to: '6:00 am once in a while'
         };
-        assert.throws(() => move(parsedCommand, events), Error)
+        assert.throws(() => move(parsedCommand, events), /the project specified does not exist/)
     })
 });

@@ -8,7 +8,6 @@ const {
     REMOVE,
     HALT,
     MOVE,
-    PAID,
     RESUME,
     SCHEDULE,
     SKIP,
@@ -265,7 +264,7 @@ describe('reducers', function () {
         assert.deepEqual(expected, newState)
     })
 
-    it('should correctly change time and frequency of project given MOVE action', function () {
+    it('should not modify the state for the SKIP action', function () {
         const state = {
             "lazy-jar": {
                 "userIds": [0, 2],
@@ -279,22 +278,18 @@ describe('reducers', function () {
             }
         }
         const action = {
-            "type": MOVE,
-            "event": 'lazy-jar',
-            "frequency": "WEEKDAYS",
-            "time": {
-                "hh": 6,
-                "mm": 30,
-                "zone": "UTC"
-            }
+            type: SKIP,
+            event: 'artris',
+            userId: 0,
+            days: 2
         }
         const expected = {
             "lazy-jar": {
                 "userIds": [0, 2],
                 "frequency": "WEEKDAYS",
                 "time": {
-                    "hh": 6,
-                    "mm": 30,
+                    "hh": 1,
+                    "mm": 10,
                     "zone": "UTC"
                 },
                 "halted": false
@@ -303,4 +298,47 @@ describe('reducers', function () {
         const newState = lazyJar(state, action)
         assert.deepEqual(expected, newState)
     });
+
+    it('should correctly remove project from state with TERMINATE action', function () {
+        const state = {
+            "lazy-jar": {
+                "userIds": [0, 2],
+                "frequency": "WEEKDAYS",
+                "time": {
+                    "hh": 1,
+                    "mm": 10,
+                    "zone": "UTC"
+                },
+                "halted": false
+            },
+            "artris": {
+                "userIds": [0, 2],
+                "frequency": "WEEKDAYS",
+                "time": {
+                    "hh": 1,
+                    "mm": 10,
+                    "zone": "UTC"
+                },
+                "halted": false
+            }
+        }
+        const action = {
+            "type": TERMINATE,
+            "event": 'artris'
+        }
+        const expected = {
+            "lazy-jar": {
+                "userIds": [0, 2],
+                "frequency": "WEEKDAYS",
+                "time": {
+                    "hh": 1,
+                    "mm": 10,
+                    "zone": "UTC"
+                },
+                "halted": false
+            }
+        }
+        const newState = lazyJar(state, action)
+        assert.deepEqual(expected, newState)
+    })
 });

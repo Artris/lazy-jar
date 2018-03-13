@@ -88,10 +88,22 @@ function mapToFrequency(period) {
     throw Error('please specify when you want the meetings to happen eg. weekdays, everyday, Saturdays ...')
 }
 
+/**
+ * Maps a string that contains a number of days to a number e.g) '2 days' to 2
+ * @param {String} period 
+ * @return {Number} number of days specified in parameter
+ */
+function mapPeriodtoDays(period) {
+    let result = period.match(/^(\d\d?\d?)\s(days?)$/)
+    if (result === null) throw Error('please specify the period in days e.g ...for 2 days')
+    return Number(result[1])
+}
+
 module.exports = {
     eventExists,
     eventAlreadyExists,
     mapUsernameToIDs,
     mapToFrequency,
-    mapToTime
+    mapToTime,
+    mapPeriodtoDays
 }
