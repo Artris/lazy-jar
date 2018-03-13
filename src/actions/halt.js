@@ -1,21 +1,6 @@
-const {
-    eventExists
-} = require('./helpers')
-const {
-    HALT
-} = require('../commands');
-
-function halt(parsedCommand, events) {
-    const {
-        event
-    } = parsedCommand
-    eventExists(event, events)
-    return {
-        type: HALT,
-        event
-    }
-}
+const { eventExists } = require('./helpers');
+const { HALT } = require('../commands');
 
 module.exports = {
-    halt
-}
+  halt: require('./halt.factory')(eventExists, HALT)
+};

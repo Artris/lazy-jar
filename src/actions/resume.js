@@ -1,21 +1,6 @@
-const {
-    eventExists
-} = require('./helpers')
-const {
-    RESUME
-} = require('../commands');
-
-function resume(parsedCommand, events) {
-    const {
-        event
-    } = parsedCommand
-    eventExists(event, events)
-    return {
-        type: RESUME,
-        event
-    }
-}
+const { eventExists } = require('./helpers');
+const { RESUME } = require('../commands');
 
 module.exports = {
-    resume
-}
+  resume: require('./resume.factory')(eventExists, RESUME)
+};
