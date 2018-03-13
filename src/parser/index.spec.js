@@ -1,5 +1,5 @@
 const assert = require('assert');
-const { parseCommand } = require('../../src/parser');
+const { parseCommand } = require('./index');
 const {
   ADD,
   REMOVE,
@@ -9,7 +9,7 @@ const {
   STATUS,
   HALT,
   TERMINATE
-} = require('../../src/commands');
+} = require('../commands');
 
 describe('parseCommand', function() {
   it('should parse a schedule command', function() {

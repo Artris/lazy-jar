@@ -1,6 +1,6 @@
 const assert = require('assert');
-const { RESUME } = require('../../src/commands');
-const { parseResumeCommand } = require('../../src/parser/resume');
+const { RESUME } = require('../commands');
+const { parseResumeCommand } = require('./resume');
 
 describe('parseResumeCommand', function() {
   it('should split a valid resume command into action parameters', function() {

@@ -1,10 +1,5 @@
 const assert = require('assert');
-const {
-  split,
-  splitBy,
-  splitAt,
-  splitUsernames
-} = require('../../src/parser/helpers');
+const { split, splitBy, splitAt, splitUsernames } = require('./helpers');
 
 describe('helpers', function() {
   describe('split', function() {

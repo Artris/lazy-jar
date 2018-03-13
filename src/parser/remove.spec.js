@@ -1,6 +1,6 @@
 const assert = require('assert');
-const { REMOVE } = require('../../src/commands');
-const { parseRemoveCommand } = require('../../src/parser/remove');
+const { REMOVE } = require('../commands');
+const { parseRemoveCommand } = require('./remove');
 
 describe('parseRemoveCommand', function() {
   it('should handle ",", "and", and "me" keywords', function() {

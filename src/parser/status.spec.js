@@ -1,6 +1,6 @@
 const assert = require('assert');
-const { STATUS } = require('../../src/commands');
-const { parseStatusCommand } = require('../../src/parser/status');
+const { STATUS } = require('../commands');
+const { parseStatusCommand } = require('./status');
 
 describe('parseStatusCommand', function() {
   it('should split valid status command', function() {

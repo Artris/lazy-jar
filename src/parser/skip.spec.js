@@ -1,6 +1,6 @@
 const assert = require('assert');
-const { SKIP } = require('../../src/commands');
-const { parseSkipCommand } = require('../../src/parser/skip');
+const { SKIP } = require('../commands');
+const { parseSkipCommand } = require('./skip');
 
 describe('parseSkipMessage', function() {
   it('should split a valid skip command into action parameters', function() {
