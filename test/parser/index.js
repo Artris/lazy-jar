@@ -4,7 +4,6 @@ const {
   ADD,
   REMOVE,
   MOVE,
-  PAID,
   SCHEDULE,
   SKIP,
   STATUS,
@@ -82,18 +81,6 @@ describe('parseCommand', function() {
     const expected = {
       type: TERMINATE,
       event: 'artris'
-    };
-    const result = parseCommand(message);
-    assert.deepEqual(result, expected);
-  });
-
-  it('should parse paid command', function() {
-    const message = 'I paid @dtoki $10';
-    const expected = {
-      type: PAID,
-      to: '@dtoki',
-      who: 'I',
-      some: '$10'
     };
     const result = parseCommand(message);
     assert.deepEqual(result, expected);
