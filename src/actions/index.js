@@ -27,11 +27,11 @@ function createAction(parsedCommand, usernameToIds, myUserID, events, zone) {
         case HALT:
             return halt(parsedCommand, events)
         case MOVE:
-            return move(parsedCommand, events)
+            return move(parsedCommand, events, zone)
         case RESUME:
             return resume(parsedCommand, events)
         case SCHEDULE:
-            return schedule(parsedCommand, usernameToIds, myUserID, events)
+            return schedule(parsedCommand, usernameToIds, myUserID, events, zone)
         case SKIP:
             return skip(parsedCommand, usernameToIds, myUserID, events)
         case STATUS:
