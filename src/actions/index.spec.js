@@ -1,5 +1,10 @@
-const assert = require('assert');
-const { createAction } = require('./index');
+const chai = require('chai');
+const sinon = require('sinon');
+const sinonChai = require('sinon-chai');
+
+chai.use(sinonChai);
+
+const createAction = require('./actions.factory');
 const {
   ADD,
   REMOVE,
@@ -13,204 +18,99 @@ const {
 } = require('../commands');
 
 describe('createAction', function() {
-  const events = new Set(['artris', 'lazy-jar']);
-  const usernameToIds = new Map([
-    ['@dtoki', 0],
-    ['@alireza.eva.u23', 1],
-    ['@grace', 2]
-  ]);
-  const myUserID = 2;
-  zone = 'UTC';
-  it('should correctly return add action', function() {
-    const parsedCommand = {
-      type: ADD,
-      to: 'artris',
-      usernames: ['@dtoki', '@alireza.eva.u23', 'me']
-    };
-    const expected = {
-      type: ADD,
-      event: 'artris',
-      userIds: [0, 1, 2]
-    };
-    const result = createAction(
-      parsedCommand,
-      usernameToIds,
-      myUserID,
-      events,
-      zone
+  const usernameToIds = new Map([['@eva', 1]]);
+  const myUserId = '@dtoki';
+  const events = ['artris', 'feeling lucky'];
+  const zone = 'UTC';
+  let add, remove, halt, move, resume, schedule, skip, terminate;
+  let actions;
+
+  beforeEach(() => {
+    add = sinon.spy();
+    remove = sinon.spy();
+    halt = sinon.spy();
+    move = sinon.spy();
+    resume = sinon.spy();
+    schedule = sinon.spy();
+    skip = sinon.spy();
+    terminate = sinon.spy();
+    actions = createAction(
+      add,
+      remove,
+      halt,
+      move,
+      resume,
+      schedule,
+      skip,
+      terminate,
+      ADD,
+      REMOVE,
+      HALT,
+      MOVE,
+      RESUME,
+      SCHEDULE,
+      SKIP,
+      STATUS,
+      TERMINATE
     );
-    assert.deepEqual(result, expected);
   });
 
-  it('should correctly return remove action', function() {
-    const parsedCommand = {
-      type: REMOVE,
-      event: 'artris',
-      usernames: ['me']
-    };
-    const expected = {
-      type: REMOVE,
-      event: 'artris',
-      userIds: [2]
-    };
-    const result = createAction(
-      parsedCommand,
-      usernameToIds,
-      myUserID,
-      events,
-      zone
-    );
-    assert.deepEqual(result, expected);
+  it('should call "add" with the right arguments when command is ADD', function() {
+    actions({ type: ADD }, usernameToIds, myUserId, events, zone);
+    chai
+      .expect(add)
+      .to.have.been.calledWith({ type: ADD }, usernameToIds, myUserId, events);
   });
 
-  it('should correctly return halt action', function() {
-    const parsedCommand = {
-      type: HALT,
-      event: 'artris'
-    };
-    const expected = {
-      type: HALT,
-      event: 'artris'
-    };
-    const result = createAction(
-      parsedCommand,
-      usernameToIds,
-      myUserID,
-      events,
-      zone
-    );
-    assert.deepEqual(result, expected);
+  it('should call "remove" with the right arguments when command is REMOVE', function() {
+    actions({ type: REMOVE }, usernameToIds, myUserId, events, zone);
+    chai
+      .expect(remove)
+      .to.have.been.calledWith(
+        { type: REMOVE },
+        usernameToIds,
+        myUserId,
+        events
+      );
   });
 
-  it('should correctly return a move action', function() {
-    const parsedCommand = {
-      type: MOVE,
-      event: 'artris',
-      to: '6:30 am everyday'
-    };
-    const expected = {
-      type: MOVE,
-      event: 'artris',
-      time: {
-        hh: 6,
-        mm: 30,
-        zone: 'UTC'
-      },
-      frequency: 'EVERYDAY'
-    };
-    const result = createAction(
-      parsedCommand,
-      usernameToIds,
-      myUserID,
-      events,
-      zone
-    );
-    assert.deepEqual(result, expected);
+  it('should call "halt" with the right arguments when command is HALT', function() {
+    actions({ type: HALT }, usernameToIds, myUserId, events, zone);
+    chai.expect(halt).to.have.been.calledWith({ type: HALT }, events);
   });
 
-  it('should correctly return a resume action', function() {
-    const parsedCommand = {
-      type: RESUME,
-      event: 'artris'
-    };
-    const expected = {
-      type: RESUME,
-      event: 'artris'
-    };
-    const result = createAction(
-      parsedCommand,
-      usernameToIds,
-      myUserID,
-      events,
-      zone
-    );
-    assert.deepEqual(result, expected);
+  it('should call "move" with the right arguments when command is MOVE', function() {
+    actions({ type: MOVE }, usernameToIds, myUserId, events, zone);
+    chai.expect(move).to.have.been.calledWith({ type: MOVE }, events, zone);
   });
 
-  it('should correctly return a schedule action', function() {
-    const parsedCommand = {
-      type: SCHEDULE,
-      event: 'feeling lucky',
-      usernames: ['@alireza.eva.u23', 'me'],
-      when: 'everyday at 6:00 am'
-    };
-    const expected = {
-      type: SCHEDULE,
-      event: 'feeling lucky',
-      userIds: [1, 2],
-      time: {
-        hh: 6,
-        mm: 0,
-        zone: 'UTC'
-      },
-      frequency: 'EVERYDAY'
-    };
-    const result = createAction(
-      parsedCommand,
-      usernameToIds,
-      myUserID,
-      events,
-      zone
-    );
-    assert.deepEqual(result, expected);
+  it('should call "resume" with the right arguments when command is RESUME', function() {
+    actions({ type: RESUME }, usernameToIds, myUserId, events, zone);
+    chai.expect(resume).to.have.been.calledWith({ type: RESUME }, events);
   });
 
-  it('should correctly return a skip action', function() {
-    const parsedCommand = {
-      type: SKIP,
-      for: '2 days',
-      username: '@dtoki',
-      name: 'artris'
-    };
-    const expected = {
-      type: SKIP,
-      event: 'artris',
-      userId: 0,
-      days: 2
-    };
-    const result = createAction(
-      parsedCommand,
-      usernameToIds,
-      myUserID,
-      events,
-      zone
-    );
-    assert.deepEqual(result, expected);
+  it('should call "schedule" with the right arguments when command is SCHEDULE', function() {
+    actions({ type: SCHEDULE }, usernameToIds, myUserId, events, zone);
+    chai
+      .expect(schedule)
+      .to.have.been.calledWith(
+        { type: SCHEDULE },
+        usernameToIds,
+        myUserId,
+        events,
+        zone
+      );
   });
 
-  it('should correctly return a status action', function() {
-    const parsedCommand = {
-      type: STATUS
-    };
-    const expected = {
-      type: STATUS
-    };
-    const result = createAction(
-      parsedCommand,
-      usernameToIds,
-      myUserID,
-      events,
-      zone
-    );
-    assert.deepEqual(result, expected);
+  it('should call "skip" with the right arguments when command is SKIP', function() {
+    actions({ type: SKIP }, usernameToIds, myUserId, events, zone);
+    chai
+      .expect(skip)
+      .to.have.been.calledWith({ type: SKIP }, usernameToIds, myUserId, events);
   });
 
-  it('should correctly return terminate action', function() {
-    const parsedCommand = {
-      type: TERMINATE,
-      event: 'artris'
-    };
-    const expected = {
-      type: TERMINATE,
-      event: 'artris'
-    };
-    const result = createAction(
-      parsedCommand,
-      usernameToIds,
-      myUserID,
-      events,
-      zone
-    );
-    assert.deepEqual(result, expected);
+  it('should call "terminate" with the right arguments when command is TERMINATE', function() {
+    actions({ type: TERMINATE }, usernameToIds, myUserId, events, zone);
+    chai.expect(terminate).to.have.been.calledWith({ type: TERMINATE });
   });
 });
