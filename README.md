@@ -36,20 +36,16 @@ an slack app for scheduling remote stand-ups and track participation
   Nofity the bot when you want to restart the stand-ups
   * e.g. "resume artris"
 * `/lj status`
-  Display info about the active stand-ups and how much each person owe
+  Display info about the active stand-ups and member participation
 * `/lj [I or @hacker] will skip [name] [time range]`
   Notify the bot before taking a break
   * At least 8h before the stand-up
   * e.g. "I will skip artris for 2 weeks"
-* `/lj [I or @hacker] paid [me or @hacker] [$total]` Notify the bot when you have made a payment
-  * You can't pay yourself
-  * A confirmation message will be sent to the recepient
-  * e.g. "I paid @dtoki $40"
 
 ## how does it work?
 
 A slash command goes through the following steps
 
 1.  **Pasring**: transforms a textual command into an action (JSON representation) that is easily consumed by the other modules in the system
-2.  **Validation / Transformation**: validates an action and transform its properties
+2.  **Action**: validates an action and transform its properties to create an action
 3.  **Reducer**: given the current state for a team and a valid action, returns the next state
