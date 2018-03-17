@@ -2,7 +2,6 @@ const ADD = 'ADD';
 const REMOVE = 'REMOVE';
 const HALT = 'HALT';
 const MOVE = 'MOVE';
-const PAID = 'PAID';
 const RESUME = 'RESUME';
 const SCHEDULE = 'SCHEDULE';
 const SKIP = 'SKIP';
@@ -14,7 +13,6 @@ module.exports = {
   REMOVE,
   HALT,
   MOVE,
-  PAID,
   RESUME,
   SCHEDULE,
   SKIP,

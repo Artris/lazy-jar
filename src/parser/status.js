@@ -1,7 +1,2 @@
 const { STATUS } = require('../commands');
-
-function parseStatusCommand(command) {
-  return { type: STATUS };
-}
-
-module.exports = { parseStatusCommand };
+module.exports = { parseStatusCommand: require('./status.factory')(STATUS) };

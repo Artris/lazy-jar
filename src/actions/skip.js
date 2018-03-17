@@ -1,27 +1,11 @@
-const {
-    eventExists,
-    mapUsernameToIDs,
-    mapPeriodtoDays
-} = require('./helpers')
-const {
-    SKIP
-} = require('../commands');
-
-function skip(parsedCommand, usernameToIds, myUserID, events) {
-    const {
-        event,
-        username,
-        name
-    } = parsedCommand
-    eventExists(name, events)
-    return {
-        type: SKIP,
-        event: name,
-        userId: mapUsernameToIDs([username], usernameToIds, myUserID).pop(),
-        days: mapPeriodtoDays(parsedCommand.for)
-    }
-}
+const { eventExists, mapUsernameToIDs, mapPeriodtoDays } = require('./helpers');
+const { SKIP } = require('../commands');
 
 module.exports = {
-    skip
-}
+  skip: require('./skip.factory')(
+    eventExists,
+    mapUsernameToIDs,
+    mapPeriodtoDays,
+    SKIP
+  )
+};
