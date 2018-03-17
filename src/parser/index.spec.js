@@ -1,5 +1,12 @@
-const assert = require('assert');
-const { parseCommand } = require('./index');
+const chai = require('chai');
+const sinon = require('sinon');
+const sinonChai = require('sinon-chai');
+
+chai.use(sinonChai);
+
+const { split } = require('./helpers');
+const createParser = require('./parser.factory');
+
 const {
   ADD,
   REMOVE,
@@ -11,98 +18,97 @@ const {
   TERMINATE
 } = require('../commands');
 
-describe('parseCommand', function() {
-  it('should parse a schedule command', function() {
-    const message = 'schedule artris with @alireza.eva.u23 everyday at 6am';
-    const expected = {
-      type: SCHEDULE,
-      event: 'artris',
-      usernames: ['@alireza.eva.u23'],
-      when: 'everyday at 6am'
-    };
-    const result = parseCommand(message);
-    assert.deepEqual(result, expected);
+describe('parser factory', function() {
+  let parseScheduleCommand,
+    parseAddCommand,
+    parseRemoveCommand,
+    parseMoveCommand,
+    parseSkipCommand,
+    parseStatusCommand,
+    parseHaltCommand,
+    parseResumeCommand,
+    parseTerminateCommand;
+
+  let parse;
+  beforeEach(() => {
+    parseScheduleCommand = sinon.spy();
+    parseAddCommand = sinon.spy();
+    parseRemoveCommand = sinon.spy();
+    parseMoveCommand = sinon.spy();
+    parseSkipCommand = sinon.spy();
+    parseStatusCommand = sinon.spy();
+    parseHaltCommand = sinon.spy();
+    parseResumeCommand = sinon.spy();
+    parseTerminateCommand = sinon.spy();
+
+    parse = createParser(
+      split,
+      parseScheduleCommand,
+      parseAddCommand,
+      parseRemoveCommand,
+      parseMoveCommand,
+      parseSkipCommand,
+      parseStatusCommand,
+      parseHaltCommand,
+      parseResumeCommand,
+      parseTerminateCommand
+    );
   });
 
-  it('should parse add command', function() {
-    const message = 'add @dtoki to artris';
-    const expected = {
-      type: ADD,
-      to: 'artris',
-      usernames: ['@dtoki']
-    };
-    const result = parseCommand(message);
-    assert.deepEqual(result, expected);
+  it('should invoke "parseScheduleCommand" when command type is schedule', () => {
+    const command = 'schedule ...';
+    parse(command);
+    chai.expect(parseScheduleCommand).to.have.been.calledWith(command);
   });
 
-  it('should parse remove command', function() {
-    const message = 'remove @dtoki from artris';
-    const expected = {
-      type: REMOVE,
-      from: 'artris',
-      usernames: ['@dtoki']
-    };
-    const result = parseCommand(message);
-    assert.deepEqual(result, expected);
+  it('should invoke "parseMoveCommand" when command type is move', () => {
+    const command = 'move ...';
+    parse(command);
+    chai.expect(parseMoveCommand).to.have.been.calledWith(command);
   });
 
-  it('should parse move command', function() {
-    const message = 'move artris to 10am';
-    const expected = {
-      type: MOVE,
-      event: 'artris',
-      to: '10am'
-    };
-    const result = parseCommand(message);
-    assert.deepEqual(result, expected);
+  it('should invoke "parseAddCommand" when command type is add', () => {
+    const command = 'add ...';
+    parse(command);
+    chai.expect(parseAddCommand).to.have.been.calledWith(command);
   });
 
-  it('should parse status command', function() {
-    const message = 'status';
-    const expected = {
-      type: STATUS
-    };
-    const result = parseCommand(message);
-    assert.deepEqual(result, expected);
+  it('should invoke "parseRemoveCommand" when command type is remove', () => {
+    const command = 'remove ...';
+    parse(command);
+    chai.expect(parseRemoveCommand).to.have.been.calledWith(command);
   });
 
-  it('should parse halt command', function() {
-    const message = 'halt artris';
-    const expected = {
-      type: HALT,
-      event: 'artris'
-    };
-    const result = parseCommand(message);
-    assert.deepEqual(result, expected);
+  it('should invoke "parseHaltCommand" when command type is halt', () => {
+    const command = 'halt ...';
+    parse(command);
+    chai.expect(parseHaltCommand).to.have.been.calledWith(command);
   });
 
-  it('should parse terminate command', function() {
-    const message = 'terminate artris';
-    const expected = {
-      type: TERMINATE,
-      event: 'artris'
-    };
-    const result = parseCommand(message);
-    assert.deepEqual(result, expected);
+  it('should invoke "parseResumeCommand" when command type is resume', () => {
+    const command = 'resume ...';
+    parse(command);
+    chai.expect(parseResumeCommand).to.have.been.calledWith(command);
   });
 
-  it('should parse skip command', function() {
-    const message = 'I will skip artris for 2 months';
-    const expected = {
-      type: SKIP,
-      username: 'I',
-      name: 'artris',
-      for: '2 months'
-    };
-    const result = parseCommand(message);
-    assert.deepEqual(result, expected);
+  it('should invoke "parseTerminateCommand" when command type is terminate', () => {
+    const command = 'terminate ...';
+    parse(command);
+    chai.expect(parseTerminateCommand).to.have.been.calledWith(command);
   });
 
-  it('should throw if the command is unknown', function() {
-    const message =
-      'UnkownCommand artris with @alireza.eva.u23 everyday at 6am';
-    assert.throws(() => {
-      parseCommand(text, { myUsername: '@alireza.eva.u23' });
-    }, 'unknown command');
+  it('should invoke "parseSkipCommand" when command type is skip', () => {
+    const command = '... will skip ...';
+    parse(command);
+    chai.expect(parseSkipCommand).to.have.been.calledWith(command);
+  });
+
+  it('should throw when the command is unknown', () => {
+    const command = 'SomeUnknownCommand ...';
+    chai
+      .expect(() => {
+        parse(command);
+      })
+      .to.throw('unkown command');
   });
 });
