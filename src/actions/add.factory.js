@@ -7,6 +7,5 @@ module.exports = (eventExists, mapUsernameToIDs, ADD) => {
       event: to,
       userIds: mapUsernameToIDs(usernames, usernameToIds, myUserID)
     };
-    mapUsernameToIDs(usernames, usernameToIds);
   };
 };
