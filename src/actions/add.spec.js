@@ -1,5 +1,5 @@
 const assert = require('assert');
-const { add } = require('./add');
+const add = require('./add');
 const { ADD } = require('../commands');
 
 describe('add action', function() {

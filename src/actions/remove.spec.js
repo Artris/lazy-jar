@@ -1,5 +1,5 @@
 const assert = require('assert');
-const { remove } = require('./remove');
+const remove = require('./remove');
 const { REMOVE } = require('../commands');
 
 describe('remove action', function() {

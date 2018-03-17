@@ -1,5 +1,5 @@
 const assert = require('assert');
-const { terminate } = require('./terminate');
+const terminate = require('./terminate');
 const { TERMINATE } = require('../commands');
 
 describe('terminate action', function() {

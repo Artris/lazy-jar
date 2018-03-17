@@ -7,13 +7,11 @@ const {
 } = require('./helpers');
 const { SCHEDULE } = require('../commands');
 
-module.exports = {
-  schedule: require('./schedule.factory')(
-    eventExists,
-    eventAlreadyExists,
-    mapUsernameToIDs,
-    mapToTime,
-    mapToFrequency,
-    SCHEDULE
-  )
-};
+module.exports = require('./schedule.factory')(
+  eventExists,
+  eventAlreadyExists,
+  mapUsernameToIDs,
+  mapToTime,
+  mapToFrequency,
+  SCHEDULE
+);

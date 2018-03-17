@@ -1,5 +1,5 @@
 const assert = require('assert');
-const { resume } = require('./resume');
+const resume = require('./resume');
 const { RESUME } = require('../commands');
 
 describe('resume action', function() {

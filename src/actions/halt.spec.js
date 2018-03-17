@@ -1,5 +1,5 @@
 const assert = require('assert');
-const { halt } = require('./halt');
+const halt = require('./halt');
 const { HALT } = require('../commands');
 
 describe('halt action', function() {
