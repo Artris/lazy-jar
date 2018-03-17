@@ -1,2 +1,2 @@
 const { STATUS } = require('../commands');
-module.exports = { parseStatusCommand: require('./status.factory')(STATUS) };
+module.exports = require('./status.factory')(STATUS);

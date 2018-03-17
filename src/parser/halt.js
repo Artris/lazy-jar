@@ -1,2 +1,2 @@
 const { HALT } = require('../commands');
-module.exports = { parseHaltCommand: require('./halt.factory')(HALT) };
+module.exports = require('./halt.factory')(HALT);

@@ -1,6 +1,6 @@
 const assert = require('assert');
 const { TERMINATE } = require('../commands');
-const { parseTerminateCommand } = require('./terminate');
+const parseTerminateCommand = require('./terminate');
 
 describe('parseTerminateCommand', function() {
   it('should split a valid terminate command into action parameters', function() {

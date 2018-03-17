@@ -1,6 +1,6 @@
 const assert = require('assert');
 const { SCHEDULE } = require('../commands');
-const { parseScheduleCommand } = require('./schedule');
+const parseScheduleCommand = require('./schedule');
 
 describe('parseScheduleCommand', function() {
   it('should split a valid schedule command into action parameters', function() {
