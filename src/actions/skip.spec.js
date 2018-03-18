@@ -1,5 +1,5 @@
 const assert = require('assert');
-const { skip } = require('./skip');
+const skip = require('./skip');
 const { SKIP } = require('../commands');
 
 describe('skip action', function() {

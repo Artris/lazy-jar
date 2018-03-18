@@ -1,5 +1,5 @@
 const assert = require('assert');
-const { schedule } = require('./schedule');
+const schedule = require('./schedule');
 const { SCHEDULE } = require('../commands');
 
 describe('schedule action', function() {

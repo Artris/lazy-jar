@@ -1,6 +1,4 @@
 const { split } = require('./helpers');
 const { TERMINATE } = require('../commands');
 
-module.exports = {
-  parseTerminateCommand: require('./terminate.factory')(split, TERMINATE)
-};
+module.exports = require('./terminate.factory')(split, TERMINATE);

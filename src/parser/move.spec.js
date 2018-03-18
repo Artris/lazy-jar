@@ -1,6 +1,6 @@
 const assert = require('assert');
 const { MOVE } = require('../commands');
-const { parseMoveCommand } = require('./move');
+const parseMoveCommand = require('./move');
 
 describe('parseMoveCommand', function() {
   it('should split a valid move command into action parameters', function() {

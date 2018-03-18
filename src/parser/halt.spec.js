@@ -1,6 +1,6 @@
 const assert = require('assert');
 const { HALT } = require('../commands');
-const { parseHaltCommand } = require('./halt');
+const parseHaltCommand = require('./halt');
 
 describe('parseHaltCommand', function() {
   it('should split a valid halt command into action parameters', function() {
