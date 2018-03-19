@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "description": "an slack app for scheduling remote stand-ups and track participation ",
   "main": "index.js",
-  "dependencies": {},
+  "dependencies": {
+    "common-tags": "^1.7.2"
+  },
   "devDependencies": {
     "chai": "^4.1.2",
     "mocha": "^5.0.1",
