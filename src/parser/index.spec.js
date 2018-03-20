@@ -4,8 +4,8 @@ const sinonChai = require('sinon-chai');
 
 chai.use(sinonChai);
 
-const { split } = require('../helpers/helpers');
-const createParser = require('../parser/parser.factory');
+const { split } = require('./helpers/helpers');
+const createParser = require('./parser.factory');
 
 const {
   ADD,
@@ -16,7 +16,7 @@ const {
   STATUS,
   HALT,
   TERMINATE
-} = require('../../commands');
+} = require('../commands');
 
 describe('parser factory', function() {
   let parseScheduleCommand,
