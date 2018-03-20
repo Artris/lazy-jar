@@ -7,6 +7,8 @@ module.exports = (
   schedule,
   skip,
   terminate,
+  start,
+  stop,
   ADD,
   REMOVE,
   HALT,
@@ -15,7 +17,9 @@ module.exports = (
   SCHEDULE,
   SKIP,
   STATUS,
-  TERMINATE
+  TERMINATE,
+  START,
+  STOP
 ) => {
   return (parsedCommand, usernameToIds, myUserID, events, zone) => {
     switch (parsedCommand.type) {
@@ -34,9 +38,15 @@ module.exports = (
       case SKIP:
         return skip(parsedCommand, usernameToIds, myUserID, events);
       case STATUS:
-        return { type: STATUS };
+        return {
+          type: STATUS
+        };
       case TERMINATE:
         return terminate(parsedCommand, events);
+      case START:
+        return start(parsedCommand, usernameToIds, myUserID, events)
+      case STOP:
+        return stop(parsedCommand, usernameToIds, myUserID, events)
     }
   };
 };
