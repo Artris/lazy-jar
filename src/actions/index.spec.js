@@ -4,7 +4,7 @@ const sinonChai = require('sinon-chai');
 
 chai.use(sinonChai);
 
-const createAction = require('../actions/actions.factory');
+const createAction = require('./actions.factory');
 
 const {
   ADD,
@@ -16,7 +16,7 @@ const {
   SKIP,
   STATUS,
   TERMINATE
-} = require('../../commands');
+} = require('../commands');
 
 describe('createAction', function() {
   const usernameToIds = new Map([['@eva', 1]]);
