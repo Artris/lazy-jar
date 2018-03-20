@@ -54,63 +54,60 @@ A slash command goes through the following steps
 ## Database
 ```json
 {
-    "secrets": [
-        {
-            "team_id": "XXXXXXXXXX",
-            "access_token": "xoxp-XXXXXXXX-XXXXXXXX-XXXXX",
-            "bot": {
-                "bot_user_id": "UTTTTTTTTTTR",
-                "bot_access_token": "xoxb-XXXXXXXXXXXX-TTTTTTTTTTTTTT"
-            }
-        }
-    ],
-    "states": [
-        {
-            "team_id": "XXXXXXXXXX",
-            "events": [
-                {
-                    "event_id": "artris",
-                    "time_to_respond": "1800",
-                    "members": [
-                        {
-                            "user_id": "XXXXXXXXXX",
-                            "ignore": false,
-                            "skip_until": "the date for the next invocation of the meeting for the user"
-                        }
-                    ],
-                    "frequency": "WEEKDAYS",
-                    "time": {
-                        "hh": 6,
-                        "mm": 30,
-                        "zone": "UTC"
-                    },
-                    "halted": false
-                }
-            ]
-        }
-    ],
-    "logs": [
-        {
-            "team_id": "XXXXXXXXXX",
-            "event_id": "XXXXXXXXXX",
-            "user_id": "XXXXXXXXXX",
-            "date": "Invocation date of the evnet",
-            "action": "Participated"
-        },
-        {
-            "team_id": "XXXXXXXXXX",
-            "event_id": "XXXXXXXXXX",
-            "user_id": "XXXXXXXXXX",
-            "date": "Invocation date of the evnet",
-            "action": "Notified"
-        }
-    ],
-    "last_notification": {
-        "team_id": "XXXXXXXXXX",
-        "event_id": "XXXXXXXXXX",
-        "user_id": "XXXXXXXXXX",
-        "date": "",
-        "action": "Participated"
+  "secrets": [
+    {
+      "team_id": "XXXXXXXXXX",
+      "access_token": "xoxp-XXXXXXXX-XXXXXXXX-XXXXX",
+      "bot": {
+        "bot_user_id": "UTTTTTTTTTTR",
+        "bot_access_token": "xoxb-XXXXXXXXXXXX-TTTTTTTTTTTTTT"
+      }
     }
+  ],
+  "states": [
+    {
+      "team_id": "XXXXXXXXXX",
+      "event_id": "artris",
+      "time_to_respond": "1800",
+      "members": [
+        {
+          "user_id": "XXXXXXXXXX",
+          "ignore": false,
+          "skip_until":
+            "the date for the next invocation of the meeting for the user"
+        }
+      ],
+      "frequency": "WEEKDAYS",
+      "time": {
+        "hh": 6,
+        "mm": 30,
+        "zone": "UTC"
+      },
+      "halted": false
+    }
+  ],
+  "logs": [
+    {
+      "team_id": "XXXXXXXXXX",
+      "event_id": "XXXXXXXXXX",
+      "user_id": "XXXXXXXXXX",
+      "date": "Invocation date of the evnet",
+      "action": "Participated"
+    },
+    {
+      "team_id": "XXXXXXXXXX",
+      "event_id": "XXXXXXXXXX",
+      "user_id": "XXXXXXXXXX",
+      "date": "Invocation date of the evnet",
+      "action": "Notified"
+    }
+  ],
+  "last_notification": {
+    "team_id": "XXXXXXXXXX",
+    "event_id": "XXXXXXXXXX",
+    "user_id": "XXXXXXXXXX",
+    "date": "",
+    "action": "Participated"
+  }
 }
 ```
