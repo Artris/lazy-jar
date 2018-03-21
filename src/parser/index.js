@@ -11,7 +11,7 @@ const parseTerminateCommand = require('../terminate/terminate');
 const parseStartCommand = require('../start/start');
 const parseStopCommand = require('../stop/stop');
 
-module.exports = require('./parser/parser.factory')(
+module.exports = require('./parser.factory')(
   split,
   parseScheduleCommand,
   parseAddCommand,

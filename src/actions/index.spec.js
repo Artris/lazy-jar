@@ -4,7 +4,7 @@ const sinonChai = require('sinon-chai');
 
 chai.use(sinonChai);
 
-const createAction = require('../actions/actions.factory');
+const createAction = require('./actions.factory');
 
 const {
   ADD,
