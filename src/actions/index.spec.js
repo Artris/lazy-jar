@@ -23,7 +23,7 @@ describe('createAction', function() {
   const myUserId = '@dtoki';
   const events = ['artris', 'feeling lucky'];
   const zone = 'UTC';
-  let add, remove, halt, move, resume, schedule, skip, terminate;
+  let add, remove, halt, move, resume, schedule, skip, status, terminate;
   let actions;
 
   beforeEach(() => {
@@ -34,6 +34,7 @@ describe('createAction', function() {
     resume = sinon.spy();
     schedule = sinon.spy();
     skip = sinon.spy();
+    status = sinon.spy();
     terminate = sinon.spy();
     actions = createAction(
       add,
@@ -43,6 +44,7 @@ describe('createAction', function() {
       resume,
       schedule,
       skip,
+      status,
       terminate,
       ADD,
       REMOVE,
@@ -109,6 +111,13 @@ describe('createAction', function() {
       .expect(skip)
       .to.have.been.calledWith({ type: SKIP }, usernameToIds, myUserId, events);
   });
+
+  it('should call "status" with the right argumentns when command is STATUS', function(){
+    actions({type: STATUS});
+    chai
+      .expect(status)
+      .to.have.been.calledWith({type: STATUS});
+  })
 
   it('should call "terminate" with the right arguments when command is TERMINATE', function() {
     actions({ type: TERMINATE }, usernameToIds, myUserId, events, zone);

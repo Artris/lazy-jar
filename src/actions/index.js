@@ -5,6 +5,7 @@ const move = require('./move/move');
 const resume = require('./resume/resume');
 const schedule = require('./schedule/schedule');
 const skip = require('./schedule/skip');
+const status = require('./status/status');
 const terminate = require('./terminate/terminate');
 const {
   ADD,
@@ -26,6 +27,7 @@ module.exports = require('./actions.factory')(
   resume,
   schedule,
   skip,
+  status,
   terminate,
   ADD,
   REMOVE,

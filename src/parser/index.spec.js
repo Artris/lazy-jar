@@ -103,6 +103,12 @@ describe('parser factory', function() {
     chai.expect(parseSkipCommand).to.have.been.calledWith(command);
   });
 
+  it('should invoke "parseStatusCommand" when command type is status', ()=> {
+    const command = 'status';
+    parse(command);
+    chai.expect(parseStatusCommand).to.have.been.calledWith(command);
+  });
+
   it('should throw when the command is unknown', () => {
     const command = 'SomeUnknownCommand ...';
     chai
