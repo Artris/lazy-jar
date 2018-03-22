@@ -14,7 +14,6 @@ const {
   RESUME,
   SCHEDULE,
   SKIP,
-  STATUS,
   TERMINATE,
   START,
   STOP
@@ -59,7 +58,6 @@ describe('createAction', function () {
       RESUME,
       SCHEDULE,
       SKIP,
-      STATUS,
       TERMINATE,
       START,
       STOP

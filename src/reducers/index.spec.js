@@ -11,7 +11,6 @@ const {
   RESUME,
   SCHEDULE,
   SKIP,
-  STATUS,
   TERMINATE,
   START,
   STOP
@@ -268,59 +267,59 @@ describe('reducers', function () {
   });
 
   it('should correctly set skip_until key for a member', function () {
-      const state = {
-        team_id: 'CBV',
-        event_id: 'lazy-jar',
-        time_to_respond: 900,
-        members: [{
-            user_id: 2,
-            ignore: false
-          },
-          {
-            user_id: 3,
-            ignore: false
-          }
-        ],
-        frequency: 'WEEKDAYS',
-        time: {
-          hh: 1,
-          mm: 10,
-          zone: 'UTC'
-        },
-        halted: true
-      }
-      const action = {
-        type: SKIP,
-        event: 'lazy-jar',
-        userId: 2,
-        skip_until: '16-10-2018'
-      };
-      const expected = {
-        team_id: 'CBV',
-        event_id: 'lazy-jar',
-        time_to_respond: 900,
-        members: [{
+    const state = {
+      team_id: 'CBV',
+      event_id: 'lazy-jar',
+      time_to_respond: 900,
+      members: [{
           user_id: 2,
-          ignore: false,
-          skip_until: '16-10-2018'
-        }, {
+          ignore: false
+        },
+        {
           user_id: 3,
           ignore: false
-        }],
-        frequency: 'WEEKDAYS',
-        time: {
-          hh: 1,
-          mm: 10,
-          zone: 'UTC'
-        },
-        halted: true
-  }
-  const newState = lazyJar(state, action);
-  assert.deepEqual(expected, newState);
-});
+        }
+      ],
+      frequency: 'WEEKDAYS',
+      time: {
+        hh: 1,
+        mm: 10,
+        zone: 'UTC'
+      },
+      halted: true
+    }
+    const action = {
+      type: SKIP,
+      event: 'lazy-jar',
+      userId: 2,
+      skip_until: '16-10-2018'
+    };
+    const expected = {
+      team_id: 'CBV',
+      event_id: 'lazy-jar',
+      time_to_respond: 900,
+      members: [{
+        user_id: 2,
+        ignore: false,
+        skip_until: '16-10-2018'
+      }, {
+        user_id: 3,
+        ignore: false
+      }],
+      frequency: 'WEEKDAYS',
+      time: {
+        hh: 1,
+        mm: 10,
+        zone: 'UTC'
+      },
+      halted: true
+    }
+    const newState = lazyJar(state, action);
+    assert.deepEqual(expected, newState);
+  });
 
-it('should correctly update the state given START action', function () {
-  const state = {
+  it('should correctly update the state given START action', function () {
+    const state = {
       team_id: 'CBV',
       event_id: 'lazy-jar',
       time_to_respond: 900,
@@ -341,13 +340,13 @@ it('should correctly update the state given START action', function () {
         zone: 'UTC'
       },
       halted: true
-  }
-  const action = {
-    type: START,
-    event: 'lazy-jar',
-    userId: 2,
-  };
-  const expected = {
+    }
+    const action = {
+      type: START,
+      event: 'lazy-jar',
+      userId: 2,
+    };
+    const expected = {
       team_id: 'CBV',
       event_id: 'lazy-jar',
       time_to_respond: 900,
@@ -365,60 +364,59 @@ it('should correctly update the state given START action', function () {
         zone: 'UTC'
       },
       halted: true
-  }
-  const newState = lazyJar(state, action);
-  assert.deepEqual(expected, newState);
-});
+    }
+    const newState = lazyJar(state, action);
+    assert.deepEqual(expected, newState);
+  });
 
-it('should correctly update the state given STOP action', function () {
-const state = {
-  team_id: 'CBV',
-    event_id: 'lazy-jar',
-    time_to_respond: 900,
-    members: [{
-        user_id: 2,
-        ignore: false,
-        skip_until: '16-10-2018'
+  it('should correctly update the state given STOP action', function () {
+    const state = {
+      team_id: 'CBV',
+      event_id: 'lazy-jar',
+      time_to_respond: 900,
+      members: [{
+          user_id: 2,
+          ignore: false,
+          skip_until: '16-10-2018'
+        },
+        {
+          user_id: 3,
+          ignore: false
+        }
+      ],
+      frequency: 'WEEKDAYS',
+      time: {
+        hh: 1,
+        mm: 10,
+        zone: 'UTC'
       },
-      {
+      halted: true
+    }
+    const action = {
+      type: STOP,
+      event: 'lazy-jar',
+      userId: 2,
+    };
+    const expected = {
+      team_id: 'CBV',
+      event_id: 'lazy-jar',
+      time_to_respond: 900,
+      members: [{
+        user_id: 2,
+        ignore: true,
+      }, {
         user_id: 3,
         ignore: false
-      }
-    ],
-    frequency: 'WEEKDAYS',
-    time: {
-      hh: 1,
-      mm: 10,
-      zone: 'UTC'
-    },
-    halted: true
-}
-const action = {
-  type: STOP,
-  event: 'lazy-jar',
-  userId: 2,
-};
-const expected = {
-    team_id: 'CBV',
-    event_id: 'lazy-jar',
-    time_to_respond: 900,
-    members: [{
-      user_id: 2,
-      ignore: true,
-      skip_until: '16-10-2018'
-    }, {
-      user_id: 3,
-      ignore: false
-    }],
-    frequency: 'WEEKDAYS',
-    time: {
-      hh: 1,
-      mm: 10,
-      zone: 'UTC'
-    },
-    halted: true
-}
-const newState = lazyJar(state, action);
-assert.deepEqual(expected, newState);
-});
+      }],
+      frequency: 'WEEKDAYS',
+      time: {
+        hh: 1,
+        mm: 10,
+        zone: 'UTC'
+      },
+      halted: true
+    }
+    const newState = lazyJar(state, action);
+    assert.deepEqual(expected, newState);
+  });
 });

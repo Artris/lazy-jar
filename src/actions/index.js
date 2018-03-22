@@ -17,7 +17,6 @@ const {
     RESUME,
     SCHEDULE,
     SKIP,
-    STATUS,
     TERMINATE,
     START,
     STOP
@@ -41,7 +40,6 @@ module.exports = require('./actions.factory')(
     RESUME,
     SCHEDULE,
     SKIP,
-    STATUS,
     TERMINATE,
     START,
     STOP

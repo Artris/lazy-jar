@@ -16,7 +16,6 @@ module.exports = (
   RESUME,
   SCHEDULE,
   SKIP,
-  STATUS,
   TERMINATE,
   START,
   STOP
@@ -37,10 +36,6 @@ module.exports = (
         return schedule(parsedCommand, usernameToIds, myUserID, events, zone);
       case SKIP:
         return skip(parsedCommand, usernameToIds, myUserID, events);
-      case STATUS:
-        return {
-          type: STATUS
-        };
       case TERMINATE:
         return terminate(parsedCommand, events);
       case START:

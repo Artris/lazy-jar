@@ -91,9 +91,10 @@ function processUserIds(prevMembers, action) {
             })
         case STOP:
             return prevMembers.map(member => {
-                return (member.user_id === action.userId) ? Object.assign({}, member, {
+                return (member.user_id === action.userId) ? {
+                    user_id: action.userId,
                     ignore: true
-                }) : member
+                } : member
             })
         default:
             return prevMembers
