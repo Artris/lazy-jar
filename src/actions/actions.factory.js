@@ -6,6 +6,7 @@ module.exports = (
   resume,
   schedule,
   skip,
+  status,
   terminate,
   ADD,
   REMOVE,
@@ -34,7 +35,7 @@ module.exports = (
       case SKIP:
         return skip(parsedCommand, usernameToIds, myUserID, events);
       case STATUS:
-        return { type: STATUS };
+        return status(parsedCommand);
       case TERMINATE:
         return terminate(parsedCommand, events);
     }
