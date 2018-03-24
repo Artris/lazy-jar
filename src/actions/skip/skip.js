@@ -1,9 +1,11 @@
-const { eventExists, mapUsernameToIDs, mapPeriodtoDays } = require('../helpers/helpers');
+const { eventExists, mapUsernameToIDs, mapPeriodtoDate } = require('../helpers/helpers');
+const moment = require('moment');
 const { SKIP } = require('../../commands');
 
 module.exports = require('./skip.factory')(
   eventExists,
   mapUsernameToIDs,
-  mapPeriodtoDays,
-  SKIP
+  mapPeriodtoDate,
+  SKIP,
+  moment
 );

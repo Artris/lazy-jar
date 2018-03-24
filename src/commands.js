@@ -7,6 +7,8 @@ const SCHEDULE = 'SCHEDULE';
 const SKIP = 'SKIP';
 const STATUS = 'STATUS';
 const TERMINATE = 'TERMINATE';
+const STOP = 'STOP'
+const START = 'START'
 
 module.exports = {
   ADD,
@@ -17,5 +19,7 @@ module.exports = {
   SCHEDULE,
   SKIP,
   STATUS,
-  TERMINATE
+  TERMINATE,
+  START,
+  STOP
 };
