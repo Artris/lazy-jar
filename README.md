@@ -41,6 +41,13 @@ an slack app for scheduling remote stand-ups and track participation
   Notify the bot before taking a break
   * At least 8h before the stand-up
   * e.g. "I will skip artris for 2 weeks"
+* `/lj start notifying [username] for [name]`
+  Notify the bot that the hacker will start attending a stand-up again after a 'stop' or 'skip' command has been sent
+  * e.g. "start notifying @grace for artris"
+* `/lj stop notifying [username] for [name]`
+  The hacker is on a break and will not be counted as part of a stand-up until the 'start' command is sent
+  * e.g. "stop notifying @grace for artris"
+  
 
 ## how does it work?
 

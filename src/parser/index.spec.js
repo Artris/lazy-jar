@@ -4,8 +4,10 @@ const sinonChai = require('sinon-chai');
 
 chai.use(sinonChai);
 
-const { split } = require('./helpers/helpers');
-const createParser = require('./parser.factory');
+const {
+  split
+} = require('./helpers/helpers');
+const createParser = require('../parser/parser.factory');
 
 const {
   ADD,
@@ -15,10 +17,12 @@ const {
   SKIP,
   STATUS,
   HALT,
-  TERMINATE
+  TERMINATE,
+  START,
+  STOP
 } = require('../commands');
 
-describe('parser factory', function() {
+describe('parser factory', function () {
   let parseScheduleCommand,
     parseAddCommand,
     parseRemoveCommand,
@@ -27,7 +31,9 @@ describe('parser factory', function() {
     parseStatusCommand,
     parseHaltCommand,
     parseResumeCommand,
-    parseTerminateCommand;
+    parseTerminateCommand,
+    parseStartCommand,
+    parseStopCommand
 
   let parse;
   beforeEach(() => {
@@ -40,6 +46,8 @@ describe('parser factory', function() {
     parseHaltCommand = sinon.spy();
     parseResumeCommand = sinon.spy();
     parseTerminateCommand = sinon.spy();
+    parseStopCommand = sinon.spy();
+    parseStartCommand = sinon.spy();
 
     parse = createParser(
       split,
@@ -51,7 +59,9 @@ describe('parser factory', function() {
       parseStatusCommand,
       parseHaltCommand,
       parseResumeCommand,
-      parseTerminateCommand
+      parseTerminateCommand,
+      parseStartCommand,
+      parseStopCommand
     );
   });
 
@@ -101,6 +111,18 @@ describe('parser factory', function() {
     const command = '... will skip ...';
     parse(command);
     chai.expect(parseSkipCommand).to.have.been.calledWith(command);
+  });
+
+  it('should invoke "parseSkipCommand" when command type is start', () => {
+    const command = 'start notifying ...';
+    parse(command);
+    chai.expect(parseStartCommand).to.have.been.calledWith(command);
+  });
+
+  it('should invoke "parseSkipCommand" when command type is stop', () => {
+    const command = 'stop notifying ...';
+    parse(command);
+    chai.expect(parseStopCommand).to.have.been.calledWith(command);
   });
 
   it('should throw when the command is unknown', () => {
