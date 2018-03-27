@@ -4,6 +4,7 @@
   "description": "an slack app for scheduling remote stand-ups and track participation ",
   "main": "index.js",
   "dependencies": {
+    "mongoose": "^5.0.11",
     "common-tags": "^1.7.2",
     "moment": "^2.21.0"
   },
@@ -14,7 +15,7 @@
     "sinon-chai": "^3.0.0"
   },
   "scripts": {
-    "test": "mocha  'src/**/*.spec.js'"
+    "test": "mocha  'src/**/*.spec.js' --exit"
   },
   "repository": {
     "type": "git",
