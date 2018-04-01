@@ -8,7 +8,6 @@ const { client_id, client_secret, scope, host } = config;
 const redirect_uri = `${host}:${port}/oauth/redirect`;
 const slack_auth_uri = 'https://slack.com/oauth/authorize';
 const slack_access_uri = 'https://slack.com/api/oauth.access';
-const assert = require('assert');
 const app = express();
 
 
