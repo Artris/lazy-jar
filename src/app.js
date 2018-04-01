@@ -1,24 +1,17 @@
 const express = require('express');
 const fetch = require('node-fetch');
 const url = require('url');
-const port = process.env.PORT;
-const mongoHelper = require("../lib/mongodb");
 const config = require('./config.json');
-const { client_id, client_secret, scope, host } = config;
+
+const { client_id, client_secret, scope, host, port } = config;
 const redirect_uri = `${host}:${port}/oauth/redirect`;
 const slack_auth_uri = 'https://slack.com/oauth/authorize';
 const slack_access_uri = 'https://slack.com/api/oauth.access';
+
+const winston = require('winston');
+winston.add(winston.transports.File, { filename: 'lazyJarLogs.log' });
+
 const app = express();
-
-
-async function insertData( { team_id : id , data} = {} ){
-  let result = await mongoHelper.connectToMongo();
-  result.collection("secrets").insertOne({ "_id": id, "data":data }).then((result) =>{
-    console.log(result);
-  }).catch((e)=>{
-    console.error(e);
-  });
-}
 
 app.use(express.urlencoded({ extended: true }));
 
@@ -34,7 +27,7 @@ app.get('/oauth/authorize', (req, res) => {
     pathname: slack_auth_uri,
     query: params
   });
-
+  winston.info(`Oauth authourization request made ${JSON.toString(req)}`);
   res.redirect(auth_url);
 });
 
@@ -52,12 +45,13 @@ function requestAccess(code) {
   });
 
   fetch(access_url)
-    .then(res => res.json())
-    .then(res => {
-      let {team_id} = res;
-      insertData(team_id, res);
-      return res;
-    });
+    .then(res => res.json());
+}
+
+function getToken(code) {
+  requestAccess(code)
+    .then(res => {})
+    .catch(err => {})
 }
 
 app.get('/oauth/redirect', (req, res) => {
@@ -68,13 +62,6 @@ app.get('/oauth/redirect', (req, res) => {
 
 app.post('/api/command', (req, res) => {
   console.log(req.body);
-  getMongoClent().collection("secrets").findOne({ "_id": req.body.team_id }).then( result => {
-    console.log(result.data);
-    res.status(200).json({ "text": JSON.stringify(result.data) });
-  }).catch(e => {
-    console.error(e);
-  });
-  
 });
 
 app.listen(port, () => console.log(`listening on port ${port}!`));

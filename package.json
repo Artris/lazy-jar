@@ -4,9 +4,12 @@
   "description": "an slack app for scheduling remote stand-ups and track participation ",
   "main": "index.js",
   "dependencies": {
-    "mongoose": "^5.0.11",
     "common-tags": "^1.7.2",
-    "moment": "^2.21.0"
+    "express": "^4.16.3",
+    "moment": "^2.21.0",
+    "mongoose": "^5.0.11",
+    "node-fetch": "^2.1.2",
+    "winston": "^2.4.1"
   },
   "devDependencies": {
     "chai": "^4.1.2",
