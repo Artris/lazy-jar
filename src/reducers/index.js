@@ -11,7 +11,7 @@ const {
     STOP
 } = require('../commands')
 
-function lazyJar(state = {}, action) {
+function lazyJar(action, state = {} ) {
     const {
         event
     } = action
