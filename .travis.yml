@@ -3,6 +3,10 @@ dist: trusty
 language: node_js
 node_js:
 - node
+services:
+- mongodb
+before_script:
+  - sleep 5
 install:
 - npm install
 - npm test

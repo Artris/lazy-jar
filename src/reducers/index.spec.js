@@ -53,7 +53,7 @@ describe('reducers', function () {
       halted: false
     }
 
-    const newState = lazyJar(state, action);
+    const newState = lazyJar(action, state);
     assert.deepEqual(expected, newState);
   });
 
@@ -82,7 +82,7 @@ describe('reducers', function () {
       event: 'artris'
     };
     const expected = {}
-    const newState = lazyJar(state, action);
+    const newState = lazyJar(action, state);
     assert.deepEqual(expected, newState);
   });
 
@@ -135,7 +135,7 @@ describe('reducers', function () {
       },
       halted: false
     }
-    const newState = lazyJar(state, action);
+    const newState = lazyJar(action, state);
     assert.deepEqual(expected, newState);
   });
 
@@ -180,7 +180,7 @@ describe('reducers', function () {
       },
       halted: false
     }
-    const newState = lazyJar(state, action);
+    const newState = lazyJar(action, state);
     assert.deepEqual(expected, newState);
   });
 
@@ -221,7 +221,7 @@ describe('reducers', function () {
       },
       halted: true
     }
-    const newState = lazyJar(state, action);
+    const newState = lazyJar(action, state);
     assert.deepEqual(expected, newState);
   });
 
@@ -262,7 +262,7 @@ describe('reducers', function () {
       },
       halted: false
     }
-    const newState = lazyJar(state, action);
+    const newState = lazyJar(action, state);
     assert.deepEqual(expected, newState);
   });
 
@@ -314,7 +314,7 @@ describe('reducers', function () {
       },
       halted: true
     }
-    const newState = lazyJar(state, action);
+    const newState = lazyJar(action, state);
     assert.deepEqual(expected, newState);
   });
 
@@ -365,7 +365,7 @@ describe('reducers', function () {
       },
       halted: true
     }
-    const newState = lazyJar(state, action);
+    const newState = lazyJar(action, state);
     assert.deepEqual(expected, newState);
   });
 
@@ -416,7 +416,7 @@ describe('reducers', function () {
       },
       halted: true
     }
-    const newState = lazyJar(state, action);
+    const newState = lazyJar(action, state);
     assert.deepEqual(expected, newState);
   });
 });
