@@ -5,7 +5,11 @@
   "main": "index.js",
   "dependencies": {
     "common-tags": "^1.7.2",
-    "moment": "^2.21.0"
+    "express": "^4.16.3",
+    "moment": "^2.21.0",
+    "mongoose": "^5.0.11",
+    "node-fetch": "^2.1.2",
+    "winston": "^2.4.1"
   },
   "devDependencies": {
     "chai": "^4.1.2",
@@ -14,7 +18,7 @@
     "sinon-chai": "^3.0.0"
   },
   "scripts": {
-    "test": "mocha  'src/**/*.spec.js'"
+    "test": "mocha  'src/**/*.spec.js' --exit"
   },
   "repository": {
     "type": "git",
