@@ -1,4 +1,3 @@
-const moment = require('moment');
 const assert = require('assert');
 const {
   eventExists,
@@ -6,12 +5,12 @@ const {
   mapUsernameToIDs,
   mapToFrequency,
   mapToTime,
-  mapPeriodtoDate
+  mapPeriodtoDays
 } = require('./helpers');
 
-describe('helpers', function () {
-  describe('mapUsernameToIds', function () {
-    it('should correctly map user names to ids', function () {
+describe('helpers', function() {
+  describe('mapUsernameToIds', function() {
+    it('should correctly map user names to ids', function() {
       const usernameToIds = new Map([
         ['@dtoki', 0],
         ['@alireza.eva.u23', 1],
@@ -24,11 +23,8 @@ describe('helpers', function () {
       assert.deepEqual(expected, mapping);
     });
 
-    it('should throw an error given a username that does not exist', function () {
-      const usernameToIds = new Map([
-        ['@alireza.eva.u23', 1],
-        ['@grace', 2]
-      ]);
+    it('should throw an error given a username that does not exist', function() {
+      const usernameToIds = new Map([['@alireza.eva.u23', 1], ['@grace', 2]]);
       usernames = ['@dtoki', 'me'];
       const myUserID = 2;
       assert.throws(
@@ -38,8 +34,8 @@ describe('helpers', function () {
     });
   });
 
-  describe('mapToTime', function () {
-    it('should correctly validate and transform a time in a string into an object -format: hh:mm am', function () {
+  describe('mapToTime', function() {
+    it('should correctly validate and transform a time in a string into an object -format: hh:mm am', function() {
       const timeString = '12:30 am everyday';
       const expected = {
         hh: '0',
@@ -50,7 +46,7 @@ describe('helpers', function () {
       assert.deepEqual(expected, time);
     });
 
-    it('should correctly validate and transform a time in a string into an object -format: hh:mm pm', function () {
+    it('should correctly validate and transform a time in a string into an object -format: hh:mm pm', function() {
       const timeString = 'everyday at 12:30 pm';
       const expected = {
         hh: '12',
@@ -61,7 +57,7 @@ describe('helpers', function () {
       assert.deepEqual(expected, time);
     });
 
-    it('should correctly validate and transform a time in a string into an object -format: h:mm am', function () {
+    it('should correctly validate and transform a time in a string into an object -format: h:mm am', function() {
       const timeString = 'everyday at 1:30 am';
       const expected = {
         hh: '1',
@@ -72,7 +68,7 @@ describe('helpers', function () {
       assert.deepEqual(expected, time);
     });
 
-    it('should correctly validate and transform a time in a string into an object -format: 0h:mm am', function () {
+    it('should correctly validate and transform a time in a string into an object -format: 0h:mm am', function() {
       const timeString = 'everyday at 01:30 am';
       const expected = {
         hh: '1',
@@ -83,7 +79,7 @@ describe('helpers', function () {
       assert.deepEqual(expected, time);
     });
 
-    it('should throw an error given incorrect time format -format hh:mmam', function () {
+    it('should throw an error given incorrect time format -format hh:mmam', function() {
       const timeString = '12:30am everyday';
       assert.throws(
         () => mapToTime(timeString, 'UTC'),
@@ -91,7 +87,7 @@ describe('helpers', function () {
       );
     });
 
-    it('should throw an error given incorrect time format -format hh:mmpm', function () {
+    it('should throw an error given incorrect time format -format hh:mmpm', function() {
       const timeString = '12:30pm everyday';
       assert.throws(
         () => mapToTime(timeString, 'UTC'),
@@ -99,7 +95,7 @@ describe('helpers', function () {
       );
     });
 
-    it('should throw an error given incorrect time format -format hh pm', function () {
+    it('should throw an error given incorrect time format -format hh pm', function() {
       const timeString = '12 pm everyday';
       assert.throws(
         () => mapToTime(timeString, 'UTC'),
@@ -107,7 +103,7 @@ describe('helpers', function () {
       );
     });
 
-    it('should throw an error given incorrect time format -format hh am', function () {
+    it('should throw an error given incorrect time format -format hh am', function() {
       const timeString = '11 am everyday';
       assert.throws(
         () => mapToTime(timeString, 'UTC'),
@@ -115,7 +111,7 @@ describe('helpers', function () {
       );
     });
 
-    it('should throw an error given incorrect time format -format hh:mm', function () {
+    it('should throw an error given incorrect time format -format hh:mm', function() {
       const timeString = '12:30 everyday';
       assert.throws(
         () => mapToTime(timeString, 'UTC'),
@@ -123,7 +119,7 @@ describe('helpers', function () {
       );
     });
 
-    it('should throw an error given incorrect time format -format h', function () {
+    it('should throw an error given incorrect time format -format h', function() {
       const timeString = '6 everyday';
       assert.throws(
         () => mapToTime(timeString, 'UTC'),
@@ -131,7 +127,7 @@ describe('helpers', function () {
       );
     });
 
-    it('should throw an error given incorrect time format -format hh:mmmm am', function () {
+    it('should throw an error given incorrect time format -format hh:mmmm am', function() {
       const timeString = '6:2020 am everyday';
       assert.throws(
         () => mapToTime(timeString, 'UTC'),
@@ -139,7 +135,7 @@ describe('helpers', function () {
       );
     });
 
-    it('should throw an error given incorrect time format -format hh:mmm am', function () {
+    it('should throw an error given incorrect time format -format hh:mmm am', function() {
       const timeString = '6:000 am everyday';
       assert.throws(
         () => mapToTime(timeString, 'UTC'),
@@ -147,7 +143,7 @@ describe('helpers', function () {
       );
     });
 
-    it('should throw an error given incorrect time format -format hh:m am', function () {
+    it('should throw an error given incorrect time format -format hh:m am', function() {
       const timeString = '6:2 am everyday';
       assert.throws(
         () => mapToTime(timeString, 'UTC'),
@@ -155,7 +151,7 @@ describe('helpers', function () {
       );
     });
 
-    it('should throw an error given incorrect time format -format :mmm am', function () {
+    it('should throw an error given incorrect time format -format :mmm am', function() {
       const timeString = ':120 am everyday';
       assert.throws(
         () => mapToTime(timeString, 'UTC'),
@@ -163,7 +159,7 @@ describe('helpers', function () {
       );
     });
 
-    it('should throw an error given incorrect time format -format hhhh am', function () {
+    it('should throw an error given incorrect time format -format hhhh am', function() {
       const timeString = '6000 am everyday';
       assert.throws(
         () => mapToTime(timeString, 'UTC'),
@@ -171,7 +167,7 @@ describe('helpers', function () {
       );
     });
 
-    it('should throw an error given correct format but illegal times -format hh:mm am where hh > 12', function () {
+    it('should throw an error given correct format but illegal times -format hh:mm am where hh > 12', function() {
       const timeString = '13:00 am everyday';
       assert.throws(
         () => mapToTime(timeString, 'UTC'),
@@ -179,7 +175,7 @@ describe('helpers', function () {
       );
     });
 
-    it('should throw an error given correct format but illegal times -format hh:mm pm where hh > 12', function () {
+    it('should throw an error given correct format but illegal times -format hh:mm pm where hh > 12', function() {
       const timeString = '13:00 pm everyday';
       assert.throws(
         () => mapToTime(timeString, 'UTC'),
@@ -187,7 +183,7 @@ describe('helpers', function () {
       );
     });
 
-    it('should throw an error given correct format but illegal times -format hh:mm pm where mm > 59', function () {
+    it('should throw an error given correct format but illegal times -format hh:mm pm where mm > 59', function() {
       const timeString = '1:60 pm everyday';
       assert.throws(
         () => mapToTime(timeString, 'UTC'),
@@ -195,7 +191,7 @@ describe('helpers', function () {
       );
     });
 
-    it('should throw an error given no time', function () {
+    it('should throw an error given no time', function() {
       const timeString = 'everyday';
       assert.throws(
         () => mapToTime(timeString, 'UTC'),
@@ -203,7 +199,7 @@ describe('helpers', function () {
       );
     });
 
-    it('should throw an error given an empty string', function () {
+    it('should throw an error given an empty string', function() {
       const timeString = '';
       assert.throws(
         () => mapToTime(timeString, 'UTC'),
@@ -212,64 +208,64 @@ describe('helpers', function () {
     });
   });
 
-  describe('mapToFrequency', function () {
-    it('should correctly validate and transform the frequency given a string', function () {
+  describe('mapToFrequency', function() {
+    it('should correctly validate and transform the frequency given a string', function() {
       const period = '12:30 am every day';
       const expected = 'EVERYDAY';
       const frequency = mapToFrequency(period);
       assert.deepEqual(expected, frequency);
     });
 
-    it('should correctly validate and transform the frequency given a string', function () {
+    it('should correctly validate and transform the frequency given a string', function() {
       const period = '12:30 am everyday';
       const expected = 'EVERYDAY';
       const frequency = mapToFrequency(period);
       assert.deepEqual(expected, frequency);
     });
 
-    it('should correctly validate and transform the frequency given a string', function () {
+    it('should correctly validate and transform the frequency given a string', function() {
       const period = '12:30 am EVERYDAY';
       const expected = 'EVERYDAY';
       const frequency = mapToFrequency(period);
       assert.deepEqual(expected, frequency);
     });
 
-    it('should correctly validate and transform the frequency given a string', function () {
+    it('should correctly validate and transform the frequency given a string', function() {
       const period = '12:30 am every work day';
       const expected = 'WEEKDAYS';
       const frequency = mapToFrequency(period);
       assert.deepEqual(expected, frequency);
     });
 
-    it('should correctly validate and transform the frequency given a string', function () {
+    it('should correctly validate and transform the frequency given a string', function() {
       const period = '12:30 am on workdays';
       const expected = 'WEEKDAYS';
       const frequency = mapToFrequency(period);
       assert.deepEqual(expected, frequency);
     });
 
-    it('should correctly validate and transform the frequency given a string', function () {
+    it('should correctly validate and transform the frequency given a string', function() {
       const period = '12:30 am on weekdays';
       const expected = 'WEEKDAYS';
       const frequency = mapToFrequency(period);
       assert.deepEqual(expected, frequency);
     });
 
-    it('should correctly validate and transform the frequency given a string', function () {
+    it('should correctly validate and transform the frequency given a string', function() {
       const period = '12:20 on weekends';
       const expected = 'WEEKENDS';
       const frequency = mapToFrequency(period);
       assert.deepEqual(expected, frequency);
     });
 
-    it('should correctly validate and transform the frequency given a string', function () {
+    it('should correctly validate and transform the frequency given a string', function() {
       const period = '12:20 on saturdays';
       const expected = 'SATURDAYS';
       const frequency = mapToFrequency(period);
       assert.deepEqual(expected, frequency);
     });
 
-    it('should throw an error given an incorrect frequency', function () {
+    it('should throw an error given an incorrect frequency', function() {
       const period = 'once every blue moon at 4am';
       assert.throws(
         () => mapToFrequency(period),
@@ -277,7 +273,7 @@ describe('helpers', function () {
       );
     });
 
-    it('should throw an error given an incorrect frequency', function () {
+    it('should throw an error given an incorrect frequency', function() {
       const period = 'never - I dont want to work';
       assert.throws(
         () => mapToFrequency(period),
@@ -286,13 +282,13 @@ describe('helpers', function () {
     });
   });
 
-  describe('eventExists', function () {
-    it('should correctly check if an event exists and not throw an error', function () {
+  describe('eventExists', function() {
+    it('should correctly check if an event exists and not throw an error', function() {
       const events = new Set(['artris', 'lazy-jar']);
       eventExists('artris', events);
     });
 
-    it('should throw an error given an event that does not exist', function () {
+    it('should throw an error given an event that does not exist', function() {
       const events = new Set(['lazy-jar']);
       assert.throws(
         () => eventExists('artris', events),
@@ -301,13 +297,13 @@ describe('helpers', function () {
     });
   });
 
-  describe('eventAlreadyExists', function () {
-    it('should correctly check if an event already exists given an event that does not exist', function () {
+  describe('eventAlreadyExists', function() {
+    it('should correctly check if an event already exists given an event that does not exist', function() {
       const events = new Set(['lazy-jar']);
       eventAlreadyExists('artris', events);
     });
 
-    it('should throw an error given an event that already exists', function () {
+    it('should throw an error given an event that already exists', function() {
       const events = new Set(['artris', 'lazy-jar']);
       assert.throws(
         () => eventAlreadyExists('artris', events),
@@ -316,46 +312,18 @@ describe('helpers', function () {
     });
   });
 
-  describe('mapPeriodToDate', function () {
-    it('should correctly map a period to a date giving a number of days', function () {
+  describe('mapToPeriod', function() {
+    it('should correctly validate a string specifying days to a number', function() {
       const period = '3 days';
-      const expected = moment().add(3, 'days').format("DD-MM-YYYY");
-      const frequency = mapPeriodtoDate(period, moment);
+      const expected = 3;
+      const frequency = mapPeriodtoDays(period);
       assert.deepEqual(expected, frequency);
     });
 
-    it('should correctly map a period to a date giving a number of weeks', function () {
-      const period = '10 weeks';
-      const expected = moment().add(10, 'weeks').format("DD-MM-YYYY");
-      const frequency = mapPeriodtoDate(period, moment);
-      assert.deepEqual(expected, frequency);
-    });
-
-    it('should correctly map a period to a date giving a number of months', function () {
-      const period = '3 months';
-      const expected = moment().add(3, 'months').format("DD-MM-YYYY");
-      const frequency = mapPeriodtoDate(period, moment);
-      assert.deepEqual(expected, frequency);
-    });
-
-    it('should correctly map a period to a date giving a number of years', function () {
-      const period = '3 years';
-      const expected = moment().add(3, 'years').format("DD-MM-YYYY");
-      const frequency = mapPeriodtoDate(period, moment)
-      assert.deepEqual(expected, frequency);
-    });
-
-    it('should throw an error with an incorrectly formatted string', function () {
+    it('should throw an error with an incorrectly formatted string', function() {
       assert.throws(
-        () => mapPeriodtoDate('2 days and two weeks', moment),
-        /please specify the period in days\/months\/years e.g ...for 2 days/
-      );
-    });
-
-    it('should throw an error with an incorrectly formatted string', function () {
-      assert.throws(
-        () => mapPeriodtoDate('3 weekdays', moment),
-        /please specify the period in days\/months\/years e.g ...for 2 days/
+        () => mapPeriodtoDays('2 months'),
+        /please specify the period in days e.g ...for 2 days/
       );
     });
   });

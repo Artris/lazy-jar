@@ -1,12 +1,9 @@
 const assert = require('assert');
-const moment = require('moment');
 const skip = require('./skip');
-const {
-  SKIP
-} = require('../../commands');
+const { SKIP } = require('../../commands');
 
-describe('skip action', function () {
-  it('should correctly return a skip action', function () {
+describe('skip action', function() {
+  it('should correctly return a skip action', function() {
     const events = new Set(['artris', 'lazy-jar']);
     const usernameToIds = new Map([
       ['@dtoki', 0],
@@ -24,18 +21,15 @@ describe('skip action', function () {
       type: SKIP,
       event: 'artris',
       userId: 0,
-      skip_until: moment().add(2, 'days').format("DD-MM-YYYY")
+      days: 2
     };
     const result = skip(parsedCommand, usernameToIds, myUserID, events);
     assert.deepEqual(result, expected);
   });
 
-  it('should throw an error given a username that does not exist', function () {
+  it('should throw an error given a username that does not exist', function() {
     const events = new Set(['artris', 'lazy-jar']);
-    const usernameToIds = new Map([
-      ['@dtoki', 0],
-      ['@alireza.eva.u23', 1]
-    ]);
+    const usernameToIds = new Map([['@dtoki', 0], ['@alireza.eva.u23', 1]]);
     const myUserID = 2;
     const parsedCommand = {
       type: SKIP,
@@ -49,12 +43,9 @@ describe('skip action', function () {
     );
   });
 
-  it('should throw an error given an event that does not exist', function () {
+  it('should throw an error given an event that does not exist', function() {
     const events = new Set(['lazy-jar']);
-    const usernameToIds = new Map([
-      ['@dtoki', 0],
-      ['@alireza.eva.u23', 1]
-    ]);
+    const usernameToIds = new Map([['@dtoki', 0], ['@alireza.eva.u23', 1]]);
     const myUserID = 2;
     const parsedCommand = {
       type: SKIP,
@@ -68,7 +59,7 @@ describe('skip action', function () {
     );
   });
 
-  it('should throw an error given an incorrect time', function () {
+  it('should throw an error given an incorrect time', function() {
     const events = new Set(['artris', 'lazy-jar']);
     const usernameToIds = new Map([
       ['@dtoki', 0],
@@ -84,7 +75,7 @@ describe('skip action', function () {
     };
     assert.throws(
       () => skip(parsedCommand, usernameToIds, myUserID, events),
-      /please specify the period in days\/months\/years e.g ...for 2 days/
+      /please specify the period in days e.g ...for 2 days/
     );
   });
 });

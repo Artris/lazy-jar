@@ -1,4 +1,4 @@
-module.exports = (eventExists, mapUsernameToIDs, mapPeriodtoDate, SKIP, moment) => {
+module.exports = (eventExists, mapUsernameToIDs, mapPeriodtoDays, SKIP) => {
   return (parsedCommand, usernameToIds, myUserID, events) => {
     const { event, username, name } = parsedCommand;
     eventExists(name, events);
@@ -6,8 +6,7 @@ module.exports = (eventExists, mapUsernameToIDs, mapPeriodtoDate, SKIP, moment) 
       type: SKIP,
       event: name,
       userId: mapUsernameToIDs([username], usernameToIds, myUserID).pop(),
-      skip_until: mapPeriodtoDate(parsedCommand.for, moment)
+      days: mapPeriodtoDays(parsedCommand.for)
     };
   };
 };
-

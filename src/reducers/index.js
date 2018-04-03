@@ -5,10 +5,7 @@ const {
     MOVE,
     RESUME,
     SCHEDULE,
-    TERMINATE,
-    SKIP,
-    START,
-    STOP
+    TERMINATE
 } = require('../commands')
 
 function lazyJar(state = {}, action) {
@@ -18,86 +15,54 @@ function lazyJar(state = {}, action) {
     switch (action.type) {
         case SCHEDULE:
             return Object.assign({}, state, {
-                event_id: event,
-                time_to_respond: 900,
-                members: action.userIds.map((user_id) => ({
-                    user_id: user_id,
-                    ignore: false
-                })),
-                frequency: action.frequency,
-                time: action.time,
-                halted: false
+                [event]: {
+                    userIds: action.userIds,
+                    frequency: action.frequency,
+                    time: action.time,
+                    halted: false
+                }
             })
         case TERMINATE:
-            return {}
+            const newState = Object.assign({}, state)
+            delete newState[event]
+            return newState
         case ADD:
         case REMOVE:
         case MOVE:
         case HALT:
         case RESUME:
-        case SKIP:
-        case START:
-        case STOP:
             const {
-                members,
+                userIds,
                 frequency,
                 time,
                 halted
-            } = state
-
+            } = state[event]
             return Object.assign({}, state, {
-                event_id: event,
-                time_to_respond: 900,
-                members: processUserIds(members, action),
-                frequency: processFrequency(frequency, action),
-                time: processTime(time, action),
-                halted: isHalted(halted, action)
+                [event]: {
+                    userIds: processUserIds(userIds, action),
+                    frequency: processFrequency(frequency, action),
+                    time: processTime(time, action),
+                    halted: isHalted(halted, action)
+                }
             })
         default:
             return state
     }
 }
 
-function processUserIds(prevMembers, action) {
+function processUserIds(prevUserIds, action) {
     switch (action.type) {
         case ADD:
             /*return new array of ids without duplicates*/
-            return prevMembers.concat(action.userIds.map((id) => {
-                return {
-                    user_id: id,
-                    ignore: false
-                }
-            })).filter((member, index, arr) => {
-                return index === arr.findIndex(object => {
-                    return object.user_id === member.user_id
-                })
+            return prevUserIds.concat(action.userIds).filter((id, index, arr) => {
+                return arr.indexOf(id) === index
             })
         case REMOVE:
-            return prevMembers.filter((member) => {
-                return !action.userIds.includes(member.user_id)
-            })
-        case SKIP:
-            return prevMembers.map(member => {
-                return (member.user_id === action.userId) ? Object.assign({}, member, {
-                    skip_until: action.skip_until
-                }) : member
-            })
-        case START:
-            return prevMembers.map(member => {
-                return (member.user_id === action.userId) ? {
-                    user_id: action.userId,
-                    ignore: false
-                } : member
-            })
-        case STOP:
-            return prevMembers.map(member => {
-                return (member.user_id === action.userId) ? {
-                    user_id: action.userId,
-                    ignore: true
-                } : member
+            return prevUserIds.filter(id => {
+                return !action.userIds.includes(id)
             })
         default:
-            return prevMembers
+            return prevUserIds
     }
 }
 

@@ -93,18 +93,10 @@ function mapToFrequency(period) {
  * @param {String} period 
  * @return {Number} number of days specified in parameter
  */
-function mapPeriodtoDate(period, moment) {
-    let years = period.match(/^(\d\d?\d?)\s(years?)$/)
-    let months = period.match(/^(\d\d?\d?)\s(months?)$/)
-    let weeks = period.match(/^(\d\d?\d?)\s(weeks?)$/)
-    let days = period.match(/^(\d\d?\d?)\s(days?)$/)
-
-    if (days !== null) return moment().add(Number(days[1]), 'days').format("DD-MM-YYYY");
-    if (weeks !== null) return moment().add(Number(weeks[1]), 'weeks').format("DD-MM-YYYY");
-    if (months !== null) return moment().add(Number(months[1]), 'months').format("DD-MM-YYYY");
-    if (years !== null) return moment().add(Number(years[1]), 'years').format("DD-MM-YYYY");
-
-    throw Error('please specify the period in days/months/years e.g ...for 2 days,')
+function mapPeriodtoDays(period) {
+    let result = period.match(/^(\d\d?\d?)\s(days?)$/)
+    if (result === null) throw Error('please specify the period in days e.g ...for 2 days')
+    return Number(result[1])
 }
 
 module.exports = {
@@ -113,5 +105,5 @@ module.exports = {
     mapUsernameToIDs,
     mapToFrequency,
     mapToTime,
-    mapPeriodtoDate
+    mapPeriodtoDays
 }
