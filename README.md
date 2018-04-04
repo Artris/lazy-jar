@@ -53,7 +53,7 @@ an slack app for scheduling remote stand-ups and track participation
 
 A slash command goes through the following steps
 
-1.  **Pasring**: transforms a textual command into an action (JSON representation) that is easily consumed by the other modules in the system
+1.  **Parsing**: transforms a textual command into an action (JSON representation) that is easily consumed by the other modules in the system
 2.  **Action**: validates an action and transform its properties to create an action
 3.  **Reducer**: given the current state for a team and a valid action, returns the next state
 
@@ -105,7 +105,7 @@ A slash command goes through the following steps
       "team_id": "XXXXXXXXXX",
       "event_id": "XXXXXXXXXX",
       "user_id": "XXXXXXXXXX",
-      "date": "Invocation date of the evnet",
+      "date": "Invocation date of the event",
       "action": "Notified"
     }
   ],
