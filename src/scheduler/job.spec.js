@@ -47,16 +47,21 @@ describe('job.factory', function() {
         })
       );
 
+    const getSecret = sinon
+      .stub()
+      .withArgs('T_ID')
+      .returns(Promise.resolve('SECRET OBJ'));
+
     const isBefore = (a, b) => a < b;
     const notifyUsers = sinon.stub().resolves();
 
-    const Job = jobFactory(getEvent, notifyUsers, isBefore);
+    const Job = jobFactory(getEvent, getSecret, notifyUsers, isBefore);
     const job = Job(team_id, event_id);
 
     job(fireDate)
       .then(() => {
         expect(notifyUsers).to.have.been.calledWith(
-          'T_ID',
+          'SECRET OBJ',
           [
             {
               user_id: 'M_ID_2',
@@ -84,7 +89,7 @@ describe('job.factory', function() {
     const log = sinon.spy();
     const logger = { log };
 
-    const Job = jobFactory(getEvent, undefined, undefined, logger);
+    const Job = jobFactory(getEvent, undefined, undefined, undefined, logger);
     const job = Job(team_id, event_id);
 
     job(fireDate)
