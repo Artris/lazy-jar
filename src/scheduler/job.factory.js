@@ -5,18 +5,18 @@ module.exports = (getEvent, notifyUsers, isBefore, logger) => (
   event_id
 ) => fireDate => {
   return getEvent(team_id, event_id)
-    .then(event => {
-      const activeMembersId = event.members
+    .then(({ url: eventUrl, event_id: eventName, members }) => {
+      const activeMembers = members
         .filter(({ ignore, skip_until }) => {
           const notActive = ignore === true;
           const isOnBreak = isBefore(fireDate, skip_until);
           return !(notActive || isOnBreak);
         })
-        .map(member => member.id);
-      return activeMembersId;
-    })
-    .then(activeMembersId => {
-      return notifyUsers(team_id, activeMembersId);
+        .map(member => {
+          const { user_id, user_im_id } = member;
+          return { user_id, user_im_id };
+        });
+      return notifyUsers(team_id, activeMembers, eventName, eventUrl);
     })
     .catch(err =>
       logger.log({

@@ -19,11 +19,30 @@ describe('job.factory', function() {
       .withArgs('T_ID', 'E_ID')
       .returns(
         Promise.resolve({
+          url: 'SOME_URL',
+          event_id: 'E_ID',
           members: [
-            { ignore: true, id: 'M_ID_1' },
-            { ignore: false, skip_until: new Date('2018-01-20'), id: 'M_ID_2' },
-            { ignore: false, skip_until: new Date('2018-04-20'), id: 'M_ID_3' },
-            { id: 'M_ID_4' }
+            {
+              ignore: true,
+              user_id: 'M_ID_1',
+              user_im_id: 'M_IM_ID_1'
+            },
+            {
+              ignore: false,
+              skip_until: new Date('2018-01-20'),
+              user_id: 'M_ID_2',
+              user_im_id: 'M_IM_ID_2'
+            },
+            {
+              ignore: false,
+              skip_until: new Date('2018-04-20'),
+              user_id: 'M_ID_3',
+              user_im_id: 'M_IM_ID_3'
+            },
+            {
+              user_id: 'M_ID_4',
+              user_im_id: 'M_IM_ID_4'
+            }
           ]
         })
       );
@@ -36,10 +55,21 @@ describe('job.factory', function() {
 
     job(fireDate)
       .then(() => {
-        expect(notifyUsers).to.have.been.calledWith('T_ID', [
-          'M_ID_2',
-          'M_ID_4'
-        ]);
+        expect(notifyUsers).to.have.been.calledWith(
+          'T_ID',
+          [
+            {
+              user_id: 'M_ID_2',
+              user_im_id: 'M_IM_ID_2'
+            },
+            {
+              user_id: 'M_ID_4',
+              user_im_id: 'M_IM_ID_4'
+            }
+          ],
+          'E_ID',
+          'SOME_URL'
+        );
         done();
       })
       .catch(err => done(err));
