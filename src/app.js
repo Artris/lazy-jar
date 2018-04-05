@@ -1,17 +1,25 @@
 const express = require('express');
 const fetch = require('node-fetch');
+const winston = require('winston');
+winston.add(winston.transports.File, {
+    filename: 'lazyJarLogs.log'
+});
 const url = require('url');
 const config = require('./config.json');
 const {
-    client_id,
-    client_secret,
-    scope,
     host,
     port,
+    client_id,
+    client_secret,
     slack_auth_uri,
     slack_access_uri,
-    slack_user_list
-} = config;
+    scope
+} = config
+const {
+    createUsernameToIdMap,
+    createUserIdToImId,
+    notifyUsers
+} = require('./slack/helpers')({ config, fetch, winston, url });
 const {
     saveSecrets,
     returnSecrets,
@@ -25,10 +33,7 @@ const createAction = require('./actions/index')
 const {
     lazyJar
 } = require('./reducers/index')
-const winston = require('winston');
-winston.add(winston.transports.File, {
-    filename: 'lazyJarLogs.log'
-});
+
 
 const app = express();
 
@@ -52,7 +57,7 @@ app.get('/oauth/authorize', (req, res) => {
     res.redirect(auth_url);
 });
 
-app.get('/oauth/redirect', async (req, res) => {
+app.get('/oauth/redirect', async(req, res) => {
     const {
         code,
         state
@@ -61,7 +66,8 @@ app.get('/oauth/redirect', async (req, res) => {
         await getSecretsAndSave(code);
         winston.info(`Team authencation successful`);
         res.send('Thank you, you have successfully authenticated your team!');
-    } catch (e) {
+    }
+    catch (e) {
         winston.error(`Team authencation failed, ${e}`);
         res.send('Oops, an error occured while authenticating your team, please try again!');
     }
@@ -76,7 +82,7 @@ app.post('/api/command', (req, res) => {
 
     returnSecrets({
         team_id
-    }).then(async (result) => {
+    }).then(async(result) => {
         let userMap, action, teamEvents, prevState;
         const {
             bot: {
@@ -87,7 +93,8 @@ app.post('/api/command', (req, res) => {
             userMap = await getUserMap(bot_access_token);
             teamEvents = await getTeamEventsSet(team_id);
 
-        } catch (e) {
+        }
+        catch (e) {
             res.send("An error has occured, please try again later");
         }
         try {
@@ -97,10 +104,12 @@ app.post('/api/command', (req, res) => {
                 await updateState(action, prevState, team_id);
                 // TODO: send back meaningful messages to user based on action
                 res.send("State updated");
-            } catch (e) {
+            }
+            catch (e) {
                 res.send("An error has occured, please try again later");
             }
-        } catch (e) {
+        }
+        catch (e) {
             res.send(e.toString());
         }
     });
@@ -154,8 +163,9 @@ async function getSecretsAndSave(code) {
 
 async function getUserMap(access_token) {
     try {
-        return await createUsernameToIdMap(access_token)
-    } catch (e) {
+        return await createUsernameToIdMap(access_token);
+    }
+    catch (e) {
         winston.error(`An error occured while creating userName to userId map ${e}`);
         throw e;
     }
@@ -168,7 +178,8 @@ async function getTeamEventsSet(team_id) {
         });
         //the validator accepts a set of events
         return new Set(events);
-    } catch (e) {
+    }
+    catch (e) {
         winston.error(`An error occured retriving list of events for team from database: ${e}`);
         throw e;
     }
@@ -178,7 +189,8 @@ async function interpretCommand(text, userMap, user_id, teamEvents) {
     try {
         const parsedCommand = parser(text)
         return createAction(parsedCommand, userMap, user_id, teamEvents, 'UTC');
-    } catch (e) {
+    }
+    catch (e) {
         winston.error(`An error occurred while intepreting the user command: ${e}`);
         throw e;
     }
@@ -194,7 +206,8 @@ async function getPreviousState(team_id, event_id) {
         //here we need to convert object returned from mongoose to a javascript object
         prevState = (prevState[0] === undefined) ? {} : (prevState.pop()).toObject();
         return prevState;
-    } catch (e) {
+    }
+    catch (e) {
         winston.error(`An error occurred while retrieving the previous state from the database: ${e}`);
         throw e;
     }
@@ -206,28 +219,9 @@ async function updateState(action, prevState, team_id) {
     newState.team_id = team_id
     try {
         await saveState(newState);
-    } catch (e) {
+    }
+    catch (e) {
         winston.error(`An error occured while updating the state of the database: ${e}`);
-        throw e;
-    }
-}
-
-async function createUsernameToIdMap(team_token) {
-    let params = {
-        token: [team_token],
-        scope: 'bot'
-    }
-    let urlRequest = url.format({
-        pathname: slack_user_list,
-        query: params
-    });
-    //Get list of users and return map of userName => userId
-    try {
-        const response = await fetch(urlRequest);
-        const jsonResp = await response.json();
-        return (new Map(jsonResp.members.map(item => ['@'+item.name, item.id])));
-    } catch (e) {
-        winston.error(`An error occured while fetching user.list from slack: ${e}`);
         throw e;
     }
 }
