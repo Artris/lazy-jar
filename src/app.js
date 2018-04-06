@@ -18,12 +18,6 @@ const {
 } = config;
 
 const {
-  createUsernameToIdMap,
-  createUserIdToImId,
-  notifyUsers
-} = require('./slack/helpers')({ config, fetch, winston, url });
-
-const {
   saveSecrets,
   returnSecrets,
   returnEventsByTeamId,
@@ -31,10 +25,41 @@ const {
   returnState
 } = require('./database/helpers/helpers.js');
 
+const {
+  createUsernameToIdMap,
+  createUserIdToImId,
+  notifyUsers,
+  getSecretsAndSave
+} = require('./app-helpers/slack')({
+  config,
+  fetch,
+  winston,
+  url,
+  undefined,
+  saveSecrets
+});
+
 const redirect_uri = `${host}:${port}/oauth/redirect`;
 const parser = require('./parser/index');
 const createAction = require('./actions/index');
 const lazyJar = require('./reducers/index');
+
+const {
+  getUserMap,
+  getTeamEventsSet,
+  interpretCommand,
+  getPreviousState,
+  updateState
+} = require('./app-helpers/command')(
+  createUsernameToIdMap,
+  returnEventsByTeamId,
+  parser,
+  createAction,
+  returnState,
+  lazyJar,
+  saveState,
+  winston
+);
 
 const app = express();
 
@@ -45,7 +70,6 @@ app.use(
 );
 
 app.get('/oauth/authorize', (req, res) => {
-  // TODO: wrap in a helper function, move to a helper file and test
   const params = {
     client_id,
     client_secret,
@@ -62,7 +86,6 @@ app.get('/oauth/authorize', (req, res) => {
 });
 
 app.get('/oauth/redirect', async (req, res) => {
-  // TODO: wrap in a helper function, move to a helper file and test
   const { code, state } = req.query;
   try {
     await getSecretsAndSave(code);
@@ -77,7 +100,6 @@ app.get('/oauth/redirect', async (req, res) => {
 });
 
 app.post('/api/command', (req, res) => {
-  // TODO: wrap in a helper function, move to a helper file and test
   const { team_id, user_id, text } = req.body;
 
   returnSecrets({
@@ -108,126 +130,3 @@ app.post('/api/command', (req, res) => {
 });
 
 app.listen(port, () => console.log(`listening on port ${port}!`));
-
-function requestAccessFromSlack(code) {
-  // TODO: move to a helper file and test
-  const params = {
-    client_id,
-    client_secret,
-    redirect_uri,
-    code
-  };
-  const access_url = url.format({
-    pathname: slack_access_uri,
-    query: params
-  });
-  return fetch(access_url).then(res => res.json());
-}
-
-async function getSecretsAndSave(code) {
-  // TODO: move to a helper file and test
-  requestAccessFromSlack(code)
-    .then(
-      ({ team_id, access_token, bot: { bot_user_id, bot_access_token } }) => {
-        // Save the team secret
-        saveSecrets({
-          team_id,
-          access_token,
-          bot_user_id,
-          bot_access_token
-        })
-          .then(res => {
-            winston.info(`Saving the team secret was successful`);
-          })
-          .catch(e => {
-            winston.error(
-              `an error occured while trying to save the team secret: ${code}`
-            );
-            throw e;
-          });
-      }
-    )
-    .catch(e => {
-      winston.error(`Getting team secret from Slack failed ${code}`);
-      throw e;
-    });
-}
-
-async function getUserMap(access_token) {
-  try {
-    return await createUsernameToIdMap(access_token);
-  } catch (e) {
-    winston.error(
-      `An error occured while creating userName to userId map ${e}`
-    );
-    throw e;
-  }
-}
-
-async function getTeamEventsSet(team_id) {
-  // TODO: move to a helper file and test
-  try {
-    let events = await returnEventsByTeamId({
-      team_id
-    });
-    // the validator accepts a set of events
-    return new Set(events);
-  } catch (e) {
-    winston.error(
-      `An error occured retriving list of events for team from database: ${e}`
-    );
-    throw e;
-  }
-}
-
-async function interpretCommand(text, userMap, user_id, teamEvents) {
-  // TODO: move to a helper file and test
-  try {
-    const parsedCommand = parser(text);
-    const action = createAction(
-      parsedCommand,
-      userMap,
-      user_id,
-      teamEvents,
-      'UTC'
-    );
-    return action;
-  } catch (e) {
-    winston.error(`An error occurred while intepreting the user command: ${e}`);
-    throw e;
-  }
-}
-
-async function getPreviousState(team_id, event_id) {
-  // TODO: move to a helper file and test
-  let prevState;
-  try {
-    prevState = await returnState({
-      team_id,
-      event_id
-    });
-    //here we need to convert object returned from mongoose to a javascript object
-    prevState = prevState[0] === undefined ? {} : prevState.pop().toObject();
-    return prevState;
-  } catch (e) {
-    winston.error(
-      `An error occurred while retrieving the previous state from the database: ${e}`
-    );
-    throw e;
-  }
-}
-
-async function updateState(action, prevState, team_id) {
-  // TODO: move to a helper file and test
-  let newState = lazyJar(action, prevState);
-  //the reducer does not return a state with the team_id, so we add it here
-  newState.team_id = team_id;
-  try {
-    await saveState(newState);
-  } catch (e) {
-    winston.error(
-      `An error occured while updating the state of the database: ${e}`
-    );
-    throw e;
-  }
-}

@@ -1,4 +1,11 @@
-module.exports = ({ config, fetch, winston, url, logNotification }) => {
+module.exports = ({
+  config,
+  fetch,
+  winston,
+  url,
+  logNotification,
+  saveSecrets
+}) => {
   const { slack_im_list, slack_user_list, slack_message_channel } = config;
   async function createUsernameToIdMap(team_token) {
     let params = {
@@ -47,7 +54,6 @@ module.exports = ({ config, fetch, winston, url, logNotification }) => {
   }
 
   async function sendDirectMessage(im_id, team_token, message) {
-    // TODO: take a callback to log to database when user is notified
     let params = {
       token: team_token,
       scope: 'bot',
@@ -90,9 +96,54 @@ module.exports = ({ config, fetch, winston, url, logNotification }) => {
     );
   }
 
+  function requestAccessFromSlack(code) {
+    const params = {
+      client_id,
+      client_secret,
+      redirect_uri,
+      code
+    };
+
+    const access_url = url.format({
+      pathname: slack_access_uri,
+      query: params
+    });
+
+    return fetch(access_url).then(res => res.json());
+  }
+
+  async function getSecretsAndSave(code) {
+    requestAccessFromSlack(code)
+      .then(
+        ({ team_id, access_token, bot: { bot_user_id, bot_access_token } }) => {
+          // Save the team secret
+          saveSecrets({
+            team_id,
+            access_token,
+            bot_user_id,
+            bot_access_token
+          })
+            .then(res => {
+              winston.info(`Saving the team secret was successful`);
+            })
+            .catch(e => {
+              winston.error(
+                `an error occured while trying to save the team secret: ${code}`
+              );
+              throw e;
+            });
+        }
+      )
+      .catch(e => {
+        winston.error(`Getting team secret from Slack failed ${code}`);
+        throw e;
+      });
+  }
+
   return {
     notifyUsers,
     createUserIdToImId,
-    createUsernameToIdMap
+    createUsernameToIdMap,
+    getSecretsAndSave
   };
 };
