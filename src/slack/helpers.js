@@ -1,4 +1,4 @@
-module.exports = ({ config, fetch, winston, url }) => {
+module.exports = ({ config, fetch, winston, url, logNotification }) => {
   const { slack_im_list, slack_user_list, slack_message_channel } = config;
   async function createUsernameToIdMap(team_token) {
     let params = {
@@ -46,22 +46,22 @@ module.exports = ({ config, fetch, winston, url }) => {
     }
   }
 
-  async function sendDirectMessage(imId, team_token, message) {
+  async function sendDirectMessage(im_id, team_token, message) {
     // TODO: take a callback to log to database when user is notified
     let params = {
       token: team_token,
       scope: 'bot',
-      channel: imId,
+      channel: im_id,
       text: message
     };
+
     let urlRequest = url.format({
       pathname: slack_message_channel,
       query: params
     });
+
     try {
-      const response = await fetch(urlRequest, {
-        method: 'POST'
-      });
+      const response = await fetch(urlRequest, { method: 'POST' });
       const jsonResp = await response.json();
     } catch (e) {
       winston.error(
@@ -71,14 +71,22 @@ module.exports = ({ config, fetch, winston, url }) => {
     }
   }
 
-  async function notifyUsers(team_token, activeMembers, eventName, eventUrl) {
-    // TODO: take in the secrets object instead of team_token
-    // TODO: Send an interactive message with the event URL
-    const message = 'Construct some message';
+  async function notifyUsers(
+    team_id,
+    access_token,
+    activeMembers,
+    eventName,
+    eventUrl,
+    fireDate
+  ) {
     return Promise.all(
-      activeMembers.map(member =>
-        sendDirectMessage(member.user_im_id, team_token, message)
-      )
+      activeMembers.map(({ user_id, user_im_id }) => {
+        // TODO: Add interactive messages with a value as the following
+        const message = `${team_id} ${eventName} ${user_id}$ ${fireDate}`;
+        sendDirectMessage(user_im_id, team_token, message).then(res =>
+          logNotification(team_id, eventName, user_id, fireDate, 'Notified')
+        );
+      })
     );
   }
 
