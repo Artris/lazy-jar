@@ -7,12 +7,13 @@ chai.use(sinonChai);
 
 const expect = chai.expect;
 
+const moment = require('moment');
 const jobFactory = require('./job.factory');
 
 describe('job.factory', function() {
   const team_id = 'T_ID',
     event_id = 'E_ID',
-    fireDate = new Date('2018-02-20');
+    fireDate = moment(new Date('2018-02-20')).utc();
   it('should notify the active members', function(done) {
     const getEvent = sinon
       .stub()
@@ -50,7 +51,7 @@ describe('job.factory', function() {
     const getSecret = sinon
       .stub()
       .withArgs('T_ID')
-      .returns(Promise.resolve('SECRET OBJ'));
+      .returns(Promise.resolve({ access_token: 'ACCESS_TOKEN' }));
 
     const isBefore = (a, b) => a < b;
     const notifyUsers = sinon.stub().resolves();
@@ -61,7 +62,8 @@ describe('job.factory', function() {
     job(fireDate)
       .then(() => {
         expect(notifyUsers).to.have.been.calledWith(
-          'SECRET OBJ',
+          'T_ID',
+          'ACCESS_TOKEN',
           [
             {
               user_id: 'M_ID_2',
@@ -73,7 +75,8 @@ describe('job.factory', function() {
             }
           ],
           'E_ID',
-          'SOME_URL'
+          'SOME_URL',
+          '20180220'
         );
         done();
       })

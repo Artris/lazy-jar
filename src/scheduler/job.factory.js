@@ -5,12 +5,13 @@ module.exports = (getEvent, getSecret, notifyUsers, isBefore, logger) => (
   event_id
 ) => {
   async function notifyActiveMembers(fireDate) {
+    // we are expecting the fireDate to be moment.js date object
     const { url: eventUrl, event_id: eventName, members } = await getEvent(
       team_id,
       event_id
     );
 
-    const secret = await getSecret(team_id);
+    const { access_token } = await getSecret(team_id);
 
     const activeMembers = members
       .filter(({ ignore, skip_until }) => {
@@ -23,7 +24,14 @@ module.exports = (getEvent, getSecret, notifyUsers, isBefore, logger) => (
         return { user_id, user_im_id };
       });
 
-    return notifyUsers(secret, activeMembers, eventName, eventUrl);
+    return notifyUsers(
+      team_id,
+      access_token,
+      activeMembers,
+      eventName,
+      eventUrl,
+      fireDate.format('YYYYMMDD')
+    );
   }
 
   return fireDate =>
