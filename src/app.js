@@ -23,7 +23,8 @@ const {
   returnSecrets,
   returnEventsByTeamId,
   saveState,
-  returnState
+  returnState,
+  getEvent
 } = require('./database/helpers/helpers.js');
 
 const {
@@ -63,7 +64,7 @@ const {
 );
 
 const Job = require('./scheduler/job.factory')(
-  returnEventsByTeamId,
+  getEvent,
   returnSecrets,
   notifyUsers,
   () => false,
@@ -102,13 +103,14 @@ app.get('/oauth/authorize', (req, res) => {
   res.redirect(auth_url);
 });
 
-app.get('/oauth/redirect', async (req, res) => {
+app.get('/oauth/redirect', async(req, res) => {
   const { code, state } = req.query;
   try {
     await getSecretsAndSave(code);
     winston.info(`Team authencation successful`);
     res.send('Thank you, you have successfully authenticated your team!');
-  } catch (e) {
+  }
+  catch (e) {
     winston.error(`Team authencation failed, ${e}`);
     res.send(
       'Oops, an error occured while authenticating your team, please try again!'
@@ -127,27 +129,34 @@ app.post('/api/command', (req, res) => {
     try {
       userMap = await getUserMap(bot_access_token);
       teamEvents = await getTeamEventsSet(team_id);
-    } catch (e) {
+    }
+    catch (e) {
       res.send('An error has occured, please try again later');
+
     }
     try {
       action = await interpretCommand(text, userMap, user_id, teamEvents);
       try {
         prevState = await getPreviousState(team_id, action.event);
         const updatedState = await updateState(action, prevState, team_id);
+        const spec = { frequency: updatedState.frequency, time: updatedState.time };
         if (action.type === 'SCHEDULE') {
-          scheduler.add([updatedState]);
-        } else if (action.type === 'HALT' || action.type === 'TERMINATE') {
+          scheduler.add([{ team_id: updatedState.team_id, event_id: updatedState.event_id, spec }]);
+        }
+        else if (action.type === 'HALT' || action.type === 'TERMINATE') {
           scheduler.cancel([updatedState]);
-        } else if (action.type === 'MOVE') {
+        }
+        else if (action.type === 'MOVE') {
           scheduler.reschedule([updatedState]);
         }
         // TODO: send back meaningful messages to user based on action
         res.send('State updated');
-      } catch (e) {
+      }
+      catch (e) {
         res.send('An error has occured, please try again later');
       }
-    } catch (e) {
+    }
+    catch (e) {
       res.send(e.toString());
     }
   });

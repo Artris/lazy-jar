@@ -1,5 +1,5 @@
 const frequencyToCronStringMap = new Map([
-  ['EVEYDAY', '*'],
+  ['EVERYDAY', '*'],
   ['WEEKDAYS', '1-5'],
   ['WEEKENDS', '6,7'],
   ['MONDAYS', '1'],
@@ -15,7 +15,8 @@ const freqToCronString = frequency => {
   const isValidFrequency = frequencyToCronStringMap.has(frequency);
   if (isValidFrequency) {
     return frequencyToCronStringMap.get(frequency);
-  } else {
+  }
+  else {
     throw Error(`Invalid Frequency: ${frequency}`);
   }
 };

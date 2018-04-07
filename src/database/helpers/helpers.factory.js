@@ -11,10 +11,11 @@ module.exports = ({
         returnEventsByTeamId,
         returnState,
         saveLogs,
-        returnLogs
+        returnLogs,
+        getEvent
     }
-    
-    function saveSecrets({team_id, access_token, bot_user_id, bot_access_token}) {
+
+    function saveSecrets({ team_id, access_token, bot_user_id, bot_access_token }) {
         const data = {
             team_id,
             access_token,
@@ -23,61 +24,65 @@ module.exports = ({
                 bot_access_token
             }
         }
-        
+
         return Secret.findOneAndUpdate({ team_id }, data, {
             'new': true,
             upsert: true
         })
     }
 
-    function returnSecrets({team_id}){
+    function returnSecrets({ team_id }) {
         return Secret.find({ team_id });
     }
-    
-    function saveState(data){
+
+    function saveState(data) {
         const {
             team_id,
             event_id
         } = data
-        
+
         return State.findOneAndUpdate({
             team_id,
             event_id
-            }, data, {
-                'new': true,
-                upsert: true
-            }
-        );
-    }
-    function saveLogs(data){
-         const {
-             team_id,
-             event_id,
-             user_id,
-             date,
-             action
-         } = data;
-         return Notification.findOneAndUpdate({
-             team_id,
-             event_id,
-             user_id,
-             date,
-             action,
-         }, data, {
-             'new':true,
-             upsert:true
-         });
+        }, data, {
+            'new': true,
+            upsert: true
+        });
     }
 
-    function returnLogs({team_id, event_id}){
-        return Notification.find({team_id, event_id});
+    function saveLogs(data) {
+        const {
+            team_id,
+            event_id,
+            user_id,
+            date,
+            action
+        } = data;
+        return Notification.findOneAndUpdate({
+            team_id,
+            event_id,
+            user_id,
+            date,
+            action,
+        }, data, {
+            'new': true,
+            upsert: true
+        });
     }
 
-    function returnEventsByTeamId(data){
+    function returnLogs({ team_id, event_id }) {
+        return Notification.find({ team_id, event_id });
+    }
+
+    function returnEventsByTeamId(data) {
         return State.find(data).then(res => res.map(data => data.event_id))
     }
-    
-    function returnState(data){
+
+    function returnState(data) {
         return State.find(data);
+    }
+
+    function getEvent(team_id, event_id) {
+        return State.findOne({ team_id, event_id });
     }
 }

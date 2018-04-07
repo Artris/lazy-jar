@@ -11,7 +11,7 @@ module.exports = (getEvent, getSecret, notifyUsers, isBefore, logger) => (
       event_id
     );
 
-    const { access_token } = await getSecret(team_id);
+    const { access_token } = await getSecret({ team_id });
 
     const activeMembers = members
       .filter(({ ignore, skip_until }) => {
@@ -34,11 +34,11 @@ module.exports = (getEvent, getSecret, notifyUsers, isBefore, logger) => (
     );
   }
 
-  return fireDate =>
-    notifyActiveMembers(fireDate).catch(err =>
+  return fireDate => {
+    return notifyActiveMembers(fireDate).catch(err =>
       logger.log({
         level: 'error',
-        message: stripIndent`
+        message: stripIndent `
           failed to execute a job
           team_id:  ${team_id}
           event_id: ${event_id}
@@ -46,4 +46,5 @@ module.exports = (getEvent, getSecret, notifyUsers, isBefore, logger) => (
         `
       })
     );
+  }
 };

@@ -1,3 +1,12 @@
+// TODO: refactor this, can be palced in a better place
+const {
+  client_id,
+  client_secret,
+  redirect_uri,
+  slack_access_uri,
+  team_token
+} = require("../config.json");
+
 module.exports = ({
   config,
   fetch,
@@ -23,7 +32,8 @@ module.exports = ({
       const response = await fetch(urlRequest);
       const jsonResp = await response.json();
       return new Map(jsonResp.members.map(item => ['@' + item.name, item.id]));
-    } catch (e) {
+    }
+    catch (e) {
       winston.error(
         `An error occured while fetching user.list from slack: ${e}`
       );
@@ -47,7 +57,8 @@ module.exports = ({
       const response = await fetch(urlRequest);
       const jsonResp = await response.json();
       return new Map(jsonResp.ims.map(item => [item.user, item.id]));
-    } catch (e) {
+    }
+    catch (e) {
       winston.error(`An error occured while fetching im.list from slack: ${e}`);
       throw e;
     }
@@ -69,7 +80,8 @@ module.exports = ({
     try {
       const response = await fetch(urlRequest, { method: 'POST' });
       const jsonResp = await response.json();
-    } catch (e) {
+    }
+    catch (e) {
       winston.error(
         `An error occured while posting a message to the user chat.postMessage : ${e}`
       );
@@ -85,7 +97,8 @@ module.exports = ({
     eventUrl,
     fireDate
   ) {
-    return Promise.all(
+    console.log("1", team_id, access_token, activeMembers, eventName, eventUrl, fireDate);
+        return Promise.all(
       activeMembers.map(({ user_id, user_im_id }) => {
         // TODO: Add interactive messages with a value as the following
         const message = `${team_id} ${eventName} ${user_id}$ ${fireDate}`;
@@ -118,11 +131,11 @@ module.exports = ({
         ({ team_id, access_token, bot: { bot_user_id, bot_access_token } }) => {
           // Save the team secret
           saveSecrets({
-            team_id,
-            access_token,
-            bot_user_id,
-            bot_access_token
-          })
+              team_id,
+              access_token,
+              bot_user_id,
+              bot_access_token
+            })
             .then(res => {
               winston.info(`Saving the team secret was successful`);
             })
