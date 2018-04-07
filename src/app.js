@@ -1,6 +1,7 @@
 const express = require('express');
 const fetch = require('node-fetch');
 const winston = require('winston');
+const schedule = require('node-schedule');
 winston.add(winston.transports.File, {
   filename: 'lazyJarLogs.log'
 });
@@ -61,6 +62,22 @@ const {
   winston
 );
 
+const Job = require('./scheduler/job.factory')(
+  returnEventsByTeamId,
+  returnSecrets,
+  notifyUsers,
+  () => false,
+  winston
+);
+
+const toCronString = require('./scheduler/to-cron-string');
+
+const scheduler = require('./scheduler/scheduler.factory')(
+  schedule,
+  toCronString,
+  Job
+);
+
 const app = express();
 
 app.use(
@@ -117,7 +134,14 @@ app.post('/api/command', (req, res) => {
       action = await interpretCommand(text, userMap, user_id, teamEvents);
       try {
         prevState = await getPreviousState(team_id, action.event);
-        await updateState(action, prevState, team_id);
+        const updatedState = await updateState(action, prevState, team_id);
+        if (action.type === 'SCHEDULE') {
+          scheduler.add([updatedState]);
+        } else if (action.type === 'HALT' || action.type === 'TERMINATE') {
+          scheduler.cancel([updatedState]);
+        } else if (action.type === 'MOVE') {
+          scheduler.reschedule([updatedState]);
+        }
         // TODO: send back meaningful messages to user based on action
         res.send('State updated');
       } catch (e) {

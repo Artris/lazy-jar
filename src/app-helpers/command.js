@@ -77,6 +77,7 @@ module.exports = function(
     newState.team_id = team_id;
     try {
       await saveState(newState);
+      return newState;
     } catch (e) {
       winston.error(
         `An error occured while updating the state of the database: ${e}`
