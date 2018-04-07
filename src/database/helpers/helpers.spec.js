@@ -4,11 +4,14 @@ const {
     returnSecrets,
     saveState,
     returnEventsByTeamId,
-    returnState
+    returnState,
+    saveLogs,
+    returnLogs
 } = require('./helpers.js');
 const {
     State,
-    Secret
+    Secret,
+    Notification
 } = require('../models/models.js') /*required to clear the database*/
 
 describe('database helper functions', function () {
@@ -156,6 +159,54 @@ describe('database helper functions', function () {
             assert(result.pop().team_id)
         });
     });
+    
+    describe('logs', () =>{
+        afterEach(() => {
+            /*clear the state collection*/
+            Notification.remove(() => {});
+        })
+        const example_log = {
+            team_id: "wild_one",
+            event_id: "gone_too_far",
+            user_id: "we_up_all_night",
+            date: "2018-12-12",
+            action: "Notefied"
+        }
+        const example_log2 = {
+            team_id: "wild_one",
+            event_id: "gone_too_far",
+            user_id: "we_up_all_night",
+            date: "2018-12-12",
+            action: "Participated"    
+        }
+
+        it("should save the log to the database", async () => {
+            let result = await saveLogs(example_log);
+            // TODO: refactor the result back to object literal.
+            const modifiedResult = {
+                team_id: result.team_id,
+                event_id: result.event_id,
+                user_id: result.user_id,
+                date: result.date,
+                action: result.action
+            };
+            assert.deepEqual(modifiedResult, example_log);
+        })
+
+        it("should only save one copy of the logs when the same primary key(the whole object) is used", async () => {
+            await saveLogs(example_log);
+            await saveLogs(example_log);
+            let result = await returnLogs({team_id:example_log.team_id, event_id:example_log.event_id});
+            assert.deepEqual(result.length, 1);
+        })
+
+        it("should return all saved logs that match the {team_id, event_id}", async () => {
+            await saveLogs(example_log);
+            await saveLogs(example_log2);
+            let result = await returnLogs({team_id:example_log.team_id, event_id:example_log.event_id});
+            assert.deepEqual(result.length,2);
+        })
+    })
 });
 
 
