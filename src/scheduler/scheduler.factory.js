@@ -8,10 +8,10 @@ module.exports = (schedule, toCronString, Job) => {
       // event: { team_id, event_id, spec: { frequency, time: { hh, mm } } }
       const eventKey = key({ team_id, event_id });
       const cronString = toCronString(spec);
-      const job = Job({ team_id, event_id });
+      const job = Job(team_id, event_id);
       schedule.scheduleJob(eventKey, cronString, job);
     });
-  }
+  };
 
   const cancel = events => {
     events.forEach(({ team_id, event_id }) => {
