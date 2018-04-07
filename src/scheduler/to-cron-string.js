@@ -15,8 +15,7 @@ const freqToCronString = frequency => {
   const isValidFrequency = frequencyToCronStringMap.has(frequency);
   if (isValidFrequency) {
     return frequencyToCronStringMap.get(frequency);
-  }
-  else {
+  } else {
     throw Error(`Invalid Frequency: ${frequency}`);
   }
 };
@@ -29,5 +28,5 @@ const timeToCronString = time => {
 module.exports = ({ frequency, time }) => {
   const mmhh = timeToCronString(time);
   const dayOfWeek = freqToCronString(frequency);
-  return `* ${mmhh} * * ${dayOfWeek}`;
+  return `0 ${mmhh} * * ${dayOfWeek}`;
 };
