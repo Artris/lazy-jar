@@ -1,9 +1,9 @@
 module.exports = function(
   createUsernameToIdMap,
-  returnEventsByTeamId,
+  getEventsFor,
   parser,
   createAction,
-  returnState,
+  getState,
   lazyJar,
   saveState,
   winston
@@ -21,11 +21,9 @@ module.exports = function(
 
   async function getTeamEventsSet(team_id) {
     try {
-      let events = await returnEventsByTeamId({
-        team_id
-      });
+      let events = await getEventsFor({ team_id });
       // the validator accepts a set of events
-      return new Set(events);
+      return new Set(events.map(e => e.event_id));
     } catch (e) {
       winston.error(
         `An error occured retriving list of events for team from database: ${e}`
@@ -56,12 +54,9 @@ module.exports = function(
   async function getPreviousState(team_id, event_id) {
     let prevState;
     try {
-      prevState = await returnState({
-        team_id,
-        event_id
-      });
+      prevState = await getState({ team_id, event_id });
       // here we need to convert object returned from mongoose to a javascript object
-      prevState = prevState[0] === undefined ? {} : prevState.pop().toObject();
+      prevState = prevState === null ? {} : prevState.toObject();
       return prevState;
     } catch (e) {
       winston.error(

@@ -19,12 +19,13 @@ const {
 } = config;
 
 const {
-  saveSecrets,
-  returnSecrets,
-  returnEventsByTeamId,
+  saveSecret,
   saveState,
-  returnState,
-  getEvent
+  saveLog,
+  getSecret,
+  getState,
+  getLogsForEvent,
+  getEventsFor
 } = require('./database/helpers/helpers.js');
 
 const {
@@ -33,12 +34,11 @@ const {
   notifyUsers,
   getSecretsAndSave
 } = require('./app-helpers/slack')({
-  config,
   fetch,
   winston,
   url,
   undefined,
-  saveSecrets
+  saveSecret
 });
 
 const redirect_uri = `${host}:${port}/oauth/redirect`;
@@ -54,18 +54,18 @@ const {
   updateState
 } = require('./app-helpers/command')(
   createUsernameToIdMap,
-  returnEventsByTeamId,
+  getEventsFor,
   parser,
   createAction,
-  returnState,
+  getState,
   lazyJar,
   saveState,
   winston
 );
 
 const Job = require('./scheduler/job.factory')(
-  getEvent,
-  returnSecrets,
+  getState,
+  getSecret,
   notifyUsers,
   () => false,
   winston
@@ -120,11 +120,11 @@ app.get('/oauth/redirect', async (req, res) => {
 app.post('/api/command', (req, res) => {
   const { team_id, user_id, text } = req.body;
 
-  returnSecrets({
+  getSecret({
     team_id
   }).then(async result => {
     let userMap, action, teamEvents, prevState;
-    const { bot: { bot_access_token } } = result.pop();
+    const { bot: { bot_access_token } } = result;
     try {
       userMap = await getUserMap(bot_access_token);
       teamEvents = await getTeamEventsSet(team_id);
