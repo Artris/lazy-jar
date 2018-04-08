@@ -23,7 +23,10 @@ describe('reducers', function() {
     const action = {
       type: SCHEDULE,
       event: 'artris',
-      userIds: [0, 2],
+      userInfos: [
+        { user_id: 'U_ID_1', user_im_id: 'U_IM_ID_1' },
+        { user_id: 'U_ID_2', user_im_id: 'U_IM_ID_2' }
+      ],
       frequency: 'EVERYDAY',
       time: {
         hh: 1,
@@ -37,11 +40,13 @@ describe('reducers', function() {
       time_to_respond: 900,
       members: [
         {
-          user_id: 0,
+          user_id: 'U_ID_1',
+          user_im_id: 'U_IM_ID_1',
           ignore: false
         },
         {
-          user_id: 2,
+          user_id: 'U_ID_2',
+          user_im_id: 'U_IM_ID_2',
           ignore: false
         }
       ],
@@ -65,11 +70,13 @@ describe('reducers', function() {
       time_to_respond: 900,
       members: [
         {
-          user_id: 0,
+          user_id: 'U_ID_1',
+          user_im_id: 'U_IM_ID_1',
           ignore: false
         },
         {
-          user_id: 2,
+          user_id: 'U_ID_2',
+          user_im_id: 'U_IM_ID_2',
           ignore: false
         }
       ],
@@ -97,11 +104,13 @@ describe('reducers', function() {
       time_to_respond: 900,
       members: [
         {
-          user_id: 0,
+          user_id: 'U_ID_1',
+          user_im_id: 'U_IM_ID_1',
           ignore: false
         },
         {
-          user_id: 2,
+          user_id: 'U_ID_2',
+          user_im_id: 'U_IM_ID_2',
           ignore: false
         }
       ],
@@ -116,7 +125,10 @@ describe('reducers', function() {
     const action = {
       type: ADD,
       event: 'lazy-jar',
-      userIds: [1, 2]
+      userInfos: [
+        { user_id: 'U_ID_0', user_im_id: 'U_IM_ID_0' },
+        { user_id: 'U_ID_2', user_im_id: 'U_IM_ID_2' }
+      ]
     };
     const expected = {
       team_id: 'TXC',
@@ -124,15 +136,18 @@ describe('reducers', function() {
       time_to_respond: 900,
       members: [
         {
-          user_id: 0,
+          user_id: 'U_ID_1',
+          user_im_id: 'U_IM_ID_1',
           ignore: false
         },
         {
-          user_id: 2,
+          user_id: 'U_ID_2',
+          user_im_id: 'U_IM_ID_2',
           ignore: false
         },
         {
-          user_id: 1,
+          user_id: 'U_ID_0',
+          user_im_id: 'U_IM_ID_0',
           ignore: false
         }
       ],
@@ -155,11 +170,13 @@ describe('reducers', function() {
       time_to_respond: 900,
       members: [
         {
-          user_id: 0,
+          user_id: 'U_ID_1',
+          user_im_id: 'U_IM_ID_1',
           ignore: false
         },
         {
-          user_id: 2,
+          user_id: 'U_ID_2',
+          user_im_id: 'U_IM_ID_2',
           ignore: false
         }
       ],
@@ -174,7 +191,7 @@ describe('reducers', function() {
     const action = {
       type: REMOVE,
       event: 'lazy-jar',
-      userIds: [0]
+      userInfos: [{ user_id: 'U_ID_1', user_im_id: 'U_IM_ID_1' }]
     };
     const expected = {
       team_id: 'CHG',
@@ -182,7 +199,8 @@ describe('reducers', function() {
       time_to_respond: 900,
       members: [
         {
-          user_id: 2,
+          user_id: 'U_ID_2',
+          user_im_id: 'U_IM_ID_2',
           ignore: false
         }
       ],
@@ -205,7 +223,8 @@ describe('reducers', function() {
       time_to_respond: 900,
       members: [
         {
-          user_id: 2,
+          user_id: 'U_ID_2',
+          user_im_id: 'U_IM_ID_2',
           ignore: false
         }
       ],
@@ -227,7 +246,8 @@ describe('reducers', function() {
       time_to_respond: 900,
       members: [
         {
-          user_id: 2,
+          user_id: 'U_ID_2',
+          user_im_id: 'U_IM_ID_2',
           ignore: false
         }
       ],
@@ -250,7 +270,8 @@ describe('reducers', function() {
       time_to_respond: 900,
       members: [
         {
-          user_id: 2,
+          user_id: 'U_ID_2',
+          user_im_id: 'U_IM_ID_2',
           ignore: false
         }
       ],
@@ -272,7 +293,8 @@ describe('reducers', function() {
       time_to_respond: 900,
       members: [
         {
-          user_id: 2,
+          user_id: 'U_ID_2',
+          user_im_id: 'U_IM_ID_2',
           ignore: false
         }
       ],
@@ -295,11 +317,13 @@ describe('reducers', function() {
       time_to_respond: 900,
       members: [
         {
-          user_id: 2,
+          user_id: 'U_ID_2',
+          user_im_id: 'U_IM_ID_2',
           ignore: false
         },
         {
-          user_id: 3,
+          user_id: 'U_ID_3',
+          user_im_id: 'U_IM_ID_3',
           ignore: false
         }
       ],
@@ -314,7 +338,10 @@ describe('reducers', function() {
     const action = {
       type: SKIP,
       event: 'lazy-jar',
-      userId: 2,
+      userInfo: {
+        user_id: 'U_ID_2',
+        user_im_id: 'U_IM_ID_2'
+      },
       skip_until: '16-10-2018'
     };
     const expected = {
@@ -323,12 +350,14 @@ describe('reducers', function() {
       time_to_respond: 900,
       members: [
         {
-          user_id: 2,
+          user_id: 'U_ID_2',
+          user_im_id: 'U_IM_ID_2',
           ignore: false,
           skip_until: '16-10-2018'
         },
         {
-          user_id: 3,
+          user_id: 'U_ID_3',
+          user_im_id: 'U_IM_ID_3',
           ignore: false
         }
       ],
@@ -351,12 +380,14 @@ describe('reducers', function() {
       time_to_respond: 900,
       members: [
         {
-          user_id: 2,
+          user_id: 'U_ID_2',
+          user_im_id: 'U_IM_ID_2',
           ignore: false,
           skip_until: '16-10-2018'
         },
         {
-          user_id: 3,
+          user_id: 'U_ID_3',
+          user_im_id: 'U_IM_ID_3',
           ignore: false
         }
       ],
@@ -371,7 +402,10 @@ describe('reducers', function() {
     const action = {
       type: START,
       event: 'lazy-jar',
-      userId: 2
+      userInfo: {
+        user_id: 'U_ID_2',
+        user_im_id: 'U_IM_ID_2'
+      }
     };
     const expected = {
       team_id: 'CBV',
@@ -379,11 +413,13 @@ describe('reducers', function() {
       time_to_respond: 900,
       members: [
         {
-          user_id: 2,
+          user_id: 'U_ID_2',
+          user_im_id: 'U_IM_ID_2',
           ignore: false
         },
         {
-          user_id: 3,
+          user_id: 'U_ID_3',
+          user_im_id: 'U_IM_ID_3',
           ignore: false
         }
       ],
@@ -406,12 +442,13 @@ describe('reducers', function() {
       time_to_respond: 900,
       members: [
         {
-          user_id: 2,
-          ignore: false,
-          skip_until: '16-10-2018'
+          user_id: 'U_ID_2',
+          user_im_id: 'U_IM_ID_2',
+          ignore: false
         },
         {
-          user_id: 3,
+          user_id: 'U_ID_3',
+          user_im_id: 'U_IM_ID_3',
           ignore: false
         }
       ],
@@ -426,7 +463,10 @@ describe('reducers', function() {
     const action = {
       type: STOP,
       event: 'lazy-jar',
-      userId: 2
+      userInfo: {
+        user_id: 'U_ID_2',
+        user_im_id: 'U_IM_ID_2'
+      }
     };
     const expected = {
       team_id: 'CBV',
@@ -434,11 +474,13 @@ describe('reducers', function() {
       time_to_respond: 900,
       members: [
         {
-          user_id: 2,
+          user_id: 'U_ID_2',
+          user_im_id: 'U_IM_ID_2',
           ignore: true
         },
         {
-          user_id: 3,
+          user_id: 'U_ID_3',
+          user_im_id: 'U_IM_ID_3',
           ignore: false
         }
       ],

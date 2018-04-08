@@ -18,10 +18,9 @@ function lazyJar(action, state = {}) {
       return Object.assign({}, state, {
         event_id: event,
         time_to_respond: 900,
-        members: action.userIds.map(user_id => ({
-          user_id: user_id,
-          ignore: false
-        })),
+        members: action.userInfos.map(info =>
+          Object.assign({}, info, { ignore: false })
+        ),
         frequency: action.frequency,
         time: action.time,
         halted: false
@@ -57,12 +56,9 @@ function processUserIds(prevMembers, action) {
       /*return new array of ids without duplicates*/
       return prevMembers
         .concat(
-          action.userIds.map(id => {
-            return {
-              user_id: id,
-              ignore: false
-            };
-          })
+          action.userInfos.map(info =>
+            Object.assign({}, info, { ignore: false })
+          )
         )
         .filter((member, index, arr) => {
           return (
@@ -73,12 +69,13 @@ function processUserIds(prevMembers, action) {
           );
         });
     case REMOVE:
+      const toRemoveUserIds = action.userInfos.map(e => e.user_id);
       return prevMembers.filter(member => {
-        return !action.userIds.includes(member.user_id);
+        return !toRemoveUserIds.includes(member.user_id);
       });
     case SKIP:
       return prevMembers.map(member => {
-        return member.user_id === action.userId
+        return member.user_id === action.userInfo.user_id
           ? Object.assign({}, member, {
               skip_until: action.skip_until
             })
@@ -86,20 +83,20 @@ function processUserIds(prevMembers, action) {
       });
     case START:
       return prevMembers.map(member => {
-        return member.user_id === action.userId
-          ? {
-              user_id: action.userId,
-              ignore: false
-            }
-          : member;
+        if (member.user_id === action.userInfo.user_id) {
+          return {
+            user_id: member.user_id,
+            user_im_id: member.user_im_id,
+            ignore: false
+          };
+        } else {
+          return member;
+        }
       });
     case STOP:
       return prevMembers.map(member => {
-        return member.user_id === action.userId
-          ? {
-              user_id: action.userId,
-              ignore: true
-            }
+        return member.user_id === action.userInfo.user_id
+          ? Object.assign({}, member, { ignore: true })
           : member;
       });
     default:
