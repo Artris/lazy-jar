@@ -115,40 +115,37 @@ app.get('/oauth/redirect', async (req, res) => {
 });
 
 app.post('/api/command', (req, res) => {
-  const { team_id, user_id, text } = req.body;
-
-  getSecret({
-    team_id
-  }).then(async result => {
-    let userMap, action, teamEvents, prevState;
-    const { bot: { bot_access_token } } = result;
-    try {
-      usersInfo = await getUsersInfo(bot_access_token);
-      teamEvents = await getTeamEventsSet(team_id);
-    } catch (e) {
-      res.send('An error has occured, please try again later');
-    }
-    try {
-      action = await interpretCommand(text, usersInfo, user_id, teamEvents);
-      try {
-        prevState = await getPreviousState(team_id, action.event);
-        const updatedState = await updateState(action, prevState, team_id);
-        if (action.type === 'SCHEDULE') {
-          scheduler.add([updatedState]);
-        } else if (action.type === 'HALT' || action.type === 'TERMINATE') {
-          scheduler.cancel([updatedState]);
-        } else if (action.type === 'MOVE') {
-          scheduler.reschedule([updatedState]);
-        }
-        // TODO: send back meaningful messages to user based on action
-        res.send('State updated');
-      } catch (e) {
-        res.send('An error has occured, please try again later');
-      }
-    } catch (e) {
-      res.send(e.toString());
-    }
-  });
+  command(req.body)
+    .then(() => {
+      res.send('State updated');
+    })
+    .catch(err => {
+      res.send('Something is wrong, please try again later');
+      console.log(err);
+    });
 });
+
+async function command({ team_id, user_id, text }) {
+  const secret = await getSecret({ team_id });
+  const teamEvents = await getTeamEventsSet(team_id);
+
+  const usersInfo = await getUsersInfo(secret.bot.bot_access_token);
+  const action = await interpretCommand(text, usersInfo, user_id, teamEvents);
+  const prevState = await getPreviousState(team_id, action.event);
+  const updatedState = await updateState(action, prevState, team_id);
+
+  switch (action.type) {
+    case 'SCHEDULE':
+      scheduler.add([updatedState]);
+      break;
+    case 'HALT':
+    case 'TERMINATE':
+      scheduler.cancel([updatedState]);
+      break;
+    case 'MOVE':
+      scheduler.reschedule([updatedState]);
+      break;
+  }
+}
 
 app.listen(port, () => console.log(`listening on port ${port}!`));
