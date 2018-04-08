@@ -5,12 +5,12 @@ const { REMOVE } = require('../../commands');
 describe('remove action', function() {
   it('should correctly return remove action', function() {
     const events = new Set(['artris', 'lazy-jar']);
-    const myUserId = 2;
-    const usernameToIds = new Map([
-      ['@dtoki', 0],
-      ['@alireza.eva.u23', 1],
-      ['@grace', 2]
+    const usernameToUserInfo = new Map([
+      ['@dtoki', { user_id: 'U_ID_0', user_im_id: 'U_IM_ID_0' }],
+      ['@alireza.eva.u23', { user_id: 'U_ID_1', user_im_id: 'U_IM_ID_1' }],
+      ['@grace', { user_id: 'U_ID_2', user_im_id: 'U_IM_ID_2' }]
     ]);
+    const myUserInfo = { user_id: 'U_ID_2', user_im_id: 'U_IM_ID_2' };
     const parsedCommand = {
       type: REMOVE,
       event: 'artris',
@@ -19,27 +19,32 @@ describe('remove action', function() {
     const expected = {
       type: REMOVE,
       event: 'artris',
-      userIds: [2]
+      userInfos: [{ user_id: 'U_ID_2', user_im_id: 'U_IM_ID_2' }]
     };
-    const result = remove(parsedCommand, usernameToIds, myUserId, events);
+    const result = remove(
+      parsedCommand,
+      usernameToUserInfo,
+      myUserInfo,
+      events
+    );
     assert.deepEqual(result, expected);
   });
 
   it('should throw an error given an event that does not exist', function() {
     const events = new Set(['lazy-jar']);
-    const myUserId = 2;
-    const usernameToIds = new Map([
-      ['@dtoki', 0],
-      ['@alireza.eva.u23', 1],
-      ['@grace', 2]
+    const usernameToUserInfo = new Map([
+      ['@dtoki', { user_id: 'U_ID_0', user_im_id: 'U_IM_ID_0' }],
+      ['@alireza.eva.u23', { user_id: 'U_ID_1', user_im_id: 'U_IM_ID_1' }],
+      ['@grace', { user_id: 'U_ID_2', user_im_id: 'U_IM_ID_2' }]
     ]);
+    const myUserInfo = { user_id: 'U_ID_2', user_im_id: 'U_IM_ID_2' };
     const parsedCommand = {
       type: REMOVE,
       event: 'artris',
       usernames: ['me']
     };
     assert.throws(
-      () => remove(parsedCommand, usernameToIds, myUserId, events),
+      () => remove(parsedCommand, usernameToUserInfo, myUserInfo, events),
       /the project specified does not exist/
     );
   });

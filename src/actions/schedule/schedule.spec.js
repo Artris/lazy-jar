@@ -5,12 +5,12 @@ const { SCHEDULE } = require('../../commands');
 describe('schedule action', function() {
   it('should correctly return a schedule action', function() {
     const events = new Set(['lazy-jar']);
-    const usernameToIds = new Map([
-      ['@dtoki', 0],
-      ['@alireza.eva.u23', 1],
-      ['@grace', 2]
+    const usernameToUserInfo = new Map([
+      ['@dtoki', { user_id: 'U_ID_0', user_im_id: 'U_IM_ID_0' }],
+      ['@alireza.eva.u23', { user_id: 'U_ID_1', user_im_id: 'U_IM_ID_1' }],
+      ['@grace', { user_id: 'U_ID_2', user_im_id: 'U_IM_ID_2' }]
     ]);
-    const myUserID = 2;
+    const myUserInfo = { user_id: 'U_ID_2', user_im_id: 'U_IM_ID_2' };
 
     const parsedCommand = {
       type: SCHEDULE,
@@ -21,7 +21,10 @@ describe('schedule action', function() {
     const expected = {
       type: SCHEDULE,
       event: 'artris',
-      userIds: [1, 2],
+      userInfos: [
+        { user_id: 'U_ID_1', user_im_id: 'U_IM_ID_1' },
+        { user_id: 'U_ID_2', user_im_id: 'U_IM_ID_2' }
+      ],
       time: {
         hh: 6,
         mm: 0,
@@ -29,18 +32,23 @@ describe('schedule action', function() {
       },
       frequency: 'EVERYDAY'
     };
-    const result = schedule(parsedCommand, usernameToIds, myUserID, events);
+    const result = schedule(
+      parsedCommand,
+      usernameToUserInfo,
+      myUserInfo,
+      events
+    );
     assert.deepEqual(result, expected);
   });
 
   it('should throw an error given an event that already exists', function() {
     const events = new Set(['artris', 'lazy-jar']);
-    const usernameToIds = new Map([
-      ['@dtoki', 0],
-      ['@alireza.eva.u23', 1],
-      ['@grace', 2]
+    const usernameToUserInfo = new Map([
+      ['@dtoki', { user_id: 'U_ID_0', user_im_id: 'U_IM_ID_0' }],
+      ['@alireza.eva.u23', { user_id: 'U_ID_1', user_im_id: 'U_IM_ID_1' }],
+      ['@grace', { user_id: 'U_ID_2', user_im_id: 'U_IM_ID_2' }]
     ]);
-    const myUserID = 2;
+    const myUserInfo = { user_id: 'U_ID_2', user_im_id: 'U_IM_ID_2' };
     const parsedCommand = {
       type: SCHEDULE,
       event: 'artris',
@@ -48,15 +56,18 @@ describe('schedule action', function() {
       when: 'everyday at 6:00 am'
     };
     assert.throws(
-      () => schedule(parsedCommand, usernameToIds, myUserID, events),
+      () => schedule(parsedCommand, usernameToUserInfo, myUserInfo, events),
       /the project artris already exists/
     );
   });
 
   it('should throw an error given a username that does not exist', function() {
     const events = new Set(['lazy-jar']);
-    const usernameToIds = new Map([['@dtoki', 0], ['@alireza.eva.u23', 1]]);
-    const myUserID = 2;
+    const usernameToUserInfo = new Map([
+      ['@dtoki', { user_id: 'U_ID_0', user_im_id: 'U_IM_ID_0' }],
+      ['@alireza.eva.u23', { user_id: 'U_ID_1', user_im_id: 'U_IM_ID_1' }]
+    ]);
+    const myUserInfo = { user_id: 'U_ID_2', user_im_id: 'U_IM_ID_2' };
     const parsedCommand = {
       type: SCHEDULE,
       event: 'artris',
@@ -64,19 +75,19 @@ describe('schedule action', function() {
       when: 'everyday at 6:00 am'
     };
     assert.throws(
-      () => schedule(parsedCommand, usernameToIds, myUserID, events),
+      () => schedule(parsedCommand, usernameToUserInfo, myUserInfo, events),
       /the user @grace does not exist/
     );
   });
 
   it('should throw an error given an incorrect time', function() {
     const events = new Set(['lazy-jar']);
-    const usernameToIds = new Map([
-      ['@dtoki', 0],
-      ['@alireza.eva.u23', 1],
-      ['@grace', 2]
+    const usernameToUserInfo = new Map([
+      ['@dtoki', { user_id: 'U_ID_0', user_im_id: 'U_IM_ID_0' }],
+      ['@alireza.eva.u23', { user_id: 'U_ID_1', user_im_id: 'U_IM_ID_1' }],
+      ['@grace', { user_id: 'U_ID_2', user_im_id: 'U_IM_ID_2' }]
     ]);
-    const myUserID = 2;
+    const myUserInfo = { user_id: 'U_ID_2', user_im_id: 'U_IM_ID_2' };
     const parsedCommand = {
       type: SCHEDULE,
       event: 'artris',
@@ -84,19 +95,19 @@ describe('schedule action', function() {
       when: 'everyday at 6'
     };
     assert.throws(
-      () => schedule(parsedCommand, usernameToIds, myUserID, events),
+      () => schedule(parsedCommand, usernameToUserInfo, myUserInfo, events),
       /please specify a date in the format/
     );
   });
 
   it('should throw an error given incorrect frequency', function() {
     const events = new Set(['lazy-jar']);
-    const usernameToIds = new Map([
-      ['@dtoki', 0],
-      ['@alireza.eva.u23', 1],
-      ['@grace', 2]
+    const usernameToUserInfo = new Map([
+      ['@dtoki', { user_id: 'U_ID_0', user_im_id: 'U_IM_ID_0' }],
+      ['@alireza.eva.u23', { user_id: 'U_ID_1', user_im_id: 'U_IM_ID_1' }],
+      ['@grace', { user_id: 'U_ID_2', user_im_id: 'U_IM_ID_2' }]
     ]);
-    const myUserID = 2;
+    const myUserInfo = { user_id: 'U_ID_2', user_im_id: 'U_IM_ID_2' };
     const parsedCommand = {
       type: SCHEDULE,
       event: 'artris',
@@ -104,7 +115,7 @@ describe('schedule action', function() {
       when: 'once at 6:00 am'
     };
     assert.throws(
-      () => schedule(parsedCommand, usernameToIds, myUserID, events),
+      () => schedule(parsedCommand, usernameToUserInfo, myUserInfo, events),
       /please specify when you want the meetings to happen eg. weekdays, everyday, Saturdays .../
     );
   });

@@ -1,7 +1,7 @@
 const {
   eventExists,
   eventAlreadyExists,
-  mapUsernameToIDs,
+  mapUsernameToUserInfo,
   mapToTime,
   mapToFrequency
 } = require('../helpers/helpers');
@@ -10,7 +10,7 @@ const { SCHEDULE } = require('../../commands');
 module.exports = require('./schedule.factory')(
   eventExists,
   eventAlreadyExists,
-  mapUsernameToIDs,
+  mapUsernameToUserInfo,
   mapToTime,
   mapToFrequency,
   SCHEDULE
