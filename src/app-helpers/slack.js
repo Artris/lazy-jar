@@ -61,7 +61,7 @@ module.exports = ({ fetch, winston, url, logNotification, saveSecret }) => {
     const userIdToImId = await getUserIdToImIdMap(team_token);
     const usernameToId = await getUsernameToIdMap(team_token);
     const userInfo = new Map();
-    for (let [name, id] in usernameToId.entries()) {
+    for (let [name, id] of usernameToId.entries()) {
       if (userIdToImId.has(id)) {
         userInfo.set(name, { user_id: id, user_im_id: userIdToImId.get(id) });
       }
