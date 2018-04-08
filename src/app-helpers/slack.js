@@ -167,7 +167,6 @@ module.exports = ({ fetch, winston, url, logNotification, saveSecret }) => {
   return {
     notifyUsers,
     createUserIdToImId,
-    getUsersInfo,
     getSecretsAndSave
   };
 };

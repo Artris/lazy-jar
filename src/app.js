@@ -46,13 +46,11 @@ const createAction = require('./actions/index');
 const lazyJar = require('./reducers/index');
 
 const {
-  getUserMap,
   getTeamEventsSet,
   interpretCommand,
   getPreviousState,
   updateState
 } = require('./app-helpers/command')(
-  createUsernameToIdMap,
   getEventsFor,
   parser,
   createAction,

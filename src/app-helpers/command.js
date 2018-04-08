@@ -1,5 +1,4 @@
 module.exports = function(
-  createUsernameToIdMap,
   getEventsFor,
   parser,
   createAction,
@@ -8,17 +7,6 @@ module.exports = function(
   saveState,
   winston
 ) {
-  async function getUserMap(access_token) {
-    try {
-      return await createUsernameToIdMap(access_token);
-    } catch (e) {
-      winston.error(
-        `An error occured while creating userName to userId map ${e}`
-      );
-      throw e;
-    }
-  }
-
   async function getTeamEventsSet(team_id) {
     try {
       let events = await getEventsFor({ team_id });
@@ -82,7 +70,6 @@ module.exports = function(
   }
 
   return {
-    getUserMap,
     getTeamEventsSet,
     interpretCommand,
     getPreviousState,
