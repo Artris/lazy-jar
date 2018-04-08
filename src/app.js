@@ -29,9 +29,9 @@ const {
 } = require('./database/helpers/helpers.js');
 
 const {
-  getUsersInfo,
   notifyUsers,
-  getSecretsAndSave
+  getSecretsAndSave,
+  getUsersInfo
 } = require('./app-helpers/slack')({
   fetch,
   winston,
