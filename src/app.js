@@ -29,8 +29,7 @@ const {
 } = require('./database/helpers/helpers.js');
 
 const {
-  createUsernameToIdMap,
-  createUserIdToImId,
+  getUsersInfo,
   notifyUsers,
   getSecretsAndSave
 } = require('./app-helpers/slack')({
@@ -126,13 +125,13 @@ app.post('/api/command', (req, res) => {
     let userMap, action, teamEvents, prevState;
     const { bot: { bot_access_token } } = result;
     try {
-      userMap = await getUserMap(bot_access_token);
+      usersInfo = await getUsersInfo(bot_access_token);
       teamEvents = await getTeamEventsSet(team_id);
     } catch (e) {
       res.send('An error has occured, please try again later');
     }
     try {
-      action = await interpretCommand(text, userMap, user_id, teamEvents);
+      action = await interpretCommand(text, usersInfo, user_id, teamEvents);
       try {
         prevState = await getPreviousState(team_id, action.event);
         const updatedState = await updateState(action, prevState, team_id);

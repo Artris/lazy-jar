@@ -11,7 +11,7 @@ const {
 } = require('../config.json');
 
 module.exports = ({ fetch, winston, url, logNotification, saveSecret }) => {
-  async function createUsernameToIdMap(team_token) {
+  async function getUsernameToIdMap(team_token) {
     let params = {
       token: team_token,
       scope: 'bot'
@@ -35,7 +35,7 @@ module.exports = ({ fetch, winston, url, logNotification, saveSecret }) => {
     }
   }
 
-  async function createUserIdToImId(team_token) {
+  async function getUserIdToImIdMap(team_token) {
     let params = {
       token: team_token,
       scope: 'bot'
@@ -55,6 +55,18 @@ module.exports = ({ fetch, winston, url, logNotification, saveSecret }) => {
       winston.error(`An error occured while fetching im.list from slack: ${e}`);
       throw e;
     }
+  }
+
+  async function getUsersInfo(team_token) {
+    const userIdToImId = await getUsernameToIdMap(team_token);
+    const usernameToId = await getUsernameToIdMap(team_token);
+    const userInfo = new Map();
+    for (let [name, id] in usernameToId.entries()) {
+      if (userIdToImId.has(id)) {
+        userInfo.set(name, { user_id: id, user_im_id: userIdToImId.get(id) });
+      }
+    }
+    return userInfo;
   }
 
   async function sendDirectMessage(im_id, team_token, message) {
@@ -155,7 +167,7 @@ module.exports = ({ fetch, winston, url, logNotification, saveSecret }) => {
   return {
     notifyUsers,
     createUserIdToImId,
-    createUsernameToIdMap,
+    getUsersInfo,
     getSecretsAndSave
   };
 };
