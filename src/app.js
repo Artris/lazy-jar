@@ -35,7 +35,7 @@ const {
 const { notifyUsers, getSecretsAndSave, getUsersInfo } = require('./helpers')(
   fetch,
   url,
-  logger,
+  winston,
   saveLog,
   saveSecret,
   config
