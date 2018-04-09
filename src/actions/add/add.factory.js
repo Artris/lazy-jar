@@ -1,11 +1,11 @@
-module.exports = (eventExists, mapUsernameToIDs, ADD) => {
+module.exports = (eventExists, mapUsernameToUserInfo, ADD) => {
   return (parsedCommand, usernameToIds, myUserID, events) => {
     const { to, usernames } = parsedCommand;
     eventExists(to, events);
     return {
       type: ADD,
       event: to,
-      userIds: mapUsernameToIDs(usernames, usernameToIds, myUserID)
+      userInfos: mapUsernameToUserInfo(usernames, usernameToIds, myUserID)
     };
   };
 };

@@ -13,23 +13,19 @@ describe('scheduler', function() {
     {
       team_id: 'T_ID_1',
       event_id: 'E_ID_1',
-      spec: {
-        frequency: 'EVERYDAY',
-        time: {
-          hh: 6,
-          mm: 30
-        }
+      frequency: 'EVERYDAY',
+      time: {
+        hh: 6,
+        mm: 30
       }
     },
     {
       team_id: 'T_ID_2',
       event_id: 'E_ID_2',
-      spec: {
-        frequency: 'WORKDAYS',
-        time: {
-          hh: 10,
-          mm: 00
-        }
+      frequency: 'WORKDAYS',
+      time: {
+        hh: 10,
+        mm: 00
       }
     }
   ];
@@ -42,15 +38,9 @@ describe('scheduler', function() {
     };
 
     Job = sinon.stub();
-    Job.withArgs({
-      team_id: 'T_ID_1',
-      event_id: 'E_ID_1'
-    }).returns('Some Job #1');
+    Job.withArgs('T_ID_1', 'E_ID_1').returns('Some Job #1');
 
-    Job.withArgs({
-      team_id: 'T_ID_2',
-      event_id: 'E_ID_2'
-    }).returns('Some Job #2');
+    Job.withArgs('T_ID_2', 'E_ID_2').returns('Some Job #2');
 
     toCronString = sinon.stub();
     toCronString

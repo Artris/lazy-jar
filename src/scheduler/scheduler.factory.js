@@ -3,14 +3,15 @@ module.exports = (schedule, toCronString, Job) => {
     return `${team_id}-${event_id}`;
   };
 
-  const add = events =>
-    events.forEach(({ team_id, event_id, spec }) => {
-      // event: { team_id, event_id, spec: { frequency, time: { hh, mm } } }
+  const add = events => {
+    events.forEach(({ team_id, event_id, frequency, time }) => {
+      // event: { team_id, event_id, frequency, time: { hh, mm } }
       const eventKey = key({ team_id, event_id });
-      const cronString = toCronString(spec);
-      const job = Job({ team_id, event_id });
+      const cronString = toCronString({ frequency, time });
+      const job = Job(team_id, event_id);
       schedule.scheduleJob(eventKey, cronString, job);
     });
+  };
 
   const cancel = events => {
     events.forEach(({ team_id, event_id }) => {

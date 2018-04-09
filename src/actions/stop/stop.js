@@ -1,8 +1,8 @@
-const { eventExists, mapUsernameToIDs } = require('../helpers/helpers');
+const { eventExists, mapUsernameToUserInfo } = require('../helpers/helpers');
 const { STOP } = require('../../commands');
 
 module.exports = require('./stop.factory')(
   eventExists,
-  mapUsernameToIDs,
+  mapUsernameToUserInfo,
   STOP
 );

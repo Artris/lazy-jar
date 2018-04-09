@@ -1,7 +1,7 @@
 module.exports = (
   eventExists,
   eventAlreadyExists,
-  mapUsernameToIDs,
+  mapUsernameToUserInfo,
   mapToTime,
   mapToFrequency,
   SCHEDULE
@@ -12,7 +12,7 @@ module.exports = (
     return {
       type: SCHEDULE,
       event,
-      userIds: mapUsernameToIDs(usernames, usernameToIds, myUserID),
+      userInfos: mapUsernameToUserInfo(usernames, usernameToIds, myUserID),
       time: mapToTime(when, zone),
       frequency: mapToFrequency(when)
     };

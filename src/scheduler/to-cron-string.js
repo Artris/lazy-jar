@@ -1,5 +1,5 @@
 const frequencyToCronStringMap = new Map([
-  ['EVEYDAY', '*'],
+  ['EVERYDAY', '*'],
   ['WEEKDAYS', '1-5'],
   ['WEEKENDS', '6,7'],
   ['MONDAYS', '1'],
@@ -28,5 +28,5 @@ const timeToCronString = time => {
 module.exports = ({ frequency, time }) => {
   const mmhh = timeToCronString(time);
   const dayOfWeek = freqToCronString(frequency);
-  return `* ${mmhh} * * ${dayOfWeek}`;
+  return `0 ${mmhh} * * ${dayOfWeek}`;
 };

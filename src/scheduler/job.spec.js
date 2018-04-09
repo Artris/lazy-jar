@@ -7,6 +7,7 @@ chai.use(sinonChai);
 
 const expect = chai.expect;
 
+const moment = require('moment');
 const jobFactory = require('./job.factory');
 
 describe('job.factory', function() {
@@ -19,27 +20,64 @@ describe('job.factory', function() {
       .withArgs('T_ID', 'E_ID')
       .returns(
         Promise.resolve({
+          url: 'SOME_URL',
+          event_id: 'E_ID',
           members: [
-            { ignore: true, id: 'M_ID_1' },
-            { ignore: false, skip_until: new Date('2018-01-20'), id: 'M_ID_2' },
-            { ignore: false, skip_until: new Date('2018-04-20'), id: 'M_ID_3' },
-            { id: 'M_ID_4' }
+            {
+              ignore: true,
+              user_id: 'M_ID_1',
+              user_im_id: 'M_IM_ID_1'
+            },
+            {
+              ignore: false,
+              skip_until: new Date('2018-01-20'),
+              user_id: 'M_ID_2',
+              user_im_id: 'M_IM_ID_2'
+            },
+            {
+              ignore: false,
+              skip_until: new Date('2018-04-20'),
+              user_id: 'M_ID_3',
+              user_im_id: 'M_IM_ID_3'
+            },
+            {
+              user_id: 'M_ID_4',
+              user_im_id: 'M_IM_ID_4'
+            }
           ]
         })
       );
 
+    const getSecret = sinon
+      .stub()
+      .withArgs('T_ID')
+      .returns(Promise.resolve({ bot: { bot_access_token: 'ACCESS_TOKEN' } }));
+
     const isBefore = (a, b) => a < b;
     const notifyUsers = sinon.stub().resolves();
 
-    const Job = jobFactory(getEvent, notifyUsers, isBefore);
+    const Job = jobFactory(getEvent, getSecret, notifyUsers, isBefore);
     const job = Job(team_id, event_id);
 
     job(fireDate)
       .then(() => {
-        expect(notifyUsers).to.have.been.calledWith('T_ID', [
-          'M_ID_2',
-          'M_ID_4'
-        ]);
+        expect(notifyUsers).to.have.been.calledWith(
+          'T_ID',
+          'ACCESS_TOKEN',
+          [
+            {
+              user_id: 'M_ID_2',
+              user_im_id: 'M_IM_ID_2'
+            },
+            {
+              user_id: 'M_ID_4',
+              user_im_id: 'M_IM_ID_4'
+            }
+          ],
+          'E_ID',
+          'SOME_URL',
+          '20180220'
+        );
         done();
       })
       .catch(err => done(err));
@@ -54,7 +92,7 @@ describe('job.factory', function() {
     const log = sinon.spy();
     const logger = { log };
 
-    const Job = jobFactory(getEvent, undefined, undefined, logger);
+    const Job = jobFactory(getEvent, undefined, undefined, undefined, logger);
     const job = Job(team_id, event_id);
 
     job(fireDate)

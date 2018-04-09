@@ -46,8 +46,8 @@ an slack app for scheduling remote stand-ups and track participation
   * e.g. "start notifying @grace for artris"
 * `/lj stop notifying [username] for [name]`
   The hacker is on a break and will not be counted as part of a stand-up until the 'start' command is sent
+
   * e.g. "stop notifying @grace for artris"
-  
 
 ## how does it work?
 
@@ -57,8 +57,8 @@ A slash command goes through the following steps
 2.  **Action**: validates an action and transform its properties to create an action
 3.  **Reducer**: given the current state for a team and a valid action, returns the next state
 
-
 ## Database
+
 ```json
 {
   "secrets": [
@@ -79,6 +79,7 @@ A slash command goes through the following steps
       "members": [
         {
           "user_id": "XXXXXXXXXX",
+          "user_im_id": "XXXXXXXXXX",
           "ignore": false,
           "skip_until":
             "the date for the next invocation of the meeting for the user"
