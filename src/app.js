@@ -27,19 +27,18 @@ const {
   saveSecret,
   saveState,
   saveLog,
+  getLogsForTeam,
   getSecret,
   getState,
   getEventsFor
 } = require('./database/helpers/helpers.js');
 
-const { notifyUsers, getSecretsAndSave, getUsersInfo } = require('./helpers')(
-  fetch,
-  url,
-  winston,
-  saveLog,
-  saveSecret,
-  config
-);
+const {
+  notifyUsers,
+  sendMessage,
+  getSecretsAndSave,
+  getUsersInfo
+} = require('./helpers')(fetch, url, winston, saveLog, saveSecret, config);
 
 const Job = require('./scheduler/job.factory')(
   getState,
@@ -56,6 +55,8 @@ const scheduler = require('./scheduler/scheduler.factory')(
   toCronString,
   Job
 );
+
+const status = require('./status/status.factory')(getLogsForTeam, winston);
 
 const app = express();
 
@@ -94,8 +95,8 @@ app.get('/oauth/redirect', async (req, res) => {
 });
 
 app.post('/api/command', (req, res) => {
-  executeCommand(req.body)
-    .then(() => res.send('State updated'))
+  respond(req.body)
+    .then(() => res.send('Success!'))
     .catch(err => {
       res.send('Something is wrong, please try again later');
       console.log(err);
@@ -104,14 +105,23 @@ app.post('/api/command', (req, res) => {
 
 app.listen(port, () => console.log(`listening on port ${port}!`));
 
-async function executeCommand({ team_id, user_id, text }) {
+async function respond({ team_id, user_id, text, channel_id }) {
   const secret = await getSecret({ team_id });
+  const token = secret.bot.bot_access_token;
+
+  const command = parser(text);
+  if (command.type === 'STATUS') {
+    const statusMap = await status(team_id);
+    await sendMessage(channel_id, token, JSON.stringify(statusMap));
+  } else {
+    await executeCommand({ team_id, user_id, command, token });
+  }
+}
+
+async function executeCommand({ team_id, user_id, command, token }) {
   const events = await getEventsFor({ team_id });
   const eventIds = new Set(events.map(e => e.event_id));
-
-  const bot_access_token = secret.bot.bot_access_token;
-  const usersInfo = await getUsersInfo(bot_access_token);
-  const command = parser(text);
+  const usersInfo = await getUsersInfo(token);
   const action = createAction(command, usersInfo, user_id, eventIds, 'UTC');
   const currState = await getState(team_id, action.event);
   const nextState = await reduce(action, currState);
