@@ -13,7 +13,7 @@ const jobFactory = require('./job.factory');
 describe('job.factory', function() {
   const team_id = 'T_ID',
     event_id = 'E_ID',
-    fireDate = moment(new Date('2018-02-20')).utc();
+    fireDate = new Date('2018-02-20');
   it('should notify the active members', function(done) {
     const getEvent = sinon
       .stub()
@@ -51,7 +51,7 @@ describe('job.factory', function() {
     const getSecret = sinon
       .stub()
       .withArgs('T_ID')
-      .returns(Promise.resolve({ access_token: 'ACCESS_TOKEN' }));
+      .returns(Promise.resolve({ bot: { bot_access_token: 'ACCESS_TOKEN' } }));
 
     const isBefore = (a, b) => a < b;
     const notifyUsers = sinon.stub().resolves();

@@ -76,9 +76,9 @@ module.exports = (fetch, url, logger, saveLog, saveSecret, config) => {
   /**
    * Helper functions to notify users
    */
-  async function sendMessage(im_id, team_token, message) {
+  async function sendMessage(im_id, access_token, message) {
     let params = {
-      token: team_token,
+      token: access_token,
       scope: 'bot',
       channel: im_id,
       text: message
@@ -111,8 +111,8 @@ module.exports = (fetch, url, logger, saveLog, saveSecret, config) => {
     return Promise.all(
       activeMembers.map(({ user_id, user_im_id }) => {
         // TODO: Add interactive messages with a value similar to message
-        const message = `${team_id} ${eventName} ${user_id}$ ${fireDate}`;
-        sendMessage(user_im_id, team_token, message).then(res =>
+        const message = `${team_id} ${eventName} ${user_id} ${fireDate}`;
+        sendMessage(user_im_id, access_token, message).then(res =>
           saveLog(team_id, eventName, user_id, fireDate, 'Notified')
         );
       })

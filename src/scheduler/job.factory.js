@@ -1,18 +1,18 @@
 const { stripIndent } = require('common-tags');
+const moment = require('moment');
 
 module.exports = (getEvent, getSecret, notifyUsers, isBefore, logger) => (
   team_id,
   event_id
 ) => {
   async function notifyActiveMembers(fireDate) {
-    // we are expecting the fireDate to be moment.js date object
     const { url: eventUrl, event_id: eventName, members } = await getEvent({
       team_id,
       event_id
     });
 
-    const { access_token } = await getSecret({ team_id });
-
+    const secret = await getSecret({ team_id });
+    const bot_access_token = secret.bot.bot_access_token;
     const activeMembers = members
       .filter(({ ignore, skip_until }) => {
         const notActive = ignore === true;
@@ -24,13 +24,17 @@ module.exports = (getEvent, getSecret, notifyUsers, isBefore, logger) => (
         return { user_id, user_im_id };
       });
 
+    const fireDateStr = moment(fireDate)
+      .utc()
+      .format('YYYYMMDD');
+
     return notifyUsers(
       team_id,
-      access_token,
+      bot_access_token,
       activeMembers,
       eventName,
       eventUrl,
-      fireDate.format('YYYYMMDD')
+      fireDateStr
     );
   }
 
