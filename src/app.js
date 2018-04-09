@@ -32,11 +32,7 @@ const {
   getEventsFor
 } = require('./database/helpers/helpers.js');
 
-const {
-  notifyUsers,
-  getSecretsAndSave,
-  getUsersInfo
-} = require('./app-helpers/slack')(
+const { notifyUsers, getSecretsAndSave, getUsersInfo } = require('./helpers')(
   fetch,
   url,
   logger,
