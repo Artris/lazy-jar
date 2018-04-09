@@ -1,16 +1,18 @@
-// TODO: refactor this, can be palced in a better place
-const {
-  client_id,
-  client_secret,
-  redirect_uri,
-  slack_access_uri,
-  team_token,
-  slack_im_list,
-  slack_user_list,
-  slack_message_channel
-} = require('../config.json');
+module.exports = (fetch, url, logger, saveLog, saveSecret, config) => {
+  const {
+    client_id,
+    client_secret,
+    redirect_uri,
+    slack_access_uri,
+    team_token,
+    slack_im_list,
+    slack_user_list,
+    slack_message_channel
+  } = config;
 
-module.exports = ({ fetch, winston, url, logNotification, saveSecret }) => {
+  /**
+   * Helper functions to get users information
+   */
   async function getUsernameToIdMap(team_token) {
     let params = {
       token: team_token,
@@ -27,11 +29,11 @@ module.exports = ({ fetch, winston, url, logNotification, saveSecret }) => {
       const response = await fetch(urlRequest);
       const jsonResp = await response.json();
       return new Map(jsonResp.members.map(item => ['@' + item.name, item.id]));
-    } catch (e) {
-      winston.error(
-        `An error occured while fetching user.list from slack: ${e}`
+    } catch (err) {
+      logger.error(
+        `An error occured while fetching user.list from slack: ${err}`
       );
-      throw e;
+      throw err;
     }
   }
 
@@ -51,9 +53,11 @@ module.exports = ({ fetch, winston, url, logNotification, saveSecret }) => {
       const response = await fetch(urlRequest);
       const jsonResp = await response.json();
       return new Map(jsonResp.ims.map(item => [item.user, item.id]));
-    } catch (e) {
-      winston.error(`An error occured while fetching im.list from slack: ${e}`);
-      throw e;
+    } catch (err) {
+      logger.error(
+        `An error occured while fetching im.list from slack: ${err}`
+      );
+      throw err;
     }
   }
 
@@ -69,7 +73,10 @@ module.exports = ({ fetch, winston, url, logNotification, saveSecret }) => {
     return userInfo;
   }
 
-  async function sendDirectMessage(im_id, team_token, message) {
+  /**
+   * Helper functions to notify users
+   */
+  async function sendMessage(im_id, team_token, message) {
     let params = {
       token: team_token,
       scope: 'bot',
@@ -85,11 +92,11 @@ module.exports = ({ fetch, winston, url, logNotification, saveSecret }) => {
     try {
       const response = await fetch(urlRequest, { method: 'POST' });
       const jsonResp = await response.json();
-    } catch (e) {
-      winston.error(
-        `An error occured while posting a message to the user chat.postMessage : ${e}`
+    } catch (err) {
+      logger.error(
+        `An error occured while posting a message to the user chat.postMessage : ${err}`
       );
-      throw e;
+      throw err;
     }
   }
 
@@ -101,26 +108,20 @@ module.exports = ({ fetch, winston, url, logNotification, saveSecret }) => {
     eventUrl,
     fireDate
   ) {
-    console.log(
-      '1',
-      team_id,
-      access_token,
-      activeMembers,
-      eventName,
-      eventUrl,
-      fireDate
-    );
     return Promise.all(
       activeMembers.map(({ user_id, user_im_id }) => {
-        // TODO: Add interactive messages with a value as the following
+        // TODO: Add interactive messages with a value similar to message
         const message = `${team_id} ${eventName} ${user_id}$ ${fireDate}`;
-        sendDirectMessage(user_im_id, team_token, message).then(res =>
-          logNotification(team_id, eventName, user_id, fireDate, 'Notified')
+        sendMessage(user_im_id, team_token, message).then(res =>
+          saveLog(team_id, eventName, user_id, fireDate, 'Notified')
         );
       })
     );
   }
 
+  /**
+   * Helpers functions for requesting access from slack
+   */
   function requestAccessFromSlack(code) {
     const params = {
       client_id,
@@ -138,35 +139,14 @@ module.exports = ({ fetch, winston, url, logNotification, saveSecret }) => {
   }
 
   async function getSecretsAndSave(code) {
-    requestAccessFromSlack(code)
-      .then(
-        ({ team_id, access_token, bot: { bot_user_id, bot_access_token } }) => {
-          // Save the team secret
-          saveSecret({
-            team_id,
-            access_token,
-            bot: { bot_user_id, bot_access_token }
-          })
-            .then(res => {
-              winston.info(`Saving the team secret was successful`);
-            })
-            .catch(e => {
-              winston.error(
-                `an error occured while trying to save the team secret: ${code}`
-              );
-              throw e;
-            });
-        }
-      )
-      .catch(e => {
-        winston.error(`Getting team secret from Slack failed ${code}`);
-        throw e;
-      });
+    return requestAccessFromSlack(code).then(secret => {
+      return saveSecret(secret);
+    });
   }
 
   return {
     notifyUsers,
-    getSecretsAndSave,
-    getUsersInfo
+    getUsersInfo,
+    getSecretsAndSave
   };
 };

@@ -18,13 +18,17 @@ const {
   scope
 } = config;
 
+const redirect_uri = `${host}:${port}/oauth/redirect`;
+const parser = require('./parser/index');
+const createAction = require('./actions/index');
+const reduce = require('./reducers/index');
+
 const {
   saveSecret,
   saveState,
   saveLog,
   getSecret,
   getState,
-  getLogsForEvent,
   getEventsFor
 } = require('./database/helpers/helpers.js');
 
@@ -32,18 +36,14 @@ const {
   notifyUsers,
   getSecretsAndSave,
   getUsersInfo
-} = require('./app-helpers/slack')({
+} = require('./app-helpers/slack')(
   fetch,
-  winston,
   url,
-  undefined,
-  saveSecret
-});
-
-const redirect_uri = `${host}:${port}/oauth/redirect`;
-const parser = require('./parser/index');
-const createAction = require('./actions/index');
-const reduce = require('./reducers/index');
+  logger,
+  saveLog,
+  saveSecret,
+  config
+);
 
 const Job = require('./scheduler/job.factory')(
   getState,
