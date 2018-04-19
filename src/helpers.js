@@ -76,11 +76,11 @@ module.exports = (fetch, url, logger, saveLog, saveSecret, config) => {
   /**
    * Helper functions to notify users
    */
-  async function sendMessage(im_id, access_token, message) {
+  async function sendMessage(channel, token, message) {
     let params = {
-      token: access_token,
+      token: token,
       scope: 'bot',
-      channel: im_id,
+      channel: channel,
       text: message
     };
 
@@ -146,6 +146,7 @@ module.exports = (fetch, url, logger, saveLog, saveSecret, config) => {
 
   return {
     notifyUsers,
+    sendMessage,
     getUsersInfo,
     getSecretsAndSave
   };

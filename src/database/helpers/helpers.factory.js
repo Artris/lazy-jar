@@ -35,6 +35,10 @@ module.exports = ({ State, Secret, Notification, Log }) => {
     return Notification.find({ team_id, event_id });
   }
 
+  function getLogsForTeam({ team_id }) {
+    return Notification.find({ team_id });
+  }
+
   function getEventsFor({ team_id }) {
     return State.find({ team_id });
   }
@@ -45,6 +49,7 @@ module.exports = ({ State, Secret, Notification, Log }) => {
     saveLog,
     getSecret,
     getState,
+    getLogsForTeam,
     getLogsForEvent,
     getEventsFor
   };

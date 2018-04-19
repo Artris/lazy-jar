@@ -4,9 +4,7 @@ const sinonChai = require('sinon-chai');
 
 chai.use(sinonChai);
 
-const {
-  split
-} = require('./helpers/helpers');
+const { split } = require('./helpers/helpers');
 const createParser = require('../parser/parser.factory');
 
 const {
@@ -22,18 +20,17 @@ const {
   STOP
 } = require('../commands');
 
-describe('parser factory', function () {
+describe('parser factory', function() {
   let parseScheduleCommand,
     parseAddCommand,
     parseRemoveCommand,
     parseMoveCommand,
     parseSkipCommand,
-    parseStatusCommand,
     parseHaltCommand,
     parseResumeCommand,
     parseTerminateCommand,
     parseStartCommand,
-    parseStopCommand
+    parseStopCommand;
 
   let parse;
   beforeEach(() => {
@@ -42,7 +39,6 @@ describe('parser factory', function () {
     parseRemoveCommand = sinon.spy();
     parseMoveCommand = sinon.spy();
     parseSkipCommand = sinon.spy();
-    parseStatusCommand = sinon.spy();
     parseHaltCommand = sinon.spy();
     parseResumeCommand = sinon.spy();
     parseTerminateCommand = sinon.spy();
@@ -56,7 +52,6 @@ describe('parser factory', function () {
       parseRemoveCommand,
       parseMoveCommand,
       parseSkipCommand,
-      parseStatusCommand,
       parseHaltCommand,
       parseResumeCommand,
       parseTerminateCommand,
