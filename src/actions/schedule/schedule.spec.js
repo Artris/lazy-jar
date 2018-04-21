@@ -96,7 +96,7 @@ describe('schedule action', function() {
     };
     assert.throws(
       () => schedule(parsedCommand, usernameToUserInfo, myUserInfo, events),
-      /please specify a date in the format/
+      /incorrectly formatted date/
     );
   });
 
@@ -116,7 +116,7 @@ describe('schedule action', function() {
     };
     assert.throws(
       () => schedule(parsedCommand, usernameToUserInfo, myUserInfo, events),
-      /please specify when you want the meetings to happen eg. weekdays, everyday, Saturdays .../
+      /incorrect frequency/
     );
   });
 });

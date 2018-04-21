@@ -84,7 +84,7 @@ describe('skip action', function() {
     };
     assert.throws(
       () => skip(parsedCommand, usernameToUserInfo, myUserInfo, events),
-      /please specify the period in days\/months\/years e.g ...for 2 days/
+      /incorrect period/
     );
   });
 });
