@@ -1,4 +1,4 @@
-const customError = require('../../customError')
+const customError = require('../../customError/customError')
 /**
  * Checks if a given username exists in a map of usernames
  * @param {String} username

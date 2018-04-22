@@ -94,7 +94,7 @@ describe('helpers', function() {
       const timeString = '12:30am everyday';
       assert.throws(
         () => mapToTime(timeString, 'UTC'),
-
+        /incorrectly formatted date/
       );
     });
 

@@ -1,4 +1,4 @@
-const customError = require('../../customError')
+const customError = require('../../customError/customError')
 /**
  * Splits the text into two segments, before and after the separator.
  * Note the before and after segments are trimmed.
