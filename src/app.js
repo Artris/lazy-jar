@@ -112,13 +112,10 @@ app.post('/api/command', (req, res) => {
 app.listen(port, () => console.log(`listening on port ${port}!`));
 
 async function respond({ team_id, user_id, text, channel_id }) {
-  const secret = await getSecret({
-    team_id
-  });
-
+  const secret = await getSecret({ team_id });
   const token = secret.bot.bot_access_token;
-  const command = parser(text);
 
+  const command = parser(text);
   if (command.type === 'STATUS') {
     const statusMap = await status(team_id);
     await sendMessage(channel_id, token, JSON.stringify(statusMap));
