@@ -56,14 +56,14 @@ function mapToTime(time, zone) {
   let amOrpm = time.match(/am|pm/);
 
   if (hh === null || amOrpm == null || mm === null)
-    throw new customError('incorrectly formatted date', EA1003)
+    throw new customError('incorrectly formatted time', EA1003)
 
   amOrpm = amOrpm.shift();
   hh = Number(hh.shift());
   mm = Number(mm.shift().slice(1));
 
   if (!((hh >= 0) & (hh <= 24)) || !((mm >= 0) & (mm < 60)) || hh > 12)
-    throw new customError('incorrectly formatted date', EA1004)
+    throw new customError('incorrectly formatted time', EA1004)
 
   hh = amOrpm === 'pm' && hh !== 12 ? (hh += 12) : hh;
   hh = amOrpm === 'am' && hh === 12 ? 0 : hh;

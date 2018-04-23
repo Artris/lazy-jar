@@ -33,7 +33,7 @@ describe('move action', function() {
     };
     assert.throws(
       () => move(parsedCommand, events),
-      /incorrectly formatted date/
+      /incorrectly formatted time/
     );
   });
 

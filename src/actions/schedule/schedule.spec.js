@@ -96,7 +96,7 @@ describe('schedule action', function() {
     };
     assert.throws(
       () => schedule(parsedCommand, usernameToUserInfo, myUserInfo, events),
-      /incorrectly formatted date/
+      /incorrectly formatted time/
     );
   });
 
