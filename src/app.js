@@ -19,7 +19,7 @@ const {
 } = config;
 
 const redirect_uri = `${host}:${port}/oauth/redirect`;
-const errorMap = require('./customError/errorMap');
+const { errorMap } = require('./customError/errorMap');
 const parser = require('./parser/index');
 const createAction = require('./actions/index');
 const reduce = require('./reducers/index');
@@ -100,12 +100,11 @@ app.post('/api/command', (req, res) => {
   respond(req.body)
     .then(() => res.send('Success!'))
     .catch(err => {
+      winston.error(err)
       if (errorMap.get(err.code)) {
         res.send(errorMap.get(err.code))
-        winston.error(`${err.code} ${err.message}`)
       }
-      else res.send('Something went wrong, please try again later')
-      console.log(err);
+      else res.send('Oh-oh! Something went wrong. Please try again later. :upside_down_face:')
     });
 });
 

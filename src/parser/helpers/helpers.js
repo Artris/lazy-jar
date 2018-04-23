@@ -1,4 +1,5 @@
 const customError = require('../../customError/customError')
+const { EP1000, EP1001 } = require('../../customError/errorMap')
 /**
  * Splits the text into two segments, before and after the separator.
  * Note the before and after segments are trimmed.
@@ -7,7 +8,7 @@ const customError = require('../../customError/customError')
  */
 function split(text, separator = ' ') {
   const indexOfSeparator = text.indexOf(separator);
-  if (indexOfSeparator === -1) throw new customError(`could not find "${separator}"`, 'EP1000')
+  if (indexOfSeparator === -1) throw new customError(`could not find "${separator}"`, EP1000)
   return [
     text.slice(0, indexOfSeparator).trim(),
     text.slice(indexOfSeparator + separator.length).trim()
@@ -35,7 +36,7 @@ function splitBy(text, separators) {
 function splitAt(text, separator) {
   const indexOfSeparator = text.indexOf(separator);
   if (indexOfSeparator === -1) {
-    throw new customError(`could not find "${separator}"`, 'EP1001');
+    throw new customError(`could not find "${separator}"`, EP1001);
   }
 
   return [
