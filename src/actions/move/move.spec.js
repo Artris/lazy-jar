@@ -33,7 +33,7 @@ describe('move action', function() {
     };
     assert.throws(
       () => move(parsedCommand, events),
-      /please specify a date in the format/
+      /incorrectly formatted time/
     );
   });
 
@@ -46,7 +46,7 @@ describe('move action', function() {
     };
     assert.throws(
       () => move(parsedCommand, events),
-      /please specify when you want the meetings to happen eg. weekdays, everyday, Saturdays .../
+      /incorrect frequency/
     );
   });
 

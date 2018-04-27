@@ -94,7 +94,7 @@ describe('helpers', function() {
       const timeString = '12:30am everyday';
       assert.throws(
         () => mapToTime(timeString, 'UTC'),
-        /please specify a date in the format/
+        /incorrectly formatted time/
       );
     });
 
@@ -102,7 +102,7 @@ describe('helpers', function() {
       const timeString = '12:30pm everyday';
       assert.throws(
         () => mapToTime(timeString, 'UTC'),
-        /please specify a date in the format/
+        /incorrectly formatted time/
       );
     });
 
@@ -110,7 +110,7 @@ describe('helpers', function() {
       const timeString = '12 pm everyday';
       assert.throws(
         () => mapToTime(timeString, 'UTC'),
-        /please specify a date in the format/
+        /incorrectly formatted time/
       );
     });
 
@@ -118,7 +118,7 @@ describe('helpers', function() {
       const timeString = '11 am everyday';
       assert.throws(
         () => mapToTime(timeString, 'UTC'),
-        /please specify a date in the format/
+        /incorrectly formatted time/
       );
     });
 
@@ -126,7 +126,7 @@ describe('helpers', function() {
       const timeString = '12:30 everyday';
       assert.throws(
         () => mapToTime(timeString, 'UTC'),
-        /please specify a date in the format/
+        /incorrectly formatted time/
       );
     });
 
@@ -134,7 +134,7 @@ describe('helpers', function() {
       const timeString = '6 everyday';
       assert.throws(
         () => mapToTime(timeString, 'UTC'),
-        /please specify a date in the format/
+        /incorrectly formatted time/
       );
     });
 
@@ -142,7 +142,7 @@ describe('helpers', function() {
       const timeString = '6:2020 am everyday';
       assert.throws(
         () => mapToTime(timeString, 'UTC'),
-        /please specify a date in the format/
+        /incorrectly formatted time/
       );
     });
 
@@ -150,7 +150,7 @@ describe('helpers', function() {
       const timeString = '6:000 am everyday';
       assert.throws(
         () => mapToTime(timeString, 'UTC'),
-        /please specify a date in the format/
+        /incorrectly formatted time/
       );
     });
 
@@ -158,7 +158,7 @@ describe('helpers', function() {
       const timeString = '6:2 am everyday';
       assert.throws(
         () => mapToTime(timeString, 'UTC'),
-        /please specify a date in the format/
+        /incorrectly formatted time/
       );
     });
 
@@ -166,7 +166,7 @@ describe('helpers', function() {
       const timeString = ':120 am everyday';
       assert.throws(
         () => mapToTime(timeString, 'UTC'),
-        /please specify a date in the format/
+        /incorrectly formatted time/
       );
     });
 
@@ -174,7 +174,7 @@ describe('helpers', function() {
       const timeString = '6000 am everyday';
       assert.throws(
         () => mapToTime(timeString, 'UTC'),
-        /please specify a date in the format/
+        /incorrectly formatted time/
       );
     });
 
@@ -182,7 +182,7 @@ describe('helpers', function() {
       const timeString = '13:00 am everyday';
       assert.throws(
         () => mapToTime(timeString, 'UTC'),
-        /please specify a date in the format/
+        /incorrectly formatted time/
       );
     });
 
@@ -190,7 +190,7 @@ describe('helpers', function() {
       const timeString = '13:00 pm everyday';
       assert.throws(
         () => mapToTime(timeString, 'UTC'),
-        /please specify a date in the format/
+        /incorrectly formatted time/
       );
     });
 
@@ -198,7 +198,7 @@ describe('helpers', function() {
       const timeString = '1:60 pm everyday';
       assert.throws(
         () => mapToTime(timeString, 'UTC'),
-        /please specify a date in the format/
+        /incorrectly formatted time/
       );
     });
 
@@ -206,7 +206,7 @@ describe('helpers', function() {
       const timeString = 'everyday';
       assert.throws(
         () => mapToTime(timeString, 'UTC'),
-        /please specify a date in the format/
+        /incorrectly formatted time/
       );
     });
 
@@ -214,7 +214,7 @@ describe('helpers', function() {
       const timeString = '';
       assert.throws(
         () => mapToTime(timeString, 'UTC'),
-        /please specify a date in the format/
+        /incorrectly formatted time/
       );
     });
   });
@@ -280,7 +280,7 @@ describe('helpers', function() {
       const period = 'once every blue moon at 4am';
       assert.throws(
         () => mapToFrequency(period),
-        /please specify when you want the meetings to happen eg. weekdays, everyday, Saturdays .../
+        /incorrect frequency/
       );
     });
 
@@ -288,7 +288,7 @@ describe('helpers', function() {
       const period = 'never - I dont want to work';
       assert.throws(
         () => mapToFrequency(period),
-        /please specify when you want the meetings to happen eg. weekdays, everyday, Saturdays .../
+        /incorrect frequency/
       );
     });
   });
@@ -363,14 +363,14 @@ describe('helpers', function() {
     it('should throw an error with an incorrectly formatted string', function() {
       assert.throws(
         () => mapPeriodtoDate('2 days and two weeks', moment),
-        /please specify the period in days\/months\/years e.g ...for 2 days/
+        /incorrect period/
       );
     });
 
     it('should throw an error with an incorrectly formatted string', function() {
       assert.throws(
         () => mapPeriodtoDate('3 weekdays', moment),
-        /please specify the period in days\/months\/years e.g ...for 2 days/
+        /incorrect period/
       );
     });
   });

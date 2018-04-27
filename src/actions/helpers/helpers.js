@@ -1,3 +1,5 @@
+const customError = require('../../customError/customError')
+const { EA1000, EA1001, EA1002, EA1003, EA1004, EA1005, EA1006 } = require('../../customError/customError')
 /**
  * Checks if a given username exists in a map of usernames
  * @param {String} username
@@ -6,7 +8,7 @@
 function usernameExists(username, usernameToUserInfo) {
   const validUsername =
     username === 'me' || username === 'I' || usernameToUserInfo.has(username);
-  if (!validUsername) throw Error(`the user ${username} does not exist`);
+  if (!validUsername) throw new customError(`the user ${username} does not exist`, EA1000)
 }
 
 /**
@@ -15,7 +17,7 @@ function usernameExists(username, usernameToUserInfo) {
  * @param {List[String]} events
  */
 function eventExists(event, events) {
-  if (!events.has(event)) throw Error('the project specified does not exist');
+  if (!events.has(event)) throw new customError('the project specified does not exist', EA1001)
 }
 
 /**
@@ -24,7 +26,7 @@ function eventExists(event, events) {
  * @param {List[String]} events
  */
 function eventAlreadyExists(event, events) {
-  if (events.has(event)) throw Error(`the project ${event} already exists`);
+  if (events.has(event)) throw new customError(`the project ${event} already exists`, EA1002)
 }
 
 /**
@@ -54,14 +56,14 @@ function mapToTime(time, zone) {
   let amOrpm = time.match(/am|pm/);
 
   if (hh === null || amOrpm == null || mm === null)
-    throw Error('please specify a date in the format hh:mm am/pm');
+    throw new customError('incorrectly formatted time', EA1003)
 
   amOrpm = amOrpm.shift();
   hh = Number(hh.shift());
   mm = Number(mm.shift().slice(1));
 
   if (!((hh >= 0) & (hh <= 24)) || !((mm >= 0) & (mm < 60)) || hh > 12)
-    throw Error('please specify a date in the format hh:mm am/pm');
+    throw new customError('incorrectly formatted time', EA1004)
 
   hh = amOrpm === 'pm' && hh !== 12 ? (hh += 12) : hh;
   hh = amOrpm === 'am' && hh === 12 ? 0 : hh;
@@ -96,10 +98,8 @@ function mapToFrequency(period) {
     const str = new RegExp(day.slice(0, -1), 'i');
     if (period.match(str)) index = i;
   });
-  if (index > -1) return daysOfWeek[index];
-  throw Error(
-    'please specify when you want the meetings to happen eg. weekdays, everyday, Saturdays ...'
-  );
+  if (index <= -1) throw new customError('incorrect frequency', EA1005)
+  return daysOfWeek[index]
 }
 
 /**
@@ -130,9 +130,7 @@ function mapPeriodtoDate(period, moment) {
       .add(Number(years[1]), 'years')
       .format('DD-MM-YYYY');
 
-  throw Error(
-    'please specify the period in days/months/years e.g ...for 2 days,'
-  );
+  throw new customError('incorrect period', EA1006)
 }
 
 module.exports = {
