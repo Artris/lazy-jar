@@ -38,6 +38,7 @@ const {
   notifyUsers,
   sendMessage,
   getSecretsAndSave,
+  getUsernameToIdMap,
   getUsersInfo
 } = require('./helpers')(fetch, url, winston, saveLog, saveSecret, config);
 
@@ -118,11 +119,22 @@ async function respond({ team_id, user_id, text, channel_id }) {
 
   const command = parser(text);
   if (command.type === 'STATUS') {
-    const statusMap = await status(team_id);
-    await sendMessage(channel_id, token, JSON.stringify(statusMap));
+    const statusFormatted = await readableStatus(team_id, token);
+    await sendMessage(channel_id, token, statusFormatted);
   } else {
     await executeCommand({ team_id, user_id, command, token });
   }
+}
+
+function reverseMap(map) {
+  return new Map([...map.entries()].map(([key, value]) => [value, key]));
+}
+
+async function readableStatus(team_id, token) {
+  const usernameToUserId = await getUsernameToIdMap(token);
+  const userIdToUsername = reverseMap(usernameToUserId);
+  const info = await status(team_id);
+  return format(info, userIdToUsername);
 }
 
 async function executeCommand({ team_id, user_id, command, token }) {

@@ -148,6 +148,7 @@ module.exports = (fetch, url, logger, saveLog, saveSecret, config) => {
     notifyUsers,
     sendMessage,
     getUsersInfo,
+    getUsernameToIdMap,
     getSecretsAndSave
   };
 };
