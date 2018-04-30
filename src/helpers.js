@@ -113,7 +113,13 @@ module.exports = (fetch, url, logger, saveLog, saveSecret, config) => {
         // TODO: Add interactive messages with a value similar to message
         const message = `${team_id} ${eventName} ${user_id} ${fireDate}`;
         sendMessage(user_im_id, access_token, message).then(res =>
-          saveLog(team_id, eventName, user_id, fireDate, 'Notified')
+          saveLog({
+            team_id,
+            event_id: eventName,
+            user_id,
+            date: fireDate,
+            action: 'Notified'
+          })
         );
       })
     );
