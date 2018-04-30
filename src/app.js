@@ -58,6 +58,7 @@ const scheduler = require('./scheduler/scheduler.factory')(
 );
 
 const status = require('./status/status.factory')(getLogsForTeam, winston);
+const format = require('./status/formatter');
 
 const app = express();
 
@@ -82,13 +83,12 @@ app.get('/oauth/authorize', (req, res) => {
   res.redirect(auth_url);
 });
 
-app.get('/oauth/redirect', async(req, res) => {
+app.get('/oauth/redirect', async (req, res) => {
   const { code, state } = req.query;
   try {
     await getSecretsAndSave(code);
     res.send('Thank you, you have successfully authenticated your team!');
-  }
-  catch (err) {
+  } catch (err) {
     winston.error(`Team authencation failed, ${err}`);
     res.send(
       'Oops, an error occured while authenticating your team, please try again!'
@@ -100,11 +100,13 @@ app.post('/api/command', (req, res) => {
   respond(req.body)
     .then(() => res.send('Success!'))
     .catch(err => {
-      winston.error(err)
+      winston.error(err);
       if (errorMap.get(err.code)) {
-        res.send(errorMap.get(err.code))
-      }
-      else res.send('Oh-oh! Something went wrong. Please try again later. :upside_down_face:')
+        res.send(errorMap.get(err.code));
+      } else
+        res.send(
+          'Oh-oh! Something went wrong. Please try again later. :upside_down_face:'
+        );
     });
 });
 
@@ -118,8 +120,7 @@ async function respond({ team_id, user_id, text, channel_id }) {
   if (command.type === 'STATUS') {
     const statusMap = await status(team_id);
     await sendMessage(channel_id, token, JSON.stringify(statusMap));
-  }
-  else {
+  } else {
     await executeCommand({ team_id, user_id, command, token });
   }
 }
