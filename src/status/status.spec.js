@@ -12,7 +12,7 @@ const mockedLogs = require('./mocked-logs.json');
 
 describe('status.fatory', function() {
   const team_id = 'ARTris';
-  const logProvider = team_id =>
+  const logProvider = ({ team_id }) =>
     Promise.resolve(mockedLogs.filter(n => n.team_id === team_id));
 
   it('should calculate the overall status for each member', function(done) {
@@ -36,7 +36,7 @@ describe('status.fatory', function() {
   });
 
   it('should log and rethrow when it fails to calculate the status', function(done) {
-    const logProvider = team_id => Promise.reject('Logs not accessible');
+    const logProvider = ({ team_id }) => Promise.reject('Logs not accessible');
     const logSpy = sinon.spy();
     const logger = { log: logSpy };
     const status = statusFactory(logProvider, logger);
