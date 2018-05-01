@@ -4,16 +4,18 @@ module.exports = (
   mapUsernameToUserInfo,
   mapToTime,
   mapToFrequency,
-  SCHEDULE
+  timezoneExists, 
+  SCHEDULE,
+  moment_tz
 ) => {
-  return (parsedCommand, usernameToIds, myUserID, events, zone = 'UTC') => {
-    const { event, usernames, when } = parsedCommand;
+  return (parsedCommand, usernameToIds, myUserID, events) => {
+    const { event, usernames, when, zone } = parsedCommand;
     eventAlreadyExists(event, events);
     return {
       type: SCHEDULE,
       event,
       userInfos: mapUsernameToUserInfo(usernames, usernameToIds, myUserID),
-      time: mapToTime(when, zone),
+      time: mapToTime(when, zone, moment_tz),
       frequency: mapToFrequency(when)
     };
   };
