@@ -122,7 +122,23 @@ async function respond({ team_id, user_id, text, channel_id }) {
     const statusFormatted = await readableStatus(team_id, token);
     await sendMessage(channel_id, token, statusFormatted);
   } else {
-    await executeCommand({ team_id, user_id, command, token });
+    const actionAndState = await executeCommand({
+      team_id,
+      user_id,
+      command,
+      token
+    });
+    const message = confirmationMessage(actionAndState);
+  }
+}
+
+function confirmationMessage({ action, state }) {
+  const { event_id } = state;
+  switch (action.type) {
+    case 'SCHEDULE':
+      return `successfully scheduled ${event_id}`;
+    case 'MOVE':
+      return `successfully rescheduled ${event_id}`;
   }
 }
 
@@ -160,4 +176,6 @@ async function executeCommand({ team_id, user_id, command, token }) {
       scheduler.reschedule([nextState]);
       break;
   }
+
+  return { action, state: nextState };
 }
