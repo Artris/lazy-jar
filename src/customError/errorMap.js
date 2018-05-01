@@ -20,8 +20,8 @@ const errorMap = new Map([
     [EA1004, 'Oops! :face_with_head_bandage: Looks like you entered a time in the incorrect format. The correct format is : hh:mm am/pm.'],
     [EA1005, 'Oops! :face_with_head_bandage: I did not catch how often you want the meetings to happen. Please resend the command with a frequency such as Weekends, Saturdays, Everyday ...'],
     [EA1006, 'Oh-oh! :confused: I could not interpret the period. Periods are specified in days, months or years e.g ... for 2 days.'],
-    [EA1007, ':confused: I could not interpret the timezone you entered. Try looking up the correct timezone for your area e.g America/Vancouver'],
-    [EA1008, ':boom: Oops! You never specified a timezone. Please resend the command with the timezone of your location such as America/Vancouver']
+    [EA1007, ':confused: I could not interpret the timezone you entered. Try looking up the correct timezone for your area.'],
+    [EA1008, ':boom: Oops! You never specified a timezone. Please resend the command with the timezone of your area.']
 ])
 
 module.exports = {
@@ -35,5 +35,6 @@ module.exports = {
     EA1005,
     EA1006,
     EA1007,
+    EA1008,
     errorMap
 }

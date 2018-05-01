@@ -1,6 +1,6 @@
 module.exports = (eventExists, mapToFrequency, mapToTime, MOVE, moment_tz) => {
   return (parsedCommand, events) => {
-    const { event, to, zone} = parsedCommand;
+    const { event, to, zone } = parsedCommand;
     eventExists(event, events);
     return {
       type: MOVE,
