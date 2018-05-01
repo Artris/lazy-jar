@@ -99,7 +99,7 @@ app.get('/oauth/redirect', async (req, res) => {
 
 app.post('/api/command', (req, res) => {
   respond(req.body)
-    .then(() => res.send('Success!'))
+    .then(message => res.send(message))
     .catch(err => {
       winston.error(err);
       if (errorMap.get(err.code)) {
@@ -128,7 +128,7 @@ async function respond({ team_id, user_id, text, channel_id }) {
       command,
       token
     });
-    const message = confirmationMessage(actionAndState);
+    return confirmationMessage(actionAndState);
   }
 }
 
