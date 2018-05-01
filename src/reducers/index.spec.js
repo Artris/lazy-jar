@@ -38,8 +38,7 @@ describe('reducers', function() {
       team_id: 'XYX',
       event_id: 'artris',
       time_to_respond: 900,
-      members: [
-        {
+      members: [{
           user_id: 'U_ID_1',
           user_im_id: 'U_IM_ID_1',
           ignore: false
@@ -68,8 +67,7 @@ describe('reducers', function() {
       team_id: 'TXY',
       event_id: 'artris',
       time_to_respond: 900,
-      members: [
-        {
+      members: [{
           user_id: 'U_ID_1',
           user_im_id: 'U_IM_ID_1',
           ignore: false
@@ -102,8 +100,7 @@ describe('reducers', function() {
       team_id: 'TXC',
       event_id: 'lazy-jar',
       time_to_respond: 900,
-      members: [
-        {
+      members: [{
           user_id: 'U_ID_1',
           user_im_id: 'U_IM_ID_1',
           ignore: false
@@ -134,8 +131,7 @@ describe('reducers', function() {
       team_id: 'TXC',
       event_id: 'lazy-jar',
       time_to_respond: 900,
-      members: [
-        {
+      members: [{
           user_id: 'U_ID_1',
           user_im_id: 'U_IM_ID_1',
           ignore: false
@@ -168,8 +164,7 @@ describe('reducers', function() {
       team_id: 'CHG',
       event_id: 'lazy-jar',
       time_to_respond: 900,
-      members: [
-        {
+      members: [{
           user_id: 'U_ID_1',
           user_im_id: 'U_IM_ID_1',
           ignore: false
@@ -197,13 +192,11 @@ describe('reducers', function() {
       team_id: 'CHG',
       event_id: 'lazy-jar',
       time_to_respond: 900,
-      members: [
-        {
-          user_id: 'U_ID_2',
-          user_im_id: 'U_IM_ID_2',
-          ignore: false
-        }
-      ],
+      members: [{
+        user_id: 'U_ID_2',
+        user_im_id: 'U_IM_ID_2',
+        ignore: false
+      }],
       frequency: 'WEEKDAYS',
       time: {
         hh: 1,
@@ -221,13 +214,11 @@ describe('reducers', function() {
       team_id: 'CBV',
       event_id: 'lazy-jar',
       time_to_respond: 900,
-      members: [
-        {
-          user_id: 'U_ID_2',
-          user_im_id: 'U_IM_ID_2',
-          ignore: false
-        }
-      ],
+      members: [{
+        user_id: 'U_ID_2',
+        user_im_id: 'U_IM_ID_2',
+        ignore: false
+      }],
       frequency: 'WEEKDAYS',
       time: {
         hh: 1,
@@ -244,13 +235,11 @@ describe('reducers', function() {
       team_id: 'CBV',
       event_id: 'lazy-jar',
       time_to_respond: 900,
-      members: [
-        {
-          user_id: 'U_ID_2',
-          user_im_id: 'U_IM_ID_2',
-          ignore: false
-        }
-      ],
+      members: [{
+        user_id: 'U_ID_2',
+        user_im_id: 'U_IM_ID_2',
+        ignore: false
+      }],
       frequency: 'WEEKDAYS',
       time: {
         hh: 1,
@@ -268,13 +257,11 @@ describe('reducers', function() {
       team_id: 'CBV',
       event_id: 'lazy-jar',
       time_to_respond: 900,
-      members: [
-        {
-          user_id: 'U_ID_2',
-          user_im_id: 'U_IM_ID_2',
-          ignore: false
-        }
-      ],
+      members: [{
+        user_id: 'U_ID_2',
+        user_im_id: 'U_IM_ID_2',
+        ignore: false
+      }],
       frequency: 'WEEKDAYS',
       time: {
         hh: 1,
@@ -291,13 +278,11 @@ describe('reducers', function() {
       team_id: 'CBV',
       event_id: 'lazy-jar',
       time_to_respond: 900,
-      members: [
-        {
-          user_id: 'U_ID_2',
-          user_im_id: 'U_IM_ID_2',
-          ignore: false
-        }
-      ],
+      members: [{
+        user_id: 'U_ID_2',
+        user_im_id: 'U_IM_ID_2',
+        ignore: false
+      }],
       frequency: 'WEEKDAYS',
       time: {
         hh: 1,
@@ -315,8 +300,7 @@ describe('reducers', function() {
       team_id: 'CBV',
       event_id: 'lazy-jar',
       time_to_respond: 900,
-      members: [
-        {
+      members: [{
           user_id: 'U_ID_2',
           user_im_id: 'U_IM_ID_2',
           ignore: false
@@ -348,8 +332,7 @@ describe('reducers', function() {
       team_id: 'CBV',
       event_id: 'lazy-jar',
       time_to_respond: 900,
-      members: [
-        {
+      members: [{
           user_id: 'U_ID_2',
           user_im_id: 'U_IM_ID_2',
           ignore: false,
@@ -378,8 +361,7 @@ describe('reducers', function() {
       team_id: 'CBV',
       event_id: 'lazy-jar',
       time_to_respond: 900,
-      members: [
-        {
+      members: [{
           user_id: 'U_ID_2',
           user_im_id: 'U_IM_ID_2',
           ignore: false,
@@ -411,8 +393,7 @@ describe('reducers', function() {
       team_id: 'CBV',
       event_id: 'lazy-jar',
       time_to_respond: 900,
-      members: [
-        {
+      members: [{
           user_id: 'U_ID_2',
           user_im_id: 'U_IM_ID_2',
           ignore: false
@@ -440,8 +421,7 @@ describe('reducers', function() {
       team_id: 'CBV',
       event_id: 'lazy-jar',
       time_to_respond: 900,
-      members: [
-        {
+      members: [{
           user_id: 'U_ID_2',
           user_im_id: 'U_IM_ID_2',
           ignore: false
@@ -472,8 +452,7 @@ describe('reducers', function() {
       team_id: 'CBV',
       event_id: 'lazy-jar',
       time_to_respond: 900,
-      members: [
-        {
+      members: [{
           user_id: 'U_ID_2',
           user_im_id: 'U_IM_ID_2',
           ignore: true
@@ -491,6 +470,54 @@ describe('reducers', function() {
         zone: 'UTC'
       },
       halted: true
+    };
+    const newState = lazyJar(action, state);
+    assert.deepEqual(expected, newState);
+  });
+  it('should correctly update the state given MOVE action', function() {
+    const state = {
+      team_id: 'CBV',
+      event_id: 'lazy-jar',
+      time_to_respond: 900,
+      members: [{
+        user_id: 'U_ID_2',
+        user_im_id: 'U_IM_ID_2',
+        ignore: false
+      }],
+      frequency: 'WEEKDAYS',
+      time: {
+        hh: 1,
+        mm: 10,
+        zone: 'UTC'
+      },
+      halted: false
+    };
+    const action = {
+      type: MOVE,
+      event: 'lazy-jar',
+      time: {
+        hh: 7,
+        mm: 0,
+        zone: 'America/Vancouver'
+      },
+      frequency: 'WEEKDAYS'
+    };
+    const expected = {
+      team_id: 'CBV',
+      event_id: 'lazy-jar',
+      time_to_respond: 900,
+      members: [{
+        user_id: 'U_ID_2',
+        user_im_id: 'U_IM_ID_2',
+        ignore: false
+      }],
+      frequency: 'WEEKDAYS',
+      time: {
+        hh: 7,
+        mm: 0,
+        zone: 'America/Vancouver'
+      },
+      halted: false
     };
     const newState = lazyJar(action, state);
     assert.deepEqual(expected, newState);

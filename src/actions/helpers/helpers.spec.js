@@ -183,7 +183,7 @@ describe('helpers', function() {
     it('should throw an error given correct format but illegal times -format hh:mm am where hh > 12', function() {
       const timeString = '13:00 am everyday';
       assert.throws(
-        () => mapToTime(timeString, 'UTC' , moment_tz),
+        () => mapToTime(timeString, 'UTC', moment_tz),
         /incorrectly formatted time/
       );
     });
@@ -377,16 +377,16 @@ describe('helpers', function() {
     });
   });
 
-  describe('timezoneExists', function () {
-    it('should not return null given a correct timezone', function () {
-      assert(timezoneExists('America/New_York', moment_tz))
+  describe('timezoneExists', function() {
+    it('should not throw an error given a correct timezone', function() {
+      assert.doesNotThrow(() => timezoneExists('America/New_York', moment_tz))
     });
-    it('should throw an error if an incorrect timezone is given', function () {
+    it('should throw an error if an incorrect timezone is given', function() {
       assert.throws(
         () => timezoneExists('incorrect tz', moment_tz),
         /incorrect timezone/);
     });
-    it('should throw an error if an undefined timezone is given', function () {
+    it('should throw an error if an undefined timezone is given', function() {
       assert.throws(
         () => timezoneExists(undefined, moment_tz),
         /no timezone specified/);

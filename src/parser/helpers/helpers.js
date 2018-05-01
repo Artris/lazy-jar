@@ -52,9 +52,14 @@ function splitUsernames(text) {
     .split(/\s+/);
 }
 
+
+/**
+ * Splits the text into time and timezone segments
+ * @param {String} text
+ */
 function splitTimeAndTimezone(text) {
-  const [time,zone] = split(text,'m')
-  return [(time+'m').trim(), zone.trim()]
+  const [time, zone] = split(text, 'm')
+  return [(time + 'm').trim(), zone.trim()]
 }
 
 module.exports = { split, splitBy, splitAt, splitUsernames, splitTimeAndTimezone };

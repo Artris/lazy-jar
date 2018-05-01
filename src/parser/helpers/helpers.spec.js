@@ -100,5 +100,4 @@ describe('helpers', function() {
       assert.deepEqual(result, expected);
     });
   });
-
 });

@@ -152,7 +152,6 @@ function mapPeriodtoDate(period, moment) {
 function timezoneExists(zone, moment_tz) {
   if (zone === null || zone == undefined || zone == '') throw new customError('no timezone specified', EA1008)
   if (moment_tz.tz.zone(zone) == null) throw new customError('incorrect timezone', EA1007)
-  return true
 }
 
 module.exports = {
