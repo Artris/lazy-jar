@@ -144,5 +144,4 @@ describe('schedule action', function() {
       /incorrect timezone/
     );
   })
-
 });

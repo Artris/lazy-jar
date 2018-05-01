@@ -1,12 +1,12 @@
-module.exports = (split, MOVE) => {
+module.exports = (split, splitTimeAndTimezone, MOVE) => {
   return command => {
     const withoutPrefix = command.slice(MOVE.length + 1);
-    const [event, to] = split(withoutPrefix, ' to ');
-    const [time, zone] = split(to, 'm ')
+    const [event, time] = split(withoutPrefix, ' to ');
+    const [to, zone] = splitTimeAndTimezone(time)
     return {
       type: MOVE,
       event,
-      to: time + 'm',
+      to,
       zone
     };
   };

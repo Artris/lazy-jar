@@ -99,7 +99,6 @@ describe('helpers', function() {
       const result = splitTimeAndTimezone(text);
       assert.deepEqual(result, expected);
     });
-
   });
 
 });

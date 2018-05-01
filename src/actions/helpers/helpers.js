@@ -1,5 +1,15 @@
 const customError = require('../../customError/customError')
-const { EA1000, EA1001, EA1002, EA1003, EA1004, EA1005, EA1006 } = require('../../customError/customError')
+const {
+  EA1000,
+  EA1001,
+  EA1002,
+  EA1003,
+  EA1004,
+  EA1005,
+  EA1006,
+  EA1007,
+  EA1008
+} = require('../../customError/customError')
 /**
  * Checks if a given username exists in a map of usernames
  * @param {String} username
@@ -50,7 +60,8 @@ function mapUsernameToUserInfo(usernames, usernameToUserInfo, myUserInfo) {
  * @param {String} zone
  * @return {Object} a JSON object representing the time
  */
-function mapToTime(time, zone) {
+function mapToTime(time, zone, moment_tz) {
+  timezoneExists(zone, moment_tz)
   let hh = time.match(/\d\d?/);
   let mm = time.match(/:\d\d\s/);
   let amOrpm = time.match(/am|pm/);
@@ -133,7 +144,13 @@ function mapPeriodtoDate(period, moment) {
   throw new customError('incorrect period', EA1006)
 }
 
+/**
+ * Maps a string that contains a number of days to a number e.g) '2 days' to 2
+ * @param {String} zone
+ * @param {moment-timezone}
+ */
 function timezoneExists(zone, moment_tz) {
+  if (zone === null || zone == undefined || zone=='') throw new customError('no timezone specified', EA1008)
   if (moment_tz.tz.zone(zone) == null) throw new customError('incorrect timezone', EA1007)
   return true
 }

@@ -4,7 +4,6 @@ module.exports = (
   mapUsernameToUserInfo,
   mapToTime,
   mapToFrequency,
-  timezoneExists, 
   SCHEDULE,
   moment_tz
 ) => {

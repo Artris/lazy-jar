@@ -4,10 +4,9 @@ const {
   mapUsernameToUserInfo,
   mapToTime,
   mapToFrequency,
-  timezoneExists
 } = require('../helpers/helpers');
 const { SCHEDULE } = require('../../commands');
-const moment_tz = require('moment-timezone')
+var moment_tz = require('moment-timezone');
 
 module.exports = require('./schedule.factory')(
   eventExists,
@@ -15,7 +14,6 @@ module.exports = require('./schedule.factory')(
   mapUsernameToUserInfo,
   mapToTime,
   mapToFrequency,
-  timezoneExists,
   SCHEDULE,
   moment_tz
 );

@@ -1,3 +1,4 @@
+const moment_tz = require('moment-timezone');
 const moment = require('moment');
 const assert = require('assert');
 const {
@@ -6,7 +7,8 @@ const {
   mapUsernameToUserInfo,
   mapToFrequency,
   mapToTime,
-  mapPeriodtoDate
+  mapPeriodtoDate,
+  timezoneExists
 } = require('./helpers');
 
 describe('helpers', function() {
@@ -53,7 +55,7 @@ describe('helpers', function() {
         mm: '30',
         zone: 'UTC'
       };
-      const time = mapToTime(timeString, 'UTC');
+      const time = mapToTime(timeString, 'UTC', moment_tz);
       assert.deepEqual(expected, time);
     });
 
@@ -64,7 +66,7 @@ describe('helpers', function() {
         mm: '30',
         zone: 'UTC'
       };
-      const time = mapToTime(timeString, 'UTC');
+      const time = mapToTime(timeString, 'UTC', moment_tz);
       assert.deepEqual(expected, time);
     });
 
@@ -75,7 +77,7 @@ describe('helpers', function() {
         mm: '30',
         zone: 'UTC'
       };
-      const time = mapToTime(timeString, 'UTC');
+      const time = mapToTime(timeString, 'UTC', moment_tz);
       assert.deepEqual(expected, time);
     });
 
@@ -86,14 +88,14 @@ describe('helpers', function() {
         mm: '30',
         zone: 'UTC'
       };
-      const time = mapToTime(timeString, 'UTC');
+      const time = mapToTime(timeString, 'UTC', moment_tz);
       assert.deepEqual(expected, time);
     });
 
     it('should throw an error given incorrect time format -format hh:mmam', function() {
       const timeString = '12:30am everyday';
       assert.throws(
-        () => mapToTime(timeString, 'UTC'),
+        () => mapToTime(timeString, 'UTC', moment_tz),
         /incorrectly formatted time/
       );
     });
@@ -101,7 +103,7 @@ describe('helpers', function() {
     it('should throw an error given incorrect time format -format hh:mmpm', function() {
       const timeString = '12:30pm everyday';
       assert.throws(
-        () => mapToTime(timeString, 'UTC'),
+        () => mapToTime(timeString, 'UTC', moment_tz),
         /incorrectly formatted time/
       );
     });
@@ -109,7 +111,7 @@ describe('helpers', function() {
     it('should throw an error given incorrect time format -format hh pm', function() {
       const timeString = '12 pm everyday';
       assert.throws(
-        () => mapToTime(timeString, 'UTC'),
+        () => mapToTime(timeString, 'UTC', moment_tz),
         /incorrectly formatted time/
       );
     });
@@ -117,7 +119,7 @@ describe('helpers', function() {
     it('should throw an error given incorrect time format -format hh am', function() {
       const timeString = '11 am everyday';
       assert.throws(
-        () => mapToTime(timeString, 'UTC'),
+        () => mapToTime(timeString, 'UTC', moment_tz),
         /incorrectly formatted time/
       );
     });
@@ -125,7 +127,7 @@ describe('helpers', function() {
     it('should throw an error given incorrect time format -format hh:mm', function() {
       const timeString = '12:30 everyday';
       assert.throws(
-        () => mapToTime(timeString, 'UTC'),
+        () => mapToTime(timeString, 'UTC', moment_tz),
         /incorrectly formatted time/
       );
     });
@@ -133,7 +135,7 @@ describe('helpers', function() {
     it('should throw an error given incorrect time format -format h', function() {
       const timeString = '6 everyday';
       assert.throws(
-        () => mapToTime(timeString, 'UTC'),
+        () => mapToTime(timeString, 'UTC', moment_tz),
         /incorrectly formatted time/
       );
     });
@@ -141,7 +143,7 @@ describe('helpers', function() {
     it('should throw an error given incorrect time format -format hh:mmmm am', function() {
       const timeString = '6:2020 am everyday';
       assert.throws(
-        () => mapToTime(timeString, 'UTC'),
+        () => mapToTime(timeString, 'UTC', moment_tz),
         /incorrectly formatted time/
       );
     });
@@ -149,7 +151,7 @@ describe('helpers', function() {
     it('should throw an error given incorrect time format -format hh:mmm am', function() {
       const timeString = '6:000 am everyday';
       assert.throws(
-        () => mapToTime(timeString, 'UTC'),
+        () => mapToTime(timeString, 'UTC', moment_tz),
         /incorrectly formatted time/
       );
     });
@@ -157,7 +159,7 @@ describe('helpers', function() {
     it('should throw an error given incorrect time format -format hh:m am', function() {
       const timeString = '6:2 am everyday';
       assert.throws(
-        () => mapToTime(timeString, 'UTC'),
+        () => mapToTime(timeString, 'UTC', moment_tz),
         /incorrectly formatted time/
       );
     });
@@ -165,7 +167,7 @@ describe('helpers', function() {
     it('should throw an error given incorrect time format -format :mmm am', function() {
       const timeString = ':120 am everyday';
       assert.throws(
-        () => mapToTime(timeString, 'UTC'),
+        () => mapToTime(timeString, 'UTC', moment_tz),
         /incorrectly formatted time/
       );
     });
@@ -173,7 +175,7 @@ describe('helpers', function() {
     it('should throw an error given incorrect time format -format hhhh am', function() {
       const timeString = '6000 am everyday';
       assert.throws(
-        () => mapToTime(timeString, 'UTC'),
+        () => mapToTime(timeString, 'UTC', moment_tz),
         /incorrectly formatted time/
       );
     });
@@ -181,7 +183,7 @@ describe('helpers', function() {
     it('should throw an error given correct format but illegal times -format hh:mm am where hh > 12', function() {
       const timeString = '13:00 am everyday';
       assert.throws(
-        () => mapToTime(timeString, 'UTC'),
+        () => mapToTime(timeString, 'UTC' , moment_tz),
         /incorrectly formatted time/
       );
     });
@@ -189,7 +191,7 @@ describe('helpers', function() {
     it('should throw an error given correct format but illegal times -format hh:mm pm where hh > 12', function() {
       const timeString = '13:00 pm everyday';
       assert.throws(
-        () => mapToTime(timeString, 'UTC'),
+        () => mapToTime(timeString, 'UTC', moment_tz),
         /incorrectly formatted time/
       );
     });
@@ -197,7 +199,7 @@ describe('helpers', function() {
     it('should throw an error given correct format but illegal times -format hh:mm pm where mm > 59', function() {
       const timeString = '1:60 pm everyday';
       assert.throws(
-        () => mapToTime(timeString, 'UTC'),
+        () => mapToTime(timeString, 'UTC', moment_tz),
         /incorrectly formatted time/
       );
     });
@@ -205,7 +207,7 @@ describe('helpers', function() {
     it('should throw an error given no time', function() {
       const timeString = 'everyday';
       assert.throws(
-        () => mapToTime(timeString, 'UTC'),
+        () => mapToTime(timeString, 'UTC', moment_tz),
         /incorrectly formatted time/
       );
     });
@@ -213,7 +215,7 @@ describe('helpers', function() {
     it('should throw an error given an empty string', function() {
       const timeString = '';
       assert.throws(
-        () => mapToTime(timeString, 'UTC'),
+        () => mapToTime(timeString, 'UTC', moment_tz),
         /incorrectly formatted time/
       );
     });
@@ -383,6 +385,11 @@ describe('helpers', function() {
       assert.throws(
         () => timezoneExists('incorrect tz', moment_tz),
         /incorrect timezone/);
+    });
+    it('should throw an error if an undefined timezone is given', function () {
+      assert.throws(
+        () => timezoneExists(undefined, moment_tz),
+        /no timezone specified/);
     });
   });
 });
