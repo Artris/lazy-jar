@@ -35,7 +35,7 @@ module.exports = (logProvider, logger) => {
   }
 
   return team_id =>
-    logProvider(team_id)
+    logProvider({ team_id })
       .then(notifications => allTimeMemberStatus(notifications))
       .catch(err => {
         console.log(err);
