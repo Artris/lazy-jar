@@ -2,7 +2,7 @@ sudo: enabled
 dist: trusty
 language: node_js
 node_js:
-- node
+- "lts/*"
 services:
 - mongodb
 before_script:
