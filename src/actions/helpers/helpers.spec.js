@@ -374,4 +374,15 @@ describe('helpers', function() {
       );
     });
   });
+
+  describe('timezoneExists', function () {
+    it('should not return null given a correct timezone', function () {
+      assert(timezoneExists('America/New_York', moment_tz))
+    });
+    it('should throw an error if an incorrect timezone is given', function () {
+      assert.throws(
+        () => timezoneExists('incorrect tz', moment_tz),
+        /incorrect timezone/);
+    });
+  });
 });

@@ -133,11 +133,17 @@ function mapPeriodtoDate(period, moment) {
   throw new customError('incorrect period', EA1006)
 }
 
+function timezoneExists(zone, moment_tz) {
+  if (moment_tz.tz.zone(zone) == null) throw new customError('incorrect timezone', EA1007)
+  return true
+}
+
 module.exports = {
   eventExists,
   eventAlreadyExists,
   mapUsernameToUserInfo,
   mapToFrequency,
   mapToTime,
-  mapPeriodtoDate
+  mapPeriodtoDate,
+  timezoneExists
 };
