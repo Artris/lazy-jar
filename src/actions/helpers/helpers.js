@@ -60,11 +60,14 @@ function mapUsernameToUserInfo(usernames, usernameToUserInfo, myUserInfo) {
  * @param {String} zone
  * @return {Object} a JSON object representing the time
  */
-function mapToTime(time, zone, moment_tz) {
-  timezoneExists(zone, moment_tz)
+function mapToTime(time, moment_tz) {
   let hh = time.match(/\d\d?/);
   let mm = time.match(/:\d\d\s/);
   let amOrpm = time.match(/am|pm/);
+
+  let zone = time.match(/\S*\/\S*/);
+  zone = (zone) ? zone.shift() : ''
+  timezoneExists(zone, moment_tz);
 
   if (hh === null || amOrpm == null || mm === null)
     throw new customError('incorrectly formatted time', EA1003)
@@ -153,6 +156,7 @@ function timezoneExists(zone, moment_tz) {
   if (zone === null || zone == undefined || zone == '') throw new customError('no timezone specified', EA1008)
   if (moment_tz.tz.zone(zone) == null) throw new customError('incorrect timezone', EA1007)
 }
+
 
 module.exports = {
   eventExists,

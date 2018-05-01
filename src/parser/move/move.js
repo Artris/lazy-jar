@@ -1,6 +1,6 @@
-const { split, splitTimeAndTimezone } = require('../helpers/helpers');
+const { split } = require('../helpers/helpers');
 const {
     MOVE
 } = require('../../commands');
 
-module.exports = require('./move.factory')(split, splitTimeAndTimezone, MOVE);
+module.exports = require('./move.factory')(split, MOVE);

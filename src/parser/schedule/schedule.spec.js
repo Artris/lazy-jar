@@ -10,8 +10,7 @@ describe('parseScheduleCommand', function() {
       type: SCHEDULE,
       event: 'artris',
       usernames: ['@alireza.eva.u23', 'me'],
-      when: 'everyday at 6am',
-      zone: 'UTC'
+      when: 'everyday at 6am UTC',
     };
     const result = parseScheduleCommand(message);
     assert.deepEqual(result, expected);

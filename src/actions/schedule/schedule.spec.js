@@ -16,8 +16,7 @@ describe('schedule action', function() {
       type: SCHEDULE,
       event: 'artris',
       usernames: ['@alireza.eva.u23', 'me'],
-      when: 'everyday at 6:00 am',
-      zone: 'America/Vancouver'
+      when: 'everyday at 6:00 am America/Vancouver'
     };
     const expected = {
       type: SCHEDULE,
@@ -29,7 +28,7 @@ describe('schedule action', function() {
       time: {
         hh: 6,
         mm: 0,
-      zone: 'America/Vancouver'
+        zone: 'America/Vancouver'
       },
       frequency: 'EVERYDAY'
     };
@@ -74,7 +73,7 @@ describe('schedule action', function() {
       type: SCHEDULE,
       event: 'artris',
       usernames: ['@grace', 'me'],
-      when: 'everyday at 6:00 am', 
+      when: 'everyday at 6:00 am',
       zone: 'America/Vancouver'
     };
     assert.throws(
@@ -95,8 +94,7 @@ describe('schedule action', function() {
       type: SCHEDULE,
       event: 'artris',
       usernames: ['@alireza.eva.u23', 'me'],
-      when: 'everyday at 6',
-      zone: 'America/Vancouver'
+      when: 'everyday at 6 America/Vancouver'
     };
     assert.throws(
       () => schedule(parsedCommand, usernameToUserInfo, myUserInfo, events),
@@ -116,15 +114,14 @@ describe('schedule action', function() {
       type: SCHEDULE,
       event: 'artris',
       usernames: ['@alireza.eva.u23', 'me'],
-      when: 'once at 6:00 am',
-      zone: 'America/Vancouver'
+      when: 'once at 6:00 am America/Vancouver'
     };
     assert.throws(
       () => schedule(parsedCommand, usernameToUserInfo, myUserInfo, events),
       /incorrect frequency/
     );
   });
-  it('should throw an error given an incorrect zone' , function() {
+  it('should throw an error given an incorrect zone', function() {
     const events = new Set(['lazy-jar']);
     const usernameToUserInfo = new Map([
       ['@dtoki', { user_id: 'U_ID_0', user_im_id: 'U_IM_ID_0' }],
@@ -136,8 +133,7 @@ describe('schedule action', function() {
       type: SCHEDULE,
       event: 'artris',
       usernames: ['@alireza.eva.u23', 'me'],
-      when: 'once at 6:00 am',
-      zone: '...'
+      when: 'everyday at 6:00 am ../..'
     };
     assert.throws(
       () => schedule(parsedCommand, usernameToUserInfo, myUserInfo, events),

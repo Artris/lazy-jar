@@ -8,8 +8,7 @@ describe('parseMoveCommand', function() {
     const expected = {
       type: MOVE,
       event: 'artris',
-      to: '6am',
-      zone: 'UTC'
+      to: '6am UTC',
     };
     const result = parseMoveCommand(message);
     assert.deepEqual(result, expected);
@@ -20,8 +19,7 @@ describe('parseMoveCommand', function() {
     const expected = {
       type: MOVE,
       event: 'artris',
-      to: 'every workday at 6:30am',
-      zone: 'UTC'
+      to: 'every workday at 6:30am UTC',
     };
     const result = parseMoveCommand(message);
     assert.deepEqual(result, expected);
