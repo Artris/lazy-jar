@@ -1,5 +1,5 @@
 const assert = require('assert');
-const { split, splitBy, splitAt, splitUsernames } = require('../helpers/helpers');
+const { split, splitBy, splitAt, splitUsernames, splitTimeAndTimezone } = require('../helpers/helpers');
 
 describe('helpers', function() {
   describe('split', function() {
@@ -84,4 +84,22 @@ describe('helpers', function() {
       assert.deepEqual(result, expected);
     });
   });
+
+  describe('splitTimeAndTimezone', function() {
+    it('should split the time and timezone string', function() {
+      const text = '6:30am UTC';
+      const expected = ['6:30am', 'UTC'];
+      const result = splitTimeAndTimezone(text);
+      assert.deepEqual(result, expected);
+    });
+
+    it('should split the time and timezone given no timezone in the string', function() {
+      const text = '6:30am';
+      const expected = ['6:30am', ''];
+      const result = splitTimeAndTimezone(text);
+      assert.deepEqual(result, expected);
+    });
+
+  });
+
 });
