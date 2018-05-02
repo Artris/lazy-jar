@@ -136,9 +136,25 @@ function confirmationMessage({ action, state }) {
   const { event_id } = state;
   switch (action.type) {
     case 'SCHEDULE':
-      return `successfully scheduled ${event_id}`;
+      return `Successfully scheduled ${event_id}. Make sure to specify the URL for the meeting!`;
     case 'MOVE':
-      return `successfully rescheduled ${event_id}`;
+      return `Successfully rescheduled ${event_id}`;
+    case 'ADD':
+      return `Successfully added new members to ${event_id}`;
+    case 'REMOVE':
+      return `Successfully removed members from ${event_id}`;
+    case 'SKIP':
+      return `You will not receive notification until ${action.skip_until}`;
+    case 'START':
+      return `You start receiving notification from now for ${event_id}`;
+    case 'STOP':
+      return `You won't receive any further notifications for ${event_id}. To participate .again use the "start" command`;
+    case 'HALT':
+      return `${event_id} is halted. To start the meeting again, use the "resume" command`;
+    case 'RESUME':
+      return `${event_id} is active again`;
+    case 'TERMINATE':
+      return `Successfully deleted ${event_id}`;
   }
 }
 
