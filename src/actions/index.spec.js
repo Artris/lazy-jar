@@ -20,7 +20,9 @@ const {
 } = require('../commands');
 
 describe('createAction', function() {
-  const usernameToUserInfo = new Map([['@eva', 1]]);
+  const usernameToUserInfo = new Map([
+    ['@eva', 1]
+  ]);
   const myUserId = 1;
   const events = ['artris', 'feeling lucky'];
   const zone = 'UTC';
@@ -63,8 +65,7 @@ describe('createAction', function() {
   });
 
   it('should call "add" with the right arguments when command is ADD', function() {
-    actions(
-      {
+    actions({
         type: ADD
       },
       usernameToUserInfo,
@@ -72,8 +73,7 @@ describe('createAction', function() {
       events,
       zone
     );
-    chai.expect(add).to.have.been.calledWith(
-      {
+    chai.expect(add).to.have.been.calledWith({
         type: ADD
       },
       usernameToUserInfo,
@@ -83,8 +83,7 @@ describe('createAction', function() {
   });
 
   it('should call "remove" with the right arguments when command is REMOVE', function() {
-    actions(
-      {
+    actions({
         type: REMOVE
       },
       usernameToUserInfo,
@@ -92,8 +91,7 @@ describe('createAction', function() {
       events,
       zone
     );
-    chai.expect(remove).to.have.been.calledWith(
-      {
+    chai.expect(remove).to.have.been.calledWith({
         type: REMOVE
       },
       usernameToUserInfo,
@@ -103,8 +101,7 @@ describe('createAction', function() {
   });
 
   it('should call "halt" with the right arguments when command is HALT', function() {
-    actions(
-      {
+    actions({
         type: HALT
       },
       usernameToUserInfo,
@@ -112,8 +109,7 @@ describe('createAction', function() {
       events,
       zone
     );
-    chai.expect(halt).to.have.been.calledWith(
-      {
+    chai.expect(halt).to.have.been.calledWith({
         type: HALT
       },
       events
@@ -121,27 +117,22 @@ describe('createAction', function() {
   });
 
   it('should call "move" with the right arguments when command is MOVE', function() {
-    actions(
-      {
+    actions({
         type: MOVE
       },
       usernameToUserInfo,
       myUserId,
       events,
-      zone
     );
-    chai.expect(move).to.have.been.calledWith(
-      {
+    chai.expect(move).to.have.been.calledWith({
         type: MOVE
       },
       events,
-      zone
     );
   });
 
   it('should call "resume" with the right arguments when command is RESUME', function() {
-    actions(
-      {
+    actions({
         type: RESUME
       },
       usernameToUserInfo,
@@ -149,8 +140,7 @@ describe('createAction', function() {
       events,
       zone
     );
-    chai.expect(resume).to.have.been.calledWith(
-      {
+    chai.expect(resume).to.have.been.calledWith({
         type: RESUME
       },
       events
@@ -158,29 +148,24 @@ describe('createAction', function() {
   });
 
   it('should call "schedule" with the right arguments when command is SCHEDULE', function() {
-    actions(
-      {
+    actions({
         type: SCHEDULE
       },
       usernameToUserInfo,
       myUserId,
-      events,
-      zone
+      events
     );
-    chai.expect(schedule).to.have.been.calledWith(
-      {
+    chai.expect(schedule).to.have.been.calledWith({
         type: SCHEDULE
       },
       usernameToUserInfo,
       myUserId,
-      events,
-      zone
+      events
     );
   });
 
   it('should call "skip" with the right arguments when command is SKIP', function() {
-    actions(
-      {
+    actions({
         type: SKIP
       },
       usernameToUserInfo,
@@ -188,8 +173,7 @@ describe('createAction', function() {
       events,
       zone
     );
-    chai.expect(skip).to.have.been.calledWith(
-      {
+    chai.expect(skip).to.have.been.calledWith({
         type: SKIP
       },
       usernameToUserInfo,
@@ -199,8 +183,7 @@ describe('createAction', function() {
   });
 
   it('should call "terminate" with the right arguments when command is TERMINATE', function() {
-    actions(
-      {
+    actions({
         type: TERMINATE
       },
       usernameToUserInfo,
@@ -208,8 +191,7 @@ describe('createAction', function() {
       events,
       zone
     );
-    chai.expect(terminate).to.have.been.calledWith(
-      {
+    chai.expect(terminate).to.have.been.calledWith({
         type: TERMINATE
       },
       events
@@ -217,8 +199,7 @@ describe('createAction', function() {
   });
 
   it('should call "stop" with the right arguments when command is STOP', function() {
-    actions(
-      {
+    actions({
         type: STOP
       },
       usernameToUserInfo,
@@ -226,8 +207,7 @@ describe('createAction', function() {
       events,
       zone
     );
-    chai.expect(stop).to.have.been.calledWith(
-      {
+    chai.expect(stop).to.have.been.calledWith({
         type: STOP
       },
       usernameToUserInfo,
@@ -237,8 +217,7 @@ describe('createAction', function() {
   });
 
   it('should call "start" with the right arguments when command is START', function() {
-    actions(
-      {
+    actions({
         type: START
       },
       usernameToUserInfo,
@@ -246,8 +225,7 @@ describe('createAction', function() {
       events,
       zone
     );
-    chai.expect(start).to.have.been.calledWith(
-      {
+    chai.expect(start).to.have.been.calledWith({
         type: START
       },
       usernameToUserInfo,

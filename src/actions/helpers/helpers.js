@@ -67,7 +67,7 @@ function mapToTime(time, moment_tz) {
 
   let zone = time.match(/(am|pm\s+)(.+)/)
   zone = (zone) ? zone[2].trim() : ''
-  timezoneExists(zone, moment_tz);
+
 
   if (hh === null || amOrpm == null || mm === null)
     throw new customError('incorrectly formatted time', EA1003)
@@ -81,6 +81,9 @@ function mapToTime(time, moment_tz) {
 
   hh = amOrpm === 'pm' && hh !== 12 ? (hh += 12) : hh;
   hh = amOrpm === 'am' && hh === 12 ? 0 : hh;
+
+  timezoneExists(zone, moment_tz);
+
   return {
     hh: hh,
     mm: mm,
