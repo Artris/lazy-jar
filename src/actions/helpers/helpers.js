@@ -65,8 +65,8 @@ function mapToTime(time, moment_tz) {
   let mm = time.match(/:\d\d\s/);
   let amOrpm = time.match(/am|pm/);
 
-  let zone = time.match(/\S*\/\S*/);
-  zone = (zone) ? zone.shift() : ''
+  let zone = time.match(/(am|pm\s+)(.+)/)
+  zone = (zone) ? zone[2].trim() : ''
   timezoneExists(zone, moment_tz);
 
   if (hh === null || amOrpm == null || mm === null)

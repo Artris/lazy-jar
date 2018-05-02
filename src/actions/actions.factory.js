@@ -20,7 +20,7 @@ module.exports = (
   START,
   STOP
 ) => {
-  return (parsedCommand, mapUsernameToUserInfo, myUserInfo, events, zone) => {
+  return (parsedCommand, mapUsernameToUserInfo, myUserInfo, events) => {
     switch (parsedCommand.type) {
       case ADD:
         return add(parsedCommand, mapUsernameToUserInfo, myUserInfo, events);
@@ -29,7 +29,7 @@ module.exports = (
       case HALT:
         return halt(parsedCommand, events);
       case MOVE:
-        return move(parsedCommand, events, zone);
+        return move(parsedCommand, events);
       case RESUME:
         return resume(parsedCommand, events);
       case SCHEDULE:
@@ -37,8 +37,7 @@ module.exports = (
           parsedCommand,
           mapUsernameToUserInfo,
           myUserInfo,
-          events,
-          zone
+          events
         );
       case SKIP:
         return skip(parsedCommand, mapUsernameToUserInfo, myUserInfo, events);
