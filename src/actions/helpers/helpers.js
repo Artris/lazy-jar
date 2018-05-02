@@ -150,7 +150,7 @@ function mapPeriodtoDate(period, moment) {
 /**
  * Maps a string that contains a number of days to a number e.g) '2 days' to 2
  * @param {String} zone
- * @param {moment-timezone}
+ * @param {moment-timezone} moment_tz
  */
 function timezoneExists(zone, moment_tz) {
   if (zone === null || zone == undefined || zone == '') throw new customError('no timezone specified', EA1008)

@@ -154,6 +154,7 @@ async function executeCommand({ team_id, user_id, command, token }) {
   const usersInfo = await getUsersInfo(token);
   const action = createAction(command, usersInfo, user_id, eventIds);
   let currState = await getState({ team_id, event_id: action.event });
+  /*we need to convert the state returned from the db into a js object*/
   currState = (currState === null) ? currState : currState.toObject();
   const nextState = await reduce(action, currState);
   // TODO: a new state out of the reducer should already include the team_id
