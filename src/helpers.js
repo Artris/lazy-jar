@@ -176,11 +176,11 @@ module.exports = (fetch, url, logger, saveLog, saveSecret, config) => {
       case REMOVE:
         return `Successfully removed members from ${event_id}`;
       case SKIP:
-        return `You will not receive notification until ${action.skip_until}`;
+        return `You will not receive notifications until ${action.skip_until}`;
       case START:
-        return `You start receiving notification from now for ${event_id}`;
+        return `You will start receiving notifications from now for ${event_id}`;
       case STOP:
-        return `You won't receive any further notifications for ${event_id}. To participate .again use the "start" command`;
+        return `You won't receive any further notifications for ${event_id}. To participate again use the "start" command`;
       case HALT:
         return `${event_id} is halted. To start the meeting again, use the "resume" command`;
       case RESUME:
