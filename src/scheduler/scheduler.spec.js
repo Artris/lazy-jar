@@ -34,7 +34,10 @@ describe('scheduler', function() {
   beforeEach(function() {
     schedule = {
       scheduleJob: sinon.spy(),
-      cancel: sinon.spy()
+      scheduledJobs: {
+        'T_ID_1-E_ID_1': { cancel: sinon.spy() },
+        'T_ID_2-E_ID_2': { cancel: sinon.spy() }
+      }
     };
 
     Job = sinon.stub();
@@ -83,8 +86,10 @@ describe('scheduler', function() {
 
   it('should support canceling existing events', function() {
     scheduler.cancel(events);
-    expect(schedule.cancel).to.have.been.calledWith('T_ID_1-E_ID_1');
-    expect(schedule.cancel).to.have.been.calledWith('T_ID_2-E_ID_2');
+    expect(schedule.scheduledJobs['T_ID_1-E_ID_1'].cancel).to.have.been
+      .calledOnce;
+    expect(schedule.scheduledJobs['T_ID_2-E_ID_2'].cancel).to.have.been
+      .calledOnce;
   });
 
   it('should support rescheduling existing events', function() {
@@ -100,7 +105,9 @@ describe('scheduler', function() {
       '0 10 * * 1-5',
       'Some Job #2'
     );
-    expect(schedule.cancel).to.have.been.calledWith('T_ID_1-E_ID_1');
-    expect(schedule.cancel).to.have.been.calledWith('T_ID_2-E_ID_2');
+    expect(schedule.scheduledJobs['T_ID_1-E_ID_1'].cancel).to.have.been
+      .calledOnce;
+    expect(schedule.scheduledJobs['T_ID_2-E_ID_2'].cancel).to.have.been
+      .calledOnce;
   });
 });

@@ -16,7 +16,8 @@ module.exports = (schedule, toCronString, Job) => {
   const cancel = events => {
     events.forEach(({ team_id, event_id }) => {
       const eventKey = key({ team_id, event_id });
-      schedule.cancel(eventKey);
+      const job = schedule.scheduledJobs[eventKey];
+      job.cancel(eventKey);
     });
   };
 
