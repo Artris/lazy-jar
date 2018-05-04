@@ -8,7 +8,8 @@ const {
   TERMINATE,
   SKIP,
   START,
-  STOP
+  STOP,
+  SET
 } = require('../commands');
 
 function lazyJar(action, state = {}) {
@@ -38,13 +39,14 @@ function lazyJar(action, state = {}) {
       const { members, frequency, time, halted } = state;
 
       return Object.assign({}, state, {
-        event_id: event,
         time_to_respond: 900,
         members: processUserIds(members, action),
         frequency: processFrequency(frequency, action),
         time: processTime(time, action),
         halted: isHalted(halted, action)
       });
+    case SET:
+      return Object.assign({}, state, { url: action.url })
     default:
       return state;
   }

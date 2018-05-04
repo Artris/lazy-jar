@@ -9,7 +9,8 @@ module.exports = (
   parseResumeCommand,
   parseTerminateCommand,
   parseStartCommand,
-  parseStopCommand
+  parseStopCommand,
+  parseSetCommand
 ) => {
   return command => {
     if (command.trim() == 'status') return { type: 'STATUS' };
@@ -34,6 +35,8 @@ module.exports = (
         return parseStartCommand(command);
       case 'stop':
         return parseStopCommand(command);
+      case 'set':
+        return parseSetCommand(command)
       default:
         const isSkipCommand = command.indexOf(' will skip ') !== -1;
         if (isSkipCommand) return parseSkipCommand(command);

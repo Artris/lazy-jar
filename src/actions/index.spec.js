@@ -16,7 +16,8 @@ const {
   SKIP,
   TERMINATE,
   START,
-  STOP
+  STOP,
+  SET
 } = require('../commands');
 
 describe('createAction', function() {
@@ -25,7 +26,12 @@ describe('createAction', function() {
   ]);
   const myUserId = 1;
   const events = ['artris', 'feeling lucky'];
+<<<<<<< f9d99468b8790ab1e4da2b5cffd0195e6b249b36
   let add, remove, halt, move, resume, schedule, skip, terminate, start, stop;
+=======
+  const zone = 'UTC';
+  let add, remove, halt, move, resume, schedule, skip, terminate, start, stop, set;
+>>>>>>> adds set url command
   let actions;
 
   beforeEach(() => {
@@ -39,6 +45,7 @@ describe('createAction', function() {
     terminate = sinon.spy();
     stop = sinon.spy();
     start = sinon.spy();
+    set = sinon.spy();
     actions = createAction(
       add,
       remove,
@@ -50,6 +57,7 @@ describe('createAction', function() {
       terminate,
       start,
       stop,
+      set,
       ADD,
       REMOVE,
       HALT,
@@ -59,7 +67,8 @@ describe('createAction', function() {
       SKIP,
       TERMINATE,
       START,
-      STOP
+      STOP,
+      SET
     );
   });
 
@@ -224,4 +233,23 @@ describe('createAction', function() {
       events
     );
   });
+
+  it('should call "set" with the right arguments when command is SET', function() {
+    actions({
+        type: SET
+      },
+      usernameToUserInfo,
+      myUserId,
+      events,
+      zone
+    );
+    chai.expect(set).to.have.been.calledWith({
+        type: SET
+      },
+      events
+    );
+  });
+
+
+
 });

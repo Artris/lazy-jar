@@ -108,6 +108,9 @@ module.exports = mongoose => {
       type: Boolean,
       required: true,
       default: false
+    },
+    url: {
+      type: String
     }
   });
 
