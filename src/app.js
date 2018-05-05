@@ -18,7 +18,7 @@ const {
   scope
 } = config;
 
-const redirect_uri = `${host}:${port}/oauth/redirect`;
+const redirect_uri = `${host}/oauth/redirect`;
 const { errorMap } = require('./customError/errorMap');
 const parser = require('./parser/index');
 const createAction = require('./actions/index');
