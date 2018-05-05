@@ -39,7 +39,8 @@ const {
   sendMessage,
   getSecretsAndSave,
   getUsernameToIdMap,
-  getUsersInfo
+  getUsersInfo,
+  confirmationMessage
 } = require('./helpers')(fetch, url, winston, saveLog, saveSecret, config);
 
 const Job = require('./scheduler/job.factory')(
@@ -99,7 +100,7 @@ app.get('/oauth/redirect', async (req, res) => {
 
 app.post('/api/command', (req, res) => {
   respond(req.body)
-    .then(() => res.send('Success!'))
+    .then(message => res.send(message))
     .catch(err => {
       winston.error(err);
       if (errorMap.get(err.code)) {
@@ -122,7 +123,13 @@ async function respond({ team_id, user_id, text, channel_id }) {
     const statusFormatted = await readableStatus(team_id, token);
     await sendMessage(channel_id, token, statusFormatted);
   } else {
-    await executeCommand({ team_id, user_id, command, token });
+    const actionAndState = await executeCommand({
+      team_id,
+      user_id,
+      command,
+      token
+    });
+    return confirmationMessage(actionAndState);
   }
 }
 
@@ -160,4 +167,6 @@ async function executeCommand({ team_id, user_id, command, token }) {
       scheduler.reschedule([nextState]);
       break;
   }
+
+  return { action, state: nextState };
 }
