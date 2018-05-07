@@ -1,4 +1,4 @@
-module.exports = (eventExists, mapToFrequency, mapToTime, MOVE, moment_tz) => {
+module.exports = (eventExists, mapToFrequency, mapToTime, MOVE) => {
   return (parsedCommand, events) => {
     const { event, to } = parsedCommand;
     eventExists(event, events);

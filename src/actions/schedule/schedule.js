@@ -3,7 +3,7 @@ const {
   eventAlreadyExists,
   mapUsernameToUserInfo,
   mapToTime,
-  mapToFrequency,
+  mapToFrequency
 } = require('../helpers/helpers');
 const { SCHEDULE } = require('../../commands');
 
