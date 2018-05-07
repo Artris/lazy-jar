@@ -4,8 +4,7 @@ module.exports = (
   mapUsernameToUserInfo,
   mapToTime,
   mapToFrequency,
-  SCHEDULE,
-  moment_tz
+  SCHEDULE
 ) => {
   return (parsedCommand, usernameToIds, myUserID, events) => {
     const { event, usernames, when } = parsedCommand;
@@ -14,7 +13,7 @@ module.exports = (
       type: SCHEDULE,
       event,
       userInfos: mapUsernameToUserInfo(usernames, usernameToIds, myUserID),
-      time: mapToTime(when, moment_tz),
+      time: mapToTime(when),
       frequency: mapToFrequency(when)
     };
   };

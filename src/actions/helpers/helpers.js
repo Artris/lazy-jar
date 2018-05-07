@@ -1,3 +1,5 @@
+const moment_tz = require('moment-timezone');
+const moment = require('moment');
 const customError = require('../../customError/customError')
 const {
   EA1000,
@@ -10,6 +12,7 @@ const {
   EA1007,
   EA1008
 } = require('../../customError/errorMap')
+
 /**
  * Checks if a given username exists in a map of usernames
  * @param {String} username
@@ -57,10 +60,9 @@ function mapUsernameToUserInfo(usernames, usernameToUserInfo, myUserInfo) {
 /**
  * Maps a string that specifies a time into an JSON object
  * @param {String} time
- * @param {String} zone
  * @return {Object} a JSON object representing the time
  */
-function mapToTime(time, moment_tz) {
+function mapToTime(time) {
   let hh = time.match(/\d\d?/);
   let mm = time.match(/:\d\d\s/);
   let amOrpm = time.match(/am|pm/);
@@ -82,7 +84,7 @@ function mapToTime(time, moment_tz) {
   hh = amOrpm === 'pm' && hh !== 12 ? (hh += 12) : hh;
   hh = amOrpm === 'am' && hh === 12 ? 0 : hh;
 
-  timezoneExists(zone, moment_tz);
+  timezoneExists(zone);
 
   return {
     hh: hh,
@@ -124,7 +126,7 @@ function mapToFrequency(period) {
  * @param {String} period
  * @return {Number} number of days specified in parameter
  */
-function mapPeriodtoDate(period, moment) {
+function mapPeriodtoDate(period) {
   let years = period.match(/^(\d\d?\d?)\s(years?)$/);
   let months = period.match(/^(\d\d?\d?)\s(months?)$/);
   let weeks = period.match(/^(\d\d?\d?)\s(weeks?)$/);
@@ -153,13 +155,11 @@ function mapPeriodtoDate(period, moment) {
 /**
  * Maps a string that contains a number of days to a number e.g) '2 days' to 2
  * @param {String} zone
- * @param {moment-timezone} moment_tz
  */
-function timezoneExists(zone, moment_tz) {
+function timezoneExists(zone) {
   if (zone === null || zone == undefined || zone == '') throw new customError('no timezone specified', EA1008)
   if (moment_tz.tz.zone(zone) == null) throw new customError('incorrect timezone', EA1007)
 }
-
 
 module.exports = {
   eventExists,

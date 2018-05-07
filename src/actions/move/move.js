@@ -6,6 +6,5 @@ module.exports = require('./move.factory')(
   eventExists,
   mapToFrequency,
   mapToTime,
-  MOVE,
-  moment_tz
+  MOVE
 );

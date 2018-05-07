@@ -6,7 +6,7 @@ module.exports = (eventExists, mapToFrequency, mapToTime, MOVE, moment_tz) => {
       type: MOVE,
       event,
       frequency: mapToFrequency(to),
-      time: mapToTime(to, moment_tz)
+      time: mapToTime(to)
     };
   };
 };

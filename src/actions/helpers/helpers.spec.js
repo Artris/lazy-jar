@@ -1,5 +1,3 @@
-const moment_tz = require('moment-timezone');
-const moment = require('moment');
 const assert = require('assert');
 const {
   eventExists,
@@ -10,6 +8,7 @@ const {
   mapPeriodtoDate,
   timezoneExists
 } = require('./helpers');
+const moment = require('moment');
 
 describe('helpers', function() {
   describe('mapUsernameToUserInfo', function() {
@@ -48,158 +47,158 @@ describe('helpers', function() {
   });
 
   describe('mapToTime', function() {
-    it('should correctly validate and transform a time in a string into an object -format: hh:mm am', function() {
+    it('should correctly validate and transform a time in a string into an object -format: hh:mm am <timezone>', function() {
       const timeString = '12:30 am America/New_York';
       const expected = {
         hh: '0',
         mm: '30',
         zone: 'America/New_York'
       };
-      const time = mapToTime(timeString, moment_tz);
+      const time = mapToTime(timeString);
       assert.deepEqual(expected, time);
     });
 
-    it('should correctly validate and transform a time in a string into an object -format: hh:mm pm', function() {
+    it('should correctly validate and transform a time in a string into an object -format: hh:mm pm <timezone>', function() {
       const timeString = '12:30 pm America/New_York';
       const expected = {
         hh: '12',
         mm: '30',
         zone: 'America/New_York'
       };
-      const time = mapToTime(timeString, moment_tz);
+      const time = mapToTime(timeString);
       assert.deepEqual(expected, time);
     });
 
-    it('should correctly validate and transform a time in a string into an object -format: h:mm am', function() {
+    it('should correctly validate and transform a time in a string into an object -format: h:mm am <timezone>', function() {
       const timeString = '1:30 am America/New_York';
       const expected = {
         hh: '1',
         mm: '30',
         zone: 'America/New_York'
       };
-      const time = mapToTime(timeString, moment_tz);
+      const time = mapToTime(timeString);
       assert.deepEqual(expected, time);
     });
 
-    it('should correctly validate and transform a time in a string into an object -format: 0h:mm am', function() {
+    it('should correctly validate and transform a time in a string into an object -format: 0h:mm am <timezone>', function() {
       const timeString = '01:30 am America/New_York';
       const expected = {
         hh: '1',
         mm: '30',
         zone: 'America/New_York'
       };
-      const time = mapToTime(timeString, moment_tz);
+      const time = mapToTime(timeString);
       assert.deepEqual(expected, time);
     });
 
-    it('should throw an error given incorrect time format -format hh:mmam', function() {
+    it('should throw an error given incorrect time format -format hh:mmam <timezone>', function() {
       const timeString = '12:30am  America/New_York';
       assert.throws(
-        () => mapToTime(timeString, moment_tz),
+        () => mapToTime(timeString),
         /incorrectly formatted time/
       );
     });
 
-    it('should throw an error given incorrect time format -format hh:mmpm', function() {
+    it('should throw an error given incorrect time format -format hh:mmpm <timezone>', function() {
       const timeString = '12:30pm  America/New_York';
       assert.throws(
-        () => mapToTime(timeString, moment_tz),
+        () => mapToTime(timeString),
         /incorrectly formatted time/
       );
     });
 
-    it('should throw an error given incorrect time format -format hh pm', function() {
+    it('should throw an error given incorrect time format -format hh pm <timezone>', function() {
       const timeString = '12 pm  America/New_York';
       assert.throws(
-        () => mapToTime(timeString, moment_tz),
+        () => mapToTime(timeString),
         /incorrectly formatted time/
       );
     });
 
-    it('should throw an error given incorrect time format -format hh am', function() {
+    it('should throw an error given incorrect time format -format hh am <timezone>', function() {
       const timeString = '11 am  America/New_York';
       assert.throws(
-        () => mapToTime(timeString, moment_tz),
+        () => mapToTime(timeString),
         /incorrectly formatted time/
       );
     });
 
-    it('should throw an error given incorrect time format -format hh:mm', function() {
+    it('should throw an error given incorrect time format -format hh:mm <timezone>', function() {
       const timeString = '12:30 America/New_York';
       assert.throws(
-        () => mapToTime(timeString, moment_tz),
+        () => mapToTime(timeString),
         /incorrectly formatted time/
       );
     });
 
-    it('should throw an error given incorrect time format -format h', function() {
+    it('should throw an error given incorrect time format -format h <timezone>', function() {
       const timeString = '6 America/New_York';
       assert.throws(
-        () => mapToTime(timeString, moment_tz),
+        () => mapToTime(timeString),
         /incorrectly formatted time/
       );
     });
 
-    it('should throw an error given incorrect time format -format hh:mmmm am', function() {
+    it('should throw an error given incorrect time format -format hh:mmmm am <timezone>', function() {
       const timeString = '6:2020 am America/New_York';
       assert.throws(
-        () => mapToTime(timeString, moment_tz),
+        () => mapToTime(timeString),
         /incorrectly formatted time/
       );
     });
 
-    it('should throw an error given incorrect time format -format hh:mmm am', function() {
+    it('should throw an error given incorrect time format -format hh:mmm am <timezone>', function() {
       const timeString = '6:000 am America/New_York';
       assert.throws(
-        () => mapToTime(timeString, moment_tz),
+        () => mapToTime(timeString),
         /incorrectly formatted time/
       );
     });
 
-    it('should throw an error given incorrect time format -format hh:m am', function() {
+    it('should throw an error given incorrect time format -format hh:m am <timezone>', function() {
       const timeString = '6:2 am America/New_York';
       assert.throws(
-        () => mapToTime(timeString, moment_tz),
+        () => mapToTime(timeString),
         /incorrectly formatted time/
       );
     });
 
-    it('should throw an error given incorrect time format -format :mmm am', function() {
+    it('should throw an error given incorrect time format -format :mmm am <timezone>', function() {
       const timeString = ':120 am  America/New_York';
       assert.throws(
-        () => mapToTime(timeString, moment_tz),
+        () => mapToTime(timeString),
         /incorrectly formatted time/
       );
     });
 
-    it('should throw an error given incorrect time format -format hhhh am', function() {
+    it('should throw an error given incorrect time format -format hhhh am <timezone>', function() {
       const timeString = '6000 am America/New_York';
       assert.throws(
-        () => mapToTime(timeString, moment_tz),
+        () => mapToTime(timeString),
         /incorrectly formatted time/
       );
     });
 
-    it('should throw an error given correct format but illegal times -format hh:mm am where hh > 12', function() {
+    it('should throw an error given correct format but illegal times -format hh:mm am <timezone> where hh > 12', function() {
       const timeString = '13:00 am everyday America/New_York';
       assert.throws(
-        () => mapToTime(timeString, moment_tz),
+        () => mapToTime(timeString),
         /incorrectly formatted time/
       );
     });
 
-    it('should throw an error given correct format but illegal times -format hh:mm pm where hh > 12', function() {
+    it('should throw an error given correct format but illegal times -format hh:mm pm <timezone> where hh > 12', function() {
       const timeString = '13:00 pm everyday America/New_York';
       assert.throws(
-        () => mapToTime(timeString, moment_tz),
+        () => mapToTime(timeString),
         /incorrectly formatted time/
       );
     });
 
-    it('should throw an error given correct format but illegal times -format hh:mm pm where mm > 59', function() {
+    it('should throw an error given correct format but illegal times -format hh:mm pm <timezone> where mm > 59', function() {
       const timeString = '1:60 pm everyday America/New_York';
       assert.throws(
-        () => mapToTime(timeString, moment_tz),
+        () => mapToTime(timeString),
         /incorrectly formatted time/
       );
     });
@@ -207,7 +206,7 @@ describe('helpers', function() {
     it('should throw an error given no time', function() {
       const timeString = 'everyday America/New_York';
       assert.throws(
-        () => mapToTime(timeString, moment_tz),
+        () => mapToTime(timeString),
         /incorrectly formatted time/
       );
     });
@@ -323,7 +322,7 @@ describe('helpers', function() {
       const expected = moment()
         .add(3, 'days')
         .format('DD-MM-YYYY');
-      const frequency = mapPeriodtoDate(period, moment);
+      const frequency = mapPeriodtoDate(period);
       assert.deepEqual(expected, frequency);
     });
 
@@ -332,7 +331,7 @@ describe('helpers', function() {
       const expected = moment()
         .add(10, 'weeks')
         .format('DD-MM-YYYY');
-      const frequency = mapPeriodtoDate(period, moment);
+      const frequency = mapPeriodtoDate(period);
       assert.deepEqual(expected, frequency);
     });
 
@@ -341,7 +340,7 @@ describe('helpers', function() {
       const expected = moment()
         .add(3, 'months')
         .format('DD-MM-YYYY');
-      const frequency = mapPeriodtoDate(period, moment);
+      const frequency = mapPeriodtoDate(period);
       assert.deepEqual(expected, frequency);
     });
 
@@ -350,20 +349,20 @@ describe('helpers', function() {
       const expected = moment()
         .add(3, 'years')
         .format('DD-MM-YYYY');
-      const frequency = mapPeriodtoDate(period, moment);
+      const frequency = mapPeriodtoDate(period);
       assert.deepEqual(expected, frequency);
     });
 
     it('should throw an error with an incorrectly formatted string', function() {
       assert.throws(
-        () => mapPeriodtoDate('2 days and two weeks', moment),
+        () => mapPeriodtoDate('2 days and two weeks'),
         /incorrect period/
       );
     });
 
     it('should throw an error with an incorrectly formatted string', function() {
       assert.throws(
-        () => mapPeriodtoDate('3 weekdays', moment),
+        () => mapPeriodtoDate('3 weekdays'),
         /incorrect period/
       );
     });
@@ -371,16 +370,16 @@ describe('helpers', function() {
 
   describe('timezoneExists', function() {
     it('should not throw an error given a correct timezone', function() {
-      assert.doesNotThrow(() => timezoneExists('America/New_York', moment_tz))
+      assert.doesNotThrow(() => timezoneExists('America/New_York'))
     });
     it('should throw an error if an incorrect timezone is given', function() {
       assert.throws(
-        () => timezoneExists('incorrect tz', moment_tz),
+        () => timezoneExists('incorrect tz'),
         /incorrect timezone/);
     });
     it('should throw an error if an undefined timezone is given', function() {
       assert.throws(
-        () => timezoneExists(undefined, moment_tz),
+        () => timezoneExists(undefined),
         /no timezone specified/);
     });
   });
