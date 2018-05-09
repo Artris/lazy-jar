@@ -85,12 +85,13 @@ app.get('/oauth/authorize', (req, res) => {
   res.redirect(auth_url);
 });
 
-app.get('/oauth/redirect', async (req, res) => {
+app.get('/oauth/redirect', async(req, res) => {
   const { code, state } = req.query;
   try {
     await getSecretsAndSave(code);
     res.send('Thank you, you have successfully authenticated your team!');
-  } catch (err) {
+  }
+  catch (err) {
     winston.error(`Team authencation failed, ${err}`);
     res.send(
       'Oops, an error occured while authenticating your team, please try again!'
@@ -105,7 +106,8 @@ app.post('/api/command', (req, res) => {
       winston.error(err);
       if (errorMap.get(err.code)) {
         res.send(errorMap.get(err.code));
-      } else
+      }
+      else
         res.send(
           'Oh-oh! Something went wrong. Please try again later. :upside_down_face:'
         );
@@ -122,7 +124,8 @@ async function respond({ team_id, user_id, text, channel_id }) {
   if (command.type === 'STATUS') {
     const statusFormatted = await readableStatus(team_id, token);
     await sendMessage(channel_id, token, statusFormatted);
-  } else {
+  }
+  else {
     const actionAndState = await executeCommand({
       team_id,
       user_id,
@@ -149,7 +152,9 @@ async function executeCommand({ team_id, user_id, command, token }) {
   const eventIds = new Set(events.map(e => e.event_id));
   const usersInfo = await getUsersInfo(token);
   const action = createAction(command, usersInfo, user_id, eventIds, 'UTC');
-  const currState = await getState(team_id, action.event);
+  let currState = await getState({ team_id, event_id: action.event });
+  /*we need to convert the state returned from the db into a js object*/
+  currState = (currState === null) ? currState : currState.toObject();
   const nextState = await reduce(action, currState);
   // TODO: a new state out of the reducer should already include the team_id
   nextState.team_id = team_id;
