@@ -104,7 +104,6 @@ app.post('/api/command', (req, res) => {
     .then(message => res.send(message))
     .catch(err => {
       winston.error(err);
-      console.log(err)
       if (errorMap.get(err.code)) {
         res.send(errorMap.get(err.code));
       }
