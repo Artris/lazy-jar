@@ -151,6 +151,7 @@ async function executeCommand({ team_id, user_id, command, token }) {
   const events = await getEventsFor({ team_id });
   const eventIds = new Set(events.map(e => e.event_id));
   const usersInfo = await getUsersInfo(token);
+  
   const action = createAction(command, usersInfo, user_id, eventIds);
   let currState = await getState({ team_id, event_id: action.event });
   /*we need to convert the state returned from the db into a js object*/
