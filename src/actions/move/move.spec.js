@@ -76,5 +76,4 @@ describe('move action', function() {
       /incorrect timezone/
     );
   });
-
 });
