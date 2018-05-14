@@ -7,7 +7,6 @@ const {
 } = require('../helpers/helpers');
 const { SCHEDULE } = require('../../commands');
 
-
 module.exports = require('./schedule.factory')(
   eventExists,
   eventAlreadyExists,
