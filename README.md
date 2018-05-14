@@ -14,7 +14,7 @@ A slack app for scheduling remote stand-ups and tracking participation
 ### Slash Commands
 
 * #### Schedule a new stand-up with a group of hackers
-    `/lj schedule [name] with [list of @hacker] [when] [timezone]`
+    `/lj schedule [name] with [list of @hacker] [when] [time zone]`
   * e.g. "schedule artris with @dtoki and @alireza everyday at 6:00 am America/Vancouver"
   * When there is a conflict, the hacker will not be added to the new stand-up and a warning will be displayed
   * If a stand-up with the same name already exists, the user will get asked to provide a different name
@@ -31,7 +31,7 @@ A slack app for scheduling remote stand-ups and tracking participation
   * An error message will be displayed if the hacker does not belong to the specified stand-up
 
 * #### Reschedule a stand-up
-    `/lj move [name] to [when]`
+    `/lj move [name] to [when] [time zone]`
   * e.g. "move artris to everyday at 7:00 am America/Vancouver"
   * A warning will be displayed if the new schedule results in conflicts among participant hacker schedules
 
