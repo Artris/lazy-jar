@@ -25,7 +25,6 @@ describe('createAction', function() {
   ]);
   const myUserId = 1;
   const events = ['artris', 'feeling lucky'];
-  const zone = 'UTC';
   let add, remove, halt, move, resume, schedule, skip, terminate, start, stop;
   let actions;
 
@@ -70,8 +69,7 @@ describe('createAction', function() {
       },
       usernameToUserInfo,
       myUserId,
-      events,
-      zone
+      events
     );
     chai.expect(add).to.have.been.calledWith({
         type: ADD
@@ -88,8 +86,7 @@ describe('createAction', function() {
       },
       usernameToUserInfo,
       myUserId,
-      events,
-      zone
+      events
     );
     chai.expect(remove).to.have.been.calledWith({
         type: REMOVE
@@ -106,8 +103,7 @@ describe('createAction', function() {
       },
       usernameToUserInfo,
       myUserId,
-      events,
-      zone
+      events
     );
     chai.expect(halt).to.have.been.calledWith({
         type: HALT
@@ -137,8 +133,7 @@ describe('createAction', function() {
       },
       usernameToUserInfo,
       myUserId,
-      events,
-      zone
+      events
     );
     chai.expect(resume).to.have.been.calledWith({
         type: RESUME
@@ -170,8 +165,7 @@ describe('createAction', function() {
       },
       usernameToUserInfo,
       myUserId,
-      events,
-      zone
+      events
     );
     chai.expect(skip).to.have.been.calledWith({
         type: SKIP
@@ -188,8 +182,7 @@ describe('createAction', function() {
       },
       usernameToUserInfo,
       myUserId,
-      events,
-      zone
+      events
     );
     chai.expect(terminate).to.have.been.calledWith({
         type: TERMINATE
@@ -204,8 +197,7 @@ describe('createAction', function() {
       },
       usernameToUserInfo,
       myUserId,
-      events,
-      zone
+      events
     );
     chai.expect(stop).to.have.been.calledWith({
         type: STOP
@@ -222,8 +214,7 @@ describe('createAction', function() {
       },
       usernameToUserInfo,
       myUserId,
-      events,
-      zone
+      events
     );
     chai.expect(start).to.have.been.calledWith({
         type: START
