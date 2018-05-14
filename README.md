@@ -32,7 +32,7 @@ A slack app for scheduling remote stand-ups and tracking participation
 
 * #### Reschedule a stand-up
     `/lj move [name] to [when]`
-  * e.g. "move artris to everyday at 7:00 am"
+  * e.g. "move artris to everyday at 7:00 am America/Vancouver"
   * A warning will be displayed if the new schedule results in conflicts among participant hacker schedules
 
 * #### Temporarily halt a stand-up
