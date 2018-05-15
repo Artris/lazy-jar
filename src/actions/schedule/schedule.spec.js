@@ -16,7 +16,7 @@ describe('schedule action', function() {
       type: SCHEDULE,
       event: 'artris',
       usernames: ['@alireza.eva.u23', 'me'],
-      when: 'everyday at 6:00 am'
+      when: 'everyday at 6:00 am America/Vancouver'
     };
     const expected = {
       type: SCHEDULE,
@@ -28,7 +28,7 @@ describe('schedule action', function() {
       time: {
         hh: 6,
         mm: 0,
-        zone: 'UTC'
+        zone: 'America/Vancouver'
       },
       frequency: 'EVERYDAY'
     };
@@ -53,7 +53,8 @@ describe('schedule action', function() {
       type: SCHEDULE,
       event: 'artris',
       usernames: ['@alireza.eva.u23', 'me'],
-      when: 'everyday at 6:00 am'
+      when: 'everyday at 6:00 am',
+      zone: 'America/Vancouver'
     };
     assert.throws(
       () => schedule(parsedCommand, usernameToUserInfo, myUserInfo, events),
@@ -72,7 +73,8 @@ describe('schedule action', function() {
       type: SCHEDULE,
       event: 'artris',
       usernames: ['@grace', 'me'],
-      when: 'everyday at 6:00 am'
+      when: 'everyday at 6:00 am',
+      zone: 'America/Vancouver'
     };
     assert.throws(
       () => schedule(parsedCommand, usernameToUserInfo, myUserInfo, events),
@@ -92,7 +94,7 @@ describe('schedule action', function() {
       type: SCHEDULE,
       event: 'artris',
       usernames: ['@alireza.eva.u23', 'me'],
-      when: 'everyday at 6'
+      when: 'everyday at 6 America/Vancouver'
     };
     assert.throws(
       () => schedule(parsedCommand, usernameToUserInfo, myUserInfo, events),
@@ -112,11 +114,30 @@ describe('schedule action', function() {
       type: SCHEDULE,
       event: 'artris',
       usernames: ['@alireza.eva.u23', 'me'],
-      when: 'once at 6:00 am'
+      when: 'once at 6:00 am America/Vancouver'
     };
     assert.throws(
       () => schedule(parsedCommand, usernameToUserInfo, myUserInfo, events),
       /incorrect frequency/
     );
   });
+  it('should throw an error given an incorrect zone', function() {
+    const events = new Set(['lazy-jar']);
+    const usernameToUserInfo = new Map([
+      ['@dtoki', { user_id: 'U_ID_0', user_im_id: 'U_IM_ID_0' }],
+      ['@alireza.eva.u23', { user_id: 'U_ID_1', user_im_id: 'U_IM_ID_1' }],
+      ['@grace', { user_id: 'U_ID_2', user_im_id: 'U_IM_ID_2' }]
+    ]);
+    const myUserInfo = { user_id: 'U_ID_2', user_im_id: 'U_IM_ID_2' };
+    const parsedCommand = {
+      type: SCHEDULE,
+      event: 'artris',
+      usernames: ['@alireza.eva.u23', 'me'],
+      when: 'everyday at 6:00 am ../..'
+    };
+    assert.throws(
+      () => schedule(parsedCommand, usernameToUserInfo, myUserInfo, events),
+      /incorrect timezone/
+    );
+  })
 });

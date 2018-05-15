@@ -16,7 +16,7 @@ module.exports = (
         usernameToIds,
         myUserID
       ).pop(),
-      skip_until: mapPeriodtoDate(parsedCommand.for, moment)
+      skip_until: mapPeriodtoDate(parsedCommand.for)
     };
   };
 };

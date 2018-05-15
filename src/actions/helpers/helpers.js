@@ -1,5 +1,18 @@
+const moment_tz = require('moment-timezone');
+const moment = require('moment');
 const customError = require('../../customError/customError')
-const { EA1000, EA1001, EA1002, EA1003, EA1004, EA1005, EA1006 } = require('../../customError/customError')
+const {
+  EA1000,
+  EA1001,
+  EA1002,
+  EA1003,
+  EA1004,
+  EA1005,
+  EA1006,
+  EA1007,
+  EA1008
+} = require('../../customError/errorMap')
+
 /**
  * Checks if a given username exists in a map of usernames
  * @param {String} username
@@ -47,13 +60,16 @@ function mapUsernameToUserInfo(usernames, usernameToUserInfo, myUserInfo) {
 /**
  * Maps a string that specifies a time into an JSON object
  * @param {String} time
- * @param {String} zone
  * @return {Object} a JSON object representing the time
  */
-function mapToTime(time, zone) {
+function mapToTime(time) {
   let hh = time.match(/\d\d?/);
   let mm = time.match(/:\d\d\s/);
   let amOrpm = time.match(/am|pm/);
+
+  let zone = time.match(/(am|pm\s+)(.+)/)
+  zone = (zone) ? zone[2].trim() : ''
+
 
   if (hh === null || amOrpm == null || mm === null)
     throw new customError('incorrectly formatted time', EA1003)
@@ -67,6 +83,9 @@ function mapToTime(time, zone) {
 
   hh = amOrpm === 'pm' && hh !== 12 ? (hh += 12) : hh;
   hh = amOrpm === 'am' && hh === 12 ? 0 : hh;
+
+  timezoneExists(zone);
+
   return {
     hh: hh,
     mm: mm,
@@ -107,7 +126,7 @@ function mapToFrequency(period) {
  * @param {String} period
  * @return {Number} number of days specified in parameter
  */
-function mapPeriodtoDate(period, moment) {
+function mapPeriodtoDate(period) {
   let years = period.match(/^(\d\d?\d?)\s(years?)$/);
   let months = period.match(/^(\d\d?\d?)\s(months?)$/);
   let weeks = period.match(/^(\d\d?\d?)\s(weeks?)$/);
@@ -133,11 +152,21 @@ function mapPeriodtoDate(period, moment) {
   throw new customError('incorrect period', EA1006)
 }
 
+/**
+ * Maps a string that contains a number of days to a number e.g) '2 days' to 2
+ * @param {String} zone
+ */
+function timezoneExists(zone) {
+  if (zone === null || zone == undefined || zone == '') throw new customError('no timezone specified', EA1008)
+  if (moment_tz.tz.zone(zone) == null) throw new customError('incorrect timezone', EA1007)
+}
+
 module.exports = {
   eventExists,
   eventAlreadyExists,
   mapUsernameToUserInfo,
   mapToFrequency,
   mapToTime,
-  mapPeriodtoDate
+  mapPeriodtoDate,
+  timezoneExists
 };

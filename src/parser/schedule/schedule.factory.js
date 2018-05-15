@@ -4,7 +4,6 @@ module.exports = (split, splitAt, splitUsernames, SCHEDULE) => {
     const [event, whoWhen] = split(withoutPrefix, 'with');
     const [who, when] = splitAt(whoWhen, 'every');
     const usernames = splitUsernames(who);
-
     return {
       type: SCHEDULE,
       event,
