@@ -35,6 +35,7 @@ function lazyJar(action, state = {}) {
     case SKIP:
     case START:
     case STOP:
+      console.log(state);
       const { members, frequency, time, halted } = state;
 
       return Object.assign({}, state, {
@@ -75,11 +76,11 @@ function processUserIds(prevMembers, action) {
       });
     case SKIP:
       return prevMembers.map(member => {
-        return member.user_id === action.userInfo.user_id
-          ? Object.assign({}, member, {
-              skip_until: action.skip_until
-            })
-          : member;
+        return member.user_id === action.userInfo.user_id ?
+          Object.assign({}, member, {
+            skip_until: action.skip_until
+          }) :
+          member;
       });
     case START:
       return prevMembers.map(member => {
@@ -89,15 +90,16 @@ function processUserIds(prevMembers, action) {
             user_im_id: member.user_im_id,
             ignore: false
           };
-        } else {
+        }
+        else {
           return member;
         }
       });
     case STOP:
       return prevMembers.map(member => {
-        return member.user_id === action.userInfo.user_id
-          ? Object.assign({}, member, { ignore: true })
-          : member;
+        return member.user_id === action.userInfo.user_id ?
+          Object.assign({}, member, { ignore: true }) :
+          member;
       });
     default:
       return prevMembers;
