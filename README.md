@@ -1,55 +1,75 @@
 # lazy-jar
 
-an slack app for scheduling remote stand-ups and track participation
+A slack app for scheduling remote stand-ups and tracking participation
 
-## commands
+## Commands
 
-### definitions
+### Definitions
 
 * `name` is a unique identifier for a stand-up
-* `when` identifies when and how often an event should happen such as "everyday at 6pm", or "every workday at 4:30pm"
+* `when` identifies when and how often an event should happen such as "everyday at 6:00 pm", or "every workday at 4:30 pm"
 * `time range` identifies a period of time such as "1 week", or "3 days"
+* `time zone` identifies the timezone corresponding to the `when` input
 
-### slash commands
+### Slash Commands
 
-* `/lj schedule [name] with [list of @hacker] [when]`
-  Schedule a new stand-up with a group of hackers
-  * e.g. "schedule artris with @dtoki, and @alireza everyday at 6am"
-  * When there is a confilict, the hacker will not be added to the new stand-up and a warning will be displayed
-* `/lj add [me or list of @hacker] to [name]`
-  Add hackers to an existing stand-up
-  * e.g. "add @dtoki, and @alireza to artris"
-  * When there is a confilict, the hacker will not be added to the new stand-up and a warning will be displayed
-* `/lj remove [me or a list @hacker] from [name]`
-  Remove hackers from an existing stand-up
+* #### Schedule a new stand-up with a group of hackers
+    `/lj schedule [name] with [list of @hacker] [when] [time zone]`
+  * e.g. "schedule artris with @dtoki and @alireza everyday at 6:00 am America/Vancouver"
+  * When there is a conflict, the hacker will not be added to the new stand-up and a warning will be displayed
+  * If a stand-up with the same name already exists, the user will get asked to provide a different name
+  
+
+* #### Add hackers to an existing stand-up
+    `/lj add [me or list of @hacker] to [name]` 
+  * e.g. "add @dtoki and @alireza to artris"
+  * When there is a conflict, the hacker will not be added to the new stand-up and a warning will be displayed
+
+* #### Remove hackers from an existing stand-up
+    `/lj remove [me or a list of @hacker] from [name]`
   * e.g. "remove me from artris"
-* `/lj move [name] to [when]`
-  Reschedule a stand-up
-  * e.g. "move artris to 7am"
-* `/lj terminate [name]`
-  Terminate a stand-up
-  * e.g. "terminate artris"
-* `lj halt [name]`
-  Nofity the bot when the team is on a break
+  * An error message will be displayed if the hacker does not belong to the specified stand-up
+
+* #### Reschedule a stand-up
+    `/lj move [name] to [when] [time zone]`
+  * e.g. "move artris to everyday at 7:00 am America/Vancouver"
+  * A warning will be displayed if the new schedule results in conflicts among participant hacker schedules
+
+* #### Temporarily halt a stand-up
+    `lj halt [name]`
   * e.g. "halt artris"
-* `lj resume [name]`
-  Nofity the bot when you want to restart the stand-ups
+
+* #### resume a currently halted stand-up
+    `lj resume [name]`
   * e.g. "resume artris"
-* `/lj status`
-  Display info about the active stand-ups and member participation
-* `/lj [I or @hacker] will skip [name] [time range]`
-  Notify the bot before taking a break
-  * At least 8h before the stand-up
+
+* #### Terminate a stand-up
+    `/lj terminate [name]`
+  * e.g. "terminate artris"
+
+
+* #### Notify an individual's timed break for a stand-up
+    `/lj [I or @hacker] will skip [name] [time range]`
+
   * e.g. "I will skip artris for 2 weeks"
-* `/lj start notifying [username] for [name]`
-  Notify the bot that the hacker will start attending a stand-up again after a 'stop' or 'skip' command has been sent
-  * e.g. "start notifying @grace for artris"
-* `/lj stop notifying [username] for [name]`
-  The hacker is on a break and will not be counted as part of a stand-up until the 'start' command is sent
+  * An error message will be displayed if the hacker is not part of the standup
 
+* #### Stop notifying a hacker
+    `/lj stop notifying [me or list of @hacker] for [name]`
+  * The hacker is on a break and will not be counted as part of a stand-up until a corresponding 'start' command is sent
   * e.g. "stop notifying @grace for artris"
+  * An error message will be displayed if the hacker is not part of the standup
 
-## how does it work?
+* #### Start notifying a hacker 
+    `/lj start notifying [me or list of@hacker] for [name]`
+  * e.g. "start notifying @grace for artris"
+  * An error message will be displayed if the hacker is not part of the standup
+
+* #### Display info on all active stand-ups and member participation
+    * `/lj status`
+
+
+## How does it work?
 
 A slash command goes through the following steps
 
@@ -119,3 +139,5 @@ A slash command goes through the following steps
   }
 }
 ```
+comment :logs are used to track events
+
