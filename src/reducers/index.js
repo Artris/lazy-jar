@@ -35,7 +35,6 @@ function lazyJar(action, state = {}) {
     case SKIP:
     case START:
     case STOP:
-      console.log(state);
       const { members, frequency, time, halted } = state;
 
       return Object.assign({}, state, {
