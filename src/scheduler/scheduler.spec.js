@@ -9,7 +9,8 @@ const expect = chai.expect;
 const schedulerFactory = require('./scheduler.factory');
 
 describe('scheduler', function() {
-  const events = [{
+  const events = [
+    {
       team_id: 'T_ID_1',
       event_id: 'E_ID_1',
       frequency: 'EVERYDAY',
