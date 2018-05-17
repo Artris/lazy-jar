@@ -18,7 +18,7 @@ describe('remove action', function() {
     };
     const expected = {
       type: REMOVE,
-      from: 'artris',
+      event: 'artris',
       userInfos: [{ user_id: 'U_ID_2', user_im_id: 'U_IM_ID_2' }]
     };
     const result = remove(

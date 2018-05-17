@@ -4,7 +4,7 @@ module.exports = (eventExists, mapUsernameToUserInfo, REMOVE) => {
     eventExists(from, events);
     return {
       type: REMOVE,
-      from,
+      event: from,
       userInfos: mapUsernameToUserInfo(usernames, usernameToIds, myUserId)
     };
   };
