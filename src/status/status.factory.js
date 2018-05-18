@@ -60,8 +60,7 @@ module.exports = (logProvider, logger) => {
       if (action === 'Notified') status.notified += 1;
     });
     return eventStatus;
-  }
-
+  } 
 
   return team_id =>
     logProvider({ team_id })
