@@ -1,7 +1,7 @@
 const express = require('express');
 const fetch = require('node-fetch');
 const winston = require('winston');
-const schedule = require('node-schedule');
+const schedule = require('node-schedule-tz');
 winston.add(winston.transports.File, {
   filename: 'lazyJarLogs.log'
 });

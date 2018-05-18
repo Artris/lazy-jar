@@ -16,7 +16,8 @@ describe('scheduler', function() {
       frequency: 'EVERYDAY',
       time: {
         hh: 6,
-        mm: 30
+        mm: 30,
+        zone: 'America/Vancouver'
       }
     },
     {
@@ -25,7 +26,8 @@ describe('scheduler', function() {
       frequency: 'WORKDAYS',
       time: {
         hh: 10,
-        mm: 00
+        mm: 00,
+        zone: 'America/Vancouver'
       }
     }
   ];
@@ -51,7 +53,8 @@ describe('scheduler', function() {
         frequency: 'EVERYDAY',
         time: {
           hh: 6,
-          mm: 30
+          mm: 30,
+          zone: 'America/Vancouver'
         }
       })
       .returns('30 6 * * *');
@@ -61,7 +64,8 @@ describe('scheduler', function() {
         frequency: 'WORKDAYS',
         time: {
           hh: 10,
-          mm: 00
+          mm: 00,
+          zone: 'America/Vancouver'
         }
       })
       .returns('0 10 * * 1-5');
@@ -74,12 +78,14 @@ describe('scheduler', function() {
     expect(schedule.scheduleJob).to.have.been.calledWith(
       'T_ID_1-E_ID_1',
       '30 6 * * *',
+      'America/Vancouver',
       'Some Job #1'
     );
 
     expect(schedule.scheduleJob).to.have.been.calledWith(
       'T_ID_2-E_ID_2',
       '0 10 * * 1-5',
+      'America/Vancouver',
       'Some Job #2'
     );
   });
@@ -97,12 +103,14 @@ describe('scheduler', function() {
     expect(schedule.scheduleJob).to.have.been.calledWith(
       'T_ID_1-E_ID_1',
       '30 6 * * *',
-      'Some Job #1'
+      'America/Vancouver',
+      'Some Job #1',
     );
 
     expect(schedule.scheduleJob).to.have.been.calledWith(
       'T_ID_2-E_ID_2',
       '0 10 * * 1-5',
+      'America/Vancouver',
       'Some Job #2'
     );
     expect(schedule.scheduledJobs['T_ID_1-E_ID_1'].cancel).to.have.been
