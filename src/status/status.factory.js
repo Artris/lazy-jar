@@ -9,13 +9,10 @@ module.exports = (logProvider, logger) => {
   function getAllMemberIds(notifications) {
     return [...new Set(notifications.map(n => n.user_id))];
   }
-<<<<<<< HEAD
-=======
 
   function getAllEventIds(events) {
     return [...new Set(events.map(n => n.event_id))];
   }
->>>>>>> 2872545... Updated Status
 
   function initializeMemberStatus(memberIds) {
     return new Map(
@@ -30,8 +27,6 @@ module.exports = (logProvider, logger) => {
     );
   }
 
-<<<<<<< HEAD
-=======
   function initializeEventStatus(eventIds) {
     return new Map(
       eventIds.map(event_id => [
@@ -45,7 +40,6 @@ module.exports = (logProvider, logger) => {
     );
   }
 
->>>>>>> 2872545... Updated Status
   function allTimeMemberStatus(notifications) {
     const memberIds = getAllMemberIds(notifications);
     const memeberStatus = initializeMemberStatus(memberIds);
@@ -57,25 +51,22 @@ module.exports = (logProvider, logger) => {
     return memeberStatus;
   }
 
+  function allTimeEventStatus(events) {
+    const eventIds = getAllEventIds(events);
+    const eventStatus = initializeEventStatus(eventIds);
+    events.forEach(({ event_id, action }) => {
+      const status = eventStatus.get(event_id);
+      if (action === 'Participated') status.participated += 1;
+      if (action === 'Notified') status.notified += 1;
+    });
+    return eventStatus;
+  }
+
+
   return team_id =>
     logProvider({ team_id })
-<<<<<<< HEAD
-      .then(notifications => allTimeMemberStatus(notifications))
-      .catch(err => {
-        console.log(err);
-        logger.log({
-          level: 'error',
-          message: stripIndent`
-                        failed to calculat the status for
-                        team_id:  ${team_id}
-                        error:    ${err}
-                      `
-        });
-        throw err;
-      });
-=======
     .then(notifications => {
-      const eventStatus = eventMemberStatus(notifications)
+      const eventStatus = allTimeEventStatus(notifications)
       const memberStatus = allTimeMemberStatus(notifications)
       return { eventStatus, memberStatus }
     })
@@ -91,5 +82,4 @@ module.exports = (logProvider, logger) => {
       });
       throw err;
     });
->>>>>>> 2872545... Updated Status
 };

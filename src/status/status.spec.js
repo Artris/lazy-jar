@@ -48,8 +48,6 @@ describe('status.fatory', function() {
       })
       .catch(err => done(err));
   });
-<<<<<<< HEAD
-=======
 
   it('should calculate metrics for specific event (lazy-jar)', function(done) {
     const logger = { log: sinon.spy() };
@@ -68,6 +66,4 @@ describe('status.fatory', function() {
       })
       .catch(err => done(err));
   });
-
->>>>>>> 2872545... Updated Status
 });
