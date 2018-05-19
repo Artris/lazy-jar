@@ -90,13 +90,17 @@ module.exports = (fetch, url, logger, saveLog, saveSecret, config) => {
   /**
    * Helper functions to notify users
    */
-  async function sendMessage(channel, token, message) {
+  async function sendMessage(channel, token, text, attachments) {
     let params = {
-      token: token,
+      token,
       scope: 'bot',
-      channel: channel,
-      text: message
+      channel,
+      text
     };
+
+    if (attachments) {
+      params['attachments'] = JSON.stringify(attachments);
+    }
 
     let urlRequest = url.format({
       pathname: slack_message_channel,
