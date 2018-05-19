@@ -75,11 +75,12 @@ function processUserIds(prevMembers, action) {
       });
     case SKIP:
       return prevMembers.map(member => {
-        return member.user_id === action.userInfo.user_id
-          ? Object.assign({}, member, {
-              skip_until: action.skip_until
-            })
-          : member;
+        if (member.user_id === action.userInfo.user_id) {
+          return Object.assign({}, member, {skip_until: action.skip_until});
+        }
+        else {
+          return member;
+        }
       });
     case START:
       return prevMembers.map(member => {
@@ -89,15 +90,19 @@ function processUserIds(prevMembers, action) {
             user_im_id: member.user_im_id,
             ignore: false
           };
-        } else {
+        }
+        else {
           return member;
         }
       });
     case STOP:
       return prevMembers.map(member => {
-        return member.user_id === action.userInfo.user_id
-          ? Object.assign({}, member, { ignore: true })
-          : member;
+        if (member.user_id === action.userInfo.user_id) {
+          return Object.assign({}, member, { ignore: true });
+        }
+        else {
+          return member;
+        }
       });
     default:
       return prevMembers;

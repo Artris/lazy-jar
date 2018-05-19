@@ -13,7 +13,7 @@ describe('remove action', function() {
     const myUserInfo = { user_id: 'U_ID_2', user_im_id: 'U_IM_ID_2' };
     const parsedCommand = {
       type: REMOVE,
-      event: 'artris',
+      from: 'artris',
       usernames: ['me']
     };
     const expected = {
@@ -40,7 +40,7 @@ describe('remove action', function() {
     const myUserInfo = { user_id: 'U_ID_2', user_im_id: 'U_IM_ID_2' };
     const parsedCommand = {
       type: REMOVE,
-      event: 'artris',
+      from: 'artris',
       usernames: ['me']
     };
     assert.throws(
@@ -52,10 +52,13 @@ describe('remove action', function() {
   it('should throw an error given a username that does not exist', function() {
     const events = new Set(['artris', 'lazy-jar']);
     const myUserId = 0;
-    const usernameToIds = new Map([['@dtoki', 0], ['@alireza.eva.u23', 1]]);
+    const usernameToIds = new Map([
+      ['@dtoki', 0],
+      ['@alireza.eva.u23', 1]
+    ]);
     const parsedCommand = {
       type: REMOVE,
-      event: 'artris',
+      from: 'artris',
       usernames: ['@grace']
     };
     assert.throws(

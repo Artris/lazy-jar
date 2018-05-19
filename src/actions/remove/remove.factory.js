@@ -1,10 +1,10 @@
 module.exports = (eventExists, mapUsernameToUserInfo, REMOVE) => {
   return (parsedCommand, usernameToIds, myUserId, events) => {
-    const { event, usernames } = parsedCommand;
-    eventExists(event, events);
+    const { from, usernames } = parsedCommand;
+    eventExists(from, events);
     return {
       type: REMOVE,
-      event,
+      event: from,
       userInfos: mapUsernameToUserInfo(usernames, usernameToIds, myUserId)
     };
   };
