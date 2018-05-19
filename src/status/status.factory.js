@@ -10,12 +10,29 @@ module.exports = (logProvider, logger) => {
     return [...new Set(notifications.map(n => n.user_id))];
   }
 
+  function getAllEventIds(events) {
+    return [...new Set(events.map(n => n.event_id))];
+  }
+
   function initializeMemberStatus(memberIds) {
     return new Map(
       memberIds.map(id => [
         id,
         {
           id,
+          notified: 0,
+          participated: 0
+        }
+      ])
+    );
+  }
+
+  function initializeEventStatus(eventIds) {
+    return new Map(
+      eventIds.map(event_id => [
+        event_id,
+        {
+          event_id,
           notified: 0,
           participated: 0
         }
@@ -34,19 +51,34 @@ module.exports = (logProvider, logger) => {
     return memeberStatus;
   }
 
+  function allTimeEventStatus(events) {
+    const eventIds = getAllEventIds(events);
+    const eventStatus = initializeEventStatus(eventIds);
+    events.forEach(({ event_id, action }) => {
+      const status = eventStatus.get(event_id);
+      if (action === 'Participated') status.participated += 1;
+      if (action === 'Notified') status.notified += 1;
+    });
+    return eventStatus;
+  } 
+
   return team_id =>
     logProvider({ team_id })
-      .then(notifications => allTimeMemberStatus(notifications))
-      .catch(err => {
-        console.log(err);
-        logger.log({
-          level: 'error',
-          message: stripIndent`
-                        failed to calculat the status for
+    .then(notifications => {
+      const eventStatus = allTimeEventStatus(notifications)
+      const memberStatus = allTimeMemberStatus(notifications)
+      return { eventStatus, memberStatus }
+    })
+    .catch(err => {
+      console.log(err);
+      logger.log({
+        level: 'error',
+        message: stripIndent `
+                        failed to calculate the status for
                         team_id:  ${team_id}
                         error:    ${err}
-                      `
-        });
-        throw err;
+                        `
       });
+      throw err;
+    });
 };

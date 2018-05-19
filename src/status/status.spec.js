@@ -25,9 +25,9 @@ describe('status.fatory', function() {
     ];
 
     status(team_id)
-      .then(membersStatus => {
+      .then(({ memberStatus }) => {
         expected.forEach(expectedStatus => {
-          const actualStatus = membersStatus.get(expectedStatus.id);
+          const actualStatus = memberStatus.get(expectedStatus.id);
           expect(actualStatus).to.deep.equal(expectedStatus);
         });
         done();
@@ -40,10 +40,28 @@ describe('status.fatory', function() {
     const logSpy = sinon.spy();
     const logger = { log: logSpy };
     const status = statusFactory(logProvider, logger);
-    status('ARTris')
+    status(team_id)
       .catch(err => {
         expect(err).to.equal('Logs not accessible');
         expect(logSpy).to.have.been.calledOnce;
+        done();
+      })
+      .catch(err => done(err));
+  });
+
+  it('should calculate metrics for specific event (lazy-jar)', function(done) {
+    const logger = { log: sinon.spy() };
+    const status = statusFactory(logProvider, logger);
+    const expected = [
+      { event_id: 'lazy-jar', notified: 11, participated: 6 },
+    ];
+
+    status(team_id)
+      .then(({ eventStatus }) => {
+        expected.forEach(expectedStatus => {
+          const actualStatus = eventStatus.get(expectedStatus.event_id);
+          expect(actualStatus).to.deep.equal(expectedStatus);
+        });
         done();
       })
       .catch(err => done(err));
