@@ -143,8 +143,7 @@ module.exports = (fetch, url, logger, saveLog, saveSecret, config) => {
                 type: 'button',
                 style: 'primary',
                 value: `${team_id},${eventName},${fireDate},${user_id}`,
-                response_url:
-                  'https://lazy-jar.artirs.io/api/notifications/participated'
+                response_url: 'https://lazy-jar.artirs.io/api/notifications'
               }
             ]
           }

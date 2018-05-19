@@ -113,16 +113,15 @@ app.post('/api/command', (req, res) => {
     });
 });
 
-app.post('/api/notifications/participated', async (req, res) => {
+app.post('/api/notifications', async (req, res) => {
   const payload = JSON.parse(req.body.payload),
-    notification = payload.actions.find(e => e.name === 'participated').value,
+    notification = payload.actions.find(e => e.name === 'notification').value,
     [team_id, event_id, fire_date, user_id] = notification.split(',');
 
   const secret = await getSecret({ team_id }),
     token = secret.bot.bot_access_token;
 
-  const event = await getState({ team_id, event_id }),
-    url = event.url;
+  const event = await getState({ team_id, event_id });
 
   const channel = payload.channel.id,
     ts = payload.message_ts;
@@ -131,7 +130,7 @@ app.post('/api/notifications/participated', async (req, res) => {
     token,
     channel,
     ts,
-    text: `[Join the meeting](${url || 'https://http.cat/101'}`
+    text: `[Join the meeting](${event.url || 'https://http.cat/101'})`
   };
 
   const request = url.format({
@@ -143,13 +142,13 @@ app.post('/api/notifications/participated', async (req, res) => {
     let response = await fetch(request, {
       method: 'POST'
     });
-    response = await result.json();
-    if (result.ok) {
+    response = await response.json();
+    if (response.ok) {
       res.status(200).end();
     } else {
       winston.error(stripIndent`
         Could not updated the interactive message
-        Response: ${result}
+        Response: ${response}
         Payload: ${req.body.paylodad}
       `);
       res.send(
