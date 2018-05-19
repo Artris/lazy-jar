@@ -130,7 +130,8 @@ app.post('/api/notifications', async (req, res) => {
     token,
     channel,
     ts,
-    text: `[Join the meeting](${event.url || 'https://http.cat/101'})`
+    text: `[Join the meeting](${event.url || 'https://http.cat/101'})`,
+    attachments: JSON.stringify({})
   };
 
   const request = url.format({
