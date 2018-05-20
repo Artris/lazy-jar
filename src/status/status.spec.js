@@ -15,25 +15,51 @@ describe('status.fatory', function() {
   const logProvider = ({ team_id }) =>
     Promise.resolve(mockedLogs.filter(n => n.team_id === team_id));
 
-  it('should calculate the overall status for each member', function(done) {
-    const logger = { log: sinon.spy() };
+it('should calculate the overall status for each member', function (done) {
+    const logger = {
+        log: sinon.spy()
+    };
     const status = statusFactory(logProvider, logger);
-    const expected = [
-      { id: '@eva', notified: 3, participated: 2 },
-      { id: '@grace', notified: 4, participated: 2 },
-      { id: '@dt', notified: 4, participated: 2 }
+    const expected = [{
+            id: '@eva',
+            notified: 6,
+            participated: 4,
+            notifiedCurrentWeek: 0,
+            participatedCurrentWeek: 0,
+            notifiedCurrentMonth: 6,
+            participatedCurrentMonth: 4
+        },
+        {
+            id: '@grace',
+            notified: 8,
+            participated: 4,
+            notifiedCurrentWeek: 0,
+            participatedCurrentWeek: 0,
+            notifiedCurrentMonth: 8,
+            participatedCurrentMonth: 4
+        },
+        {
+            id: '@dt',
+            notified: 8,
+            participated: 4,
+            notifiedCurrentWeek: 0,
+            participatedCurrentWeek: 0,
+            notifiedCurrentMonth: 5,
+            participatedCurrentMonth: 3
+        }
     ];
-
     status(team_id)
-      .then(({ memberStatus }) => {
-        expected.forEach(expectedStatus => {
-          const actualStatus = memberStatus.get(expectedStatus.id);
-          expect(actualStatus).to.deep.equal(expectedStatus);
-        });
-        done();
-      })
-      .catch(err => done(err));
-  });
+        .then(({
+            memberStatus
+        }) => {
+            expected.forEach(expectedStatus => {
+                const actualStatus = memberStatus.get(expectedStatus.id);
+                expect(actualStatus).to.deep.equal(expectedStatus);
+            });
+            done();
+        })
+        .catch(err => done(err));
+});
 
   it('should log and rethrow when it fails to calculate the status', function(done) {
     const logProvider = ({ team_id }) => Promise.reject('Logs not accessible');
@@ -53,7 +79,7 @@ describe('status.fatory', function() {
     const logger = { log: sinon.spy() };
     const status = statusFactory(logProvider, logger);
     const expected = [
-      { event_id: 'lazy-jar', notified: 11, participated: 6 },
+      { event_id: 'lazy-jar', notified: 22, participated: 12 },
     ];
 
     status(team_id)

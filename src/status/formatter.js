@@ -1,5 +1,4 @@
 module.exports = ({ eventStatus, memberStatus }, userIdToUsername) => {
-  console.log(memberStatus);
   
   return [...memberStatus.values()]
     .filter(member => userIdToUsername.has(member.id))
@@ -16,7 +15,7 @@ module.exports = ({ eventStatus, memberStatus }, userIdToUsername) => {
         This month: ${meetingsMissedCurrentMonth} meetings
         This week:  ${meetingsMissedCurrentWeek} meetings
         In total: ${missed} meetings
-        Participation rate: ${participation_rate}%\n`;
+        Participation rate: ${participation_rate}%`;
     })
     .concat(
       [...eventStatus.values()]
