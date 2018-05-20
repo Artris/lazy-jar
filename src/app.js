@@ -130,8 +130,19 @@ app.post('/api/notifications', async (req, res) => {
     token,
     channel,
     ts,
-    text: `[Join the meeting](${event.url || 'https://http.cat/101'})`,
-    attachments: JSON.stringify({})
+    text: 'Thank you for participating!',
+    attachments: JSON.stringify([
+      {
+        fallback: 'https://http.cat/500',
+        actions: [
+          {
+            type: 'button',
+            text: 'Join now',
+            url: event.url
+          }
+        ]
+      }
+    ])
   };
 
   const request = url.format({
