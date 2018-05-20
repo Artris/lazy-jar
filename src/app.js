@@ -24,6 +24,7 @@ const {
 const key = new NodeRSA(RSA_private_key);
 
 const redirect_uri = `${host}/oauth/redirect`;
+const notification_url = `${host}/api/notification/`;
 const { errorMap } = require('./customError/errorMap');
 const parser = require('./parser/index');
 const createAction = require('./actions/index');
@@ -46,7 +47,16 @@ const {
   getUsernameToIdMap,
   getUsersInfo,
   confirmationMessage
-} = require('./helpers')(fetch, url, winston, saveLog, saveSecret, config, key);
+} = require('./helpers')(
+  fetch,
+  url,
+  winston,
+  saveLog,
+  saveSecret,
+  config,
+  key,
+  notification_url
+);
 
 const Job = require('./scheduler/job.factory')(
   getState,
