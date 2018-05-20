@@ -141,8 +141,16 @@ module.exports = (
         const text = 'Your meeting is about to start';
 
         const value = `${team_id},${eventName},${fireDate},${user_id}`,
-          cipher = key.encrypt(value, 'base64');
-        const meeting_url = `${notification_url}${cipher}`;
+          cipher = key.encrypt(value, 'base64'),
+          meeting_url = url
+            .format({
+              pathname: notification_url,
+              query: {
+                id: cipher
+              }
+            })
+            .toString();
+
         const attachemnts = [
           {
             fallback: `click on the following link to join the meeting ${meeting_url}`,
