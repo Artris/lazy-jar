@@ -9,6 +9,7 @@ const STATUS = 'STATUS';
 const TERMINATE = 'TERMINATE';
 const STOP = 'STOP'
 const START = 'START'
+const SET = 'SET'
 
 module.exports = {
   ADD,
@@ -21,5 +22,6 @@ module.exports = {
   STATUS,
   TERMINATE,
   START,
-  STOP
+  STOP,
+  SET
 };

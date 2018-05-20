@@ -9,6 +9,7 @@ const parseResumeCommand = require('./resume/resume');
 const parseTerminateCommand = require('./terminate/terminate');
 const parseStartCommand = require('./start/start');
 const parseStopCommand = require('./stop/stop');
+const parseSetCommand = require('./set/set')
 
 module.exports = require('./parser.factory')(
   split,
@@ -21,5 +22,6 @@ module.exports = require('./parser.factory')(
   parseResumeCommand,
   parseTerminateCommand,
   parseStartCommand,
-  parseStopCommand
+  parseStopCommand,
+  parseSetCommand
 );

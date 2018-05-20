@@ -9,6 +9,7 @@ module.exports = (
   terminate,
   start,
   stop,
+  set,
   ADD,
   REMOVE,
   HALT,
@@ -18,7 +19,8 @@ module.exports = (
   SKIP,
   TERMINATE,
   START,
-  STOP
+  STOP,
+  SET
 ) => {
   return (parsedCommand, mapUsernameToUserInfo, myUserInfo, events) => {
     switch (parsedCommand.type) {
@@ -47,6 +49,8 @@ module.exports = (
         return start(parsedCommand, mapUsernameToUserInfo, myUserInfo, events);
       case STOP:
         return stop(parsedCommand, mapUsernameToUserInfo, myUserInfo, events);
+      case SET:
+        return set(parsedCommand, events);
     }
   };
 };

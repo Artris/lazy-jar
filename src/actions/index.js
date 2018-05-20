@@ -8,6 +8,7 @@ const skip = require('./skip/skip');
 const terminate = require('./terminate/terminate');
 const start = require('./start/start');
 const stop = require('./stop/stop');
+const set = require('./set/set');
 
 const {
     ADD,
@@ -19,7 +20,8 @@ const {
     SKIP,
     TERMINATE,
     START,
-    STOP
+    STOP,
+    SET
 } = require('../commands');
 
 module.exports = require('./actions.factory')(
@@ -33,6 +35,7 @@ module.exports = require('./actions.factory')(
     terminate,
     start,
     stop,
+    set,
     ADD,
     REMOVE,
     HALT,
@@ -42,5 +45,6 @@ module.exports = require('./actions.factory')(
     SKIP,
     TERMINATE,
     START,
-    STOP
+    STOP,
+    SET
 );

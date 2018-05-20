@@ -17,7 +17,8 @@ const {
   HALT,
   TERMINATE,
   START,
-  STOP
+  STOP,
+  SET
 } = require('../commands');
 
 describe('parser factory', function() {
@@ -30,7 +31,8 @@ describe('parser factory', function() {
     parseResumeCommand,
     parseTerminateCommand,
     parseStartCommand,
-    parseStopCommand;
+    parseStopCommand,
+    parseSetCommand;
 
   let parse;
   beforeEach(() => {
@@ -44,6 +46,7 @@ describe('parser factory', function() {
     parseTerminateCommand = sinon.spy();
     parseStopCommand = sinon.spy();
     parseStartCommand = sinon.spy();
+    parseSetCommand = sinon.spy();
 
     parse = createParser(
       split,
@@ -56,7 +59,8 @@ describe('parser factory', function() {
       parseResumeCommand,
       parseTerminateCommand,
       parseStartCommand,
-      parseStopCommand
+      parseStopCommand,
+      parseSetCommand
     );
   });
 
@@ -118,6 +122,11 @@ describe('parser factory', function() {
     const command = 'stop notifying ...';
     parse(command);
     chai.expect(parseStopCommand).to.have.been.calledWith(command);
+  });
+  it('should invoke "parseSetCommand" when command type is set', () => {
+    const command = 'set ...';
+    parse(command);
+    chai.expect(parseSetCommand).to.have.been.calledWith(command);
   });
 
   it('should throw when the command is unknown', () => {
