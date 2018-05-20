@@ -90,13 +90,17 @@ module.exports = (fetch, url, logger, saveLog, saveSecret, config) => {
   /**
    * Helper functions to notify users
    */
-  async function sendMessage(channel, token, message) {
+  async function sendMessage(channel, token, text, attachments) {
     let params = {
-      token: token,
+      token,
       scope: 'bot',
-      channel: channel,
-      text: message
+      channel,
+      text
     };
+
+    if (attachments) {
+      params['attachments'] = JSON.stringify(attachments);
+    }
 
     let urlRequest = url.format({
       pathname: slack_message_channel,
@@ -124,9 +128,28 @@ module.exports = (fetch, url, logger, saveLog, saveSecret, config) => {
   ) {
     return Promise.all(
       activeMembers.map(({ user_id, user_im_id }) => {
-        // TODO: Add interactive messages with a value similar to message
-        const message = `${team_id} ${eventName} ${user_id} ${fireDate}`;
-        sendMessage(user_im_id, access_token, message).then(res =>
+        const text = 'Your meeting is about to start';
+        const attachemnts = [
+          {
+            text: 'Are you ready?',
+            fallback: 'Sorry someting went worng',
+            callback_id: 'notification_participated',
+            color: '#3AA3E3',
+            attachment_type: 'default',
+            actions: [
+              {
+                name: 'notification',
+                text: "You're team is waiting for you!",
+                type: 'button',
+                style: 'primary',
+                value: `${team_id},${eventName},${fireDate},${user_id}`,
+                response_url: 'https://lazy-jar.artirs.io/api/notifications'
+              }
+            ]
+          }
+        ];
+
+        sendMessage(user_im_id, access_token, text, attachemnts).then(res =>
           saveLog({
             team_id,
             event_id: eventName,
