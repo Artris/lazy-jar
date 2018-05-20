@@ -21,7 +21,7 @@ const {
   rsa_private_key
 } = config;
 
-const key = new NodeRSA(RSA_private_key);
+const key = new NodeRSA(rsa_private_key);
 
 const redirect_uri = `${host}/oauth/redirect`;
 const notification_url = `${host}/api/notification/`;
