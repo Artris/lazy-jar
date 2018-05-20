@@ -116,7 +116,9 @@ app.post('/api/command', (req, res) => {
 app.post('/api/notifications', async (req, res) => {
   const payload = JSON.parse(req.body.payload),
     notification = payload.actions.find(e => e.name === 'notification').value,
-    [team_id, event_id, fire_date, user_id] = notification.split(',');
+    [team_id, event_id, date, user_id] = notification.split(',');
+
+  saveLog({ team_id, event_id, user_id, date, action: 'participated' });
 
   const secret = await getSecret({ team_id }),
     token = secret.bot.bot_access_token;
