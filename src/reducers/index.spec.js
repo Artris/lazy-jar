@@ -475,41 +475,23 @@ describe('reducers', function() {
     const newState = lazyJar(action, state);
     assert.deepEqual(expected, newState);
   });
-<<<<<<< f9d99468b8790ab1e4da2b5cffd0195e6b249b36
+  
   it('should correctly update the state given MOVE action', function() {
-=======
-
-  it('should correctly update the state given the SET action', function() {
->>>>>>> adds set url command
     const state = {
       team_id: 'CBV',
       event_id: 'lazy-jar',
       time_to_respond: 900,
       members: [{
-<<<<<<< f9d99468b8790ab1e4da2b5cffd0195e6b249b36
         user_id: 'U_ID_2',
         user_im_id: 'U_IM_ID_2',
         ignore: false
       }],
-=======
-          user_id: 'U_ID_2',
-          user_im_id: 'U_IM_ID_2',
-          ignore: false
-        },
-        {
-          user_id: 'U_ID_3',
-          user_im_id: 'U_IM_ID_3',
-          ignore: false
-        }
-      ],
->>>>>>> adds set url command
       frequency: 'WEEKDAYS',
       time: {
         hh: 1,
         mm: 10,
         zone: 'UTC'
       },
-<<<<<<< f9d99468b8790ab1e4da2b5cffd0195e6b249b36
       halted: false
     };
     const action = {
@@ -542,7 +524,29 @@ describe('reducers', function() {
     const newState = lazyJar(action, state);
     assert.deepEqual(expected, newState);
   });
-=======
+  
+it('should correctly update the state given SET action', function() {
+    const state = {
+      team_id: 'CBV',
+      event_id: 'lazy-jar',
+      time_to_respond: 900,
+      members: [{
+          user_id: 'U_ID_2',
+          user_im_id: 'U_IM_ID_2',
+          ignore: false
+        },
+        {
+          user_id: 'U_ID_3',
+          user_im_id: 'U_IM_ID_3',
+          ignore: false
+        }
+      ],
+      frequency: 'WEEKDAYS',
+      time: {
+        hh: 1,
+        mm: 10,
+        zone: 'UTC'
+      },
       halted: true
     };
     const action = {
@@ -579,5 +583,4 @@ describe('reducers', function() {
     assert.deepEqual(expected, newState);
 
   })
->>>>>>> adds set url command
 });

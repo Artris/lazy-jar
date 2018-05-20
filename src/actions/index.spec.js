@@ -26,12 +26,7 @@ describe('createAction', function() {
   ]);
   const myUserId = 1;
   const events = ['artris', 'feeling lucky'];
-<<<<<<< f9d99468b8790ab1e4da2b5cffd0195e6b249b36
-  let add, remove, halt, move, resume, schedule, skip, terminate, start, stop;
-=======
-  const zone = 'UTC';
   let add, remove, halt, move, resume, schedule, skip, terminate, start, stop, set;
->>>>>>> adds set url command
   let actions;
 
   beforeEach(() => {
@@ -240,8 +235,7 @@ describe('createAction', function() {
       },
       usernameToUserInfo,
       myUserId,
-      events,
-      zone
+      events
     );
     chai.expect(set).to.have.been.calledWith({
         type: SET
@@ -249,7 +243,4 @@ describe('createAction', function() {
       events
     );
   });
-
-
-
 });

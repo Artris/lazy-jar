@@ -9,7 +9,8 @@ const {
   STATUS,
   TERMINATE,
   START,
-  STOP
+  STOP,
+  SET
 } = require('./commands');
 
 module.exports = (fetch, url, logger, saveLog, saveSecret, config) => {
@@ -210,6 +211,8 @@ module.exports = (fetch, url, logger, saveLog, saveSecret, config) => {
         return `${event_id} is active again`;
       case TERMINATE:
         return `Successfully deleted ${event_id}`;
+      case SET:
+        return `Successfully added url: ${action.url} for ${event_id}`;
     }
   }
 
