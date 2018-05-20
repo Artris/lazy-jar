@@ -13,7 +13,7 @@ const {
   SET
 } = require('./commands');
 
-module.exports = (fetch, url, logger, saveLog, saveSecret, config) => {
+module.exports = (fetch, url, logger, saveLog, saveSecret, config, key) => {
   const {
     client_id,
     client_secret,

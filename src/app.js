@@ -2,6 +2,7 @@ const express = require('express');
 const fetch = require('node-fetch');
 const winston = require('winston');
 const schedule = require('node-schedule-tz');
+const NodeRSA = require('node-rsa');
 winston.add(winston.transports.File, {
   filename: 'lazyJarLogs.log'
 });
@@ -16,8 +17,11 @@ const {
   client_secret,
   slack_auth_uri,
   slack_access_uri,
-  scope
+  scope,
+  rsa_private_key
 } = config;
+
+const key = new NodeRSA(RSA_private_key);
 
 const redirect_uri = `${host}/oauth/redirect`;
 const { errorMap } = require('./customError/errorMap');
@@ -42,7 +46,7 @@ const {
   getUsernameToIdMap,
   getUsersInfo,
   confirmationMessage
-} = require('./helpers')(fetch, url, winston, saveLog, saveSecret, config);
+} = require('./helpers')(fetch, url, winston, saveLog, saveSecret, config, key);
 
 const Job = require('./scheduler/job.factory')(
   getState,
