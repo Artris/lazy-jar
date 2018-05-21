@@ -10,6 +10,14 @@ const expect = chai.expect;
 const statusFactory = require('./status.factory');
 const mockedLogs = require('./mocked-logs.json');
 
+const occuredWithinCurrentWeek = (date) => {
+  return true
+}
+
+const occuredWithinCurrentMonth = (date) => {
+  return true
+}
+
 describe('status.fatory', function() {
   const team_id = 'ARTris';
   const logProvider = ({ team_id }) =>
@@ -19,13 +27,13 @@ it('should calculate the overall status for each member', function (done) {
     const logger = {
         log: sinon.spy()
     };
-    const status = statusFactory(logProvider, logger);
+    const status = statusFactory(logProvider, logger, occuredWithinCurrentWeek, occuredWithinCurrentMonth);
     const expected = [{
             id: '@eva',
             notified: 6,
             participated: 4,
-            notifiedCurrentWeek: 0,
-            participatedCurrentWeek: 0,
+            notifiedCurrentWeek: 6,
+            participatedCurrentWeek: 4,
             notifiedCurrentMonth: 6,
             participatedCurrentMonth: 4
         },
@@ -33,8 +41,8 @@ it('should calculate the overall status for each member', function (done) {
             id: '@grace',
             notified: 8,
             participated: 4,
-            notifiedCurrentWeek: 0,
-            participatedCurrentWeek: 0,
+            notifiedCurrentWeek: 8,
+            participatedCurrentWeek: 4,
             notifiedCurrentMonth: 8,
             participatedCurrentMonth: 4
         },
@@ -42,10 +50,10 @@ it('should calculate the overall status for each member', function (done) {
             id: '@dt',
             notified: 8,
             participated: 4,
-            notifiedCurrentWeek: 0,
-            participatedCurrentWeek: 0,
-            notifiedCurrentMonth: 5,
-            participatedCurrentMonth: 3
+            notifiedCurrentWeek: 8,
+            participatedCurrentWeek: 4,
+            notifiedCurrentMonth: 8,
+            participatedCurrentMonth: 4
         }
     ];
     status(team_id)
@@ -77,7 +85,7 @@ it('should calculate the overall status for each member', function (done) {
 
   it('should calculate metrics for specific event (lazy-jar)', function(done) {
     const logger = { log: sinon.spy() };
-    const status = statusFactory(logProvider, logger);
+    const status = statusFactory(logProvider, logger, occuredWithinCurrentWeek, occuredWithinCurrentMonth);
     const expected = [
       { event_id: 'lazy-jar', notified: 22, participated: 12 },
     ];

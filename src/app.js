@@ -74,7 +74,7 @@ const scheduler = require('./scheduler/scheduler.factory')(
   Job
 );
 
-const status = require('./status/status.factory')(getLogsForTeam, winston);
+const status = require('./status/status')(getLogsForTeam, winston);
 const format = require('./status/formatter');
 
 const app = express();
@@ -199,3 +199,4 @@ async function executeCommand({ team_id, user_id, command, token }) {
 
   return { action, state: nextState };
 }
+

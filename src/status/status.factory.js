@@ -1,27 +1,11 @@
 const { stripIndent } = require('common-tags');
-const moment = require('moment');
 
 /**
  * Generates a simple status message based the Logs
  * @param {(team_id) -> Notification list} logProvider
  * @param logger responds to `.log` method
  */ 
-module.exports = (logProvider, logger) => {
-  function occuredWithinCurrentWeek(date) {
-      /*TODO: add timezone*/
-    const now = moment();
-    const then = moment(date, "YYYYMMDD");
-    return now.format("W") === then.format("W");
- }
- 
-  function occuredWithinCurrentMonth(date) {
-         /*TODO: add timezone*/
-    const now = moment();
-    const then = moment(date, "YYYYMMDD");
-    return (now.format("M") === then.format("M")) &&
-    (now.format("YY") === then.format("YY"));
- }
- 
+module.exports = (logProvider, logger, occuredWithinCurrentWeek, occuredWithinCurrentMonth) => {
   function getAllMemberIds(notifications) {
     return [...new Set(notifications.map(n => n.user_id))];
   }
