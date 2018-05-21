@@ -13,7 +13,16 @@ const {
   SET
 } = require('./commands');
 
-module.exports = (fetch, url, logger, saveLog, saveSecret, config) => {
+module.exports = (
+  fetch,
+  url,
+  logger,
+  saveLog,
+  saveSecret,
+  config,
+  key,
+  notification_url
+) => {
   const {
     client_id,
     client_secret,
@@ -130,21 +139,27 @@ module.exports = (fetch, url, logger, saveLog, saveSecret, config) => {
     return Promise.all(
       activeMembers.map(({ user_id, user_im_id }) => {
         const text = 'Your meeting is about to start';
+
+        const value = `${team_id},${eventName},${fireDate},${user_id}`,
+          cipher = key.encrypt(value, 'base64'),
+          meeting_url = url
+            .format({
+              pathname: notification_url,
+              query: {
+                id: cipher
+              }
+            })
+            .toString();
+
         const attachemnts = [
           {
-            text: 'Are you ready?',
-            fallback: 'Sorry someting went worng',
-            callback_id: 'notification_participated',
-            color: '#3AA3E3',
-            attachment_type: 'default',
+            fallback: `click on the following link to join the meeting ${meeting_url}`,
             actions: [
               {
-                name: 'notification',
-                text: "You're team is waiting for you!",
                 type: 'button',
                 style: 'primary',
-                value: `${team_id},${eventName},${fireDate},${user_id}`,
-                response_url: 'https://lazy-jar.artirs.io/api/notifications'
+                text: 'Join Now',
+                url: meeting_url
               }
             ]
           }

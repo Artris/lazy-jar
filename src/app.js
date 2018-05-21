@@ -2,6 +2,7 @@ const express = require('express');
 const fetch = require('node-fetch');
 const winston = require('winston');
 const schedule = require('node-schedule-tz');
+const NodeRSA = require('node-rsa');
 winston.add(winston.transports.File, {
   filename: 'lazyJarLogs.log'
 });
@@ -16,10 +17,14 @@ const {
   client_secret,
   slack_auth_uri,
   slack_access_uri,
-  scope
+  scope,
+  rsa_private_key
 } = config;
 
+const key = new NodeRSA(rsa_private_key);
+
 const redirect_uri = `${host}/oauth/redirect`;
+const notification_url = `${host}/api/notification/`;
 const { errorMap } = require('./customError/errorMap');
 const parser = require('./parser/index');
 const createAction = require('./actions/index');
@@ -42,7 +47,16 @@ const {
   getUsernameToIdMap,
   getUsersInfo,
   confirmationMessage
-} = require('./helpers')(fetch, url, winston, saveLog, saveSecret, config);
+} = require('./helpers')(
+  fetch,
+  url,
+  winston,
+  saveLog,
+  saveSecret,
+  config,
+  key,
+  notification_url
+);
 
 const Job = require('./scheduler/job.factory')(
   getState,
@@ -113,72 +127,15 @@ app.post('/api/command', (req, res) => {
     });
 });
 
-app.post('/api/notifications', async (req, res) => {
-  const payload = JSON.parse(req.body.payload),
-    notification = payload.actions.find(e => e.name === 'notification').value,
+app.get('/api/notification', async (req, res) => {
+  const notification = key.decrypt(req.query['id'], 'utf8'),
     [team_id, event_id, date, user_id] = notification.split(',');
 
   saveLog({ team_id, event_id, user_id, date, action: 'participated' });
 
-  const secret = await getSecret({ team_id }),
-    token = secret.bot.bot_access_token;
-
   const event = await getState({ team_id, event_id });
 
-  const channel = payload.channel.id,
-    ts = payload.message_ts;
-
-  const params = {
-    token,
-    channel,
-    ts,
-    text: 'Thank you for participating!',
-    attachments: JSON.stringify([
-      {
-        fallback: 'https://http.cat/500',
-        actions: [
-          {
-            type: 'button',
-            text: 'Join now',
-            url: event.url
-          }
-        ]
-      }
-    ])
-  };
-
-  const request = url.format({
-    pathname: 'https://slack.com/api/chat.update',
-    query: params
-  });
-
-  try {
-    let response = await fetch(request, {
-      method: 'POST'
-    });
-    response = await response.json();
-    if (response.ok) {
-      res.status(200).end();
-    } else {
-      winston.error(stripIndent`
-        Could not updated the interactive message
-        Response: ${response}
-        Payload: ${req.body.paylodad}
-      `);
-      res.send(
-        'Oh-oh! Something went wrong. Please try again later. :upside_down_face:'
-      );
-    }
-  } catch (err) {
-    winston.error(stripIndent`
-      Could not updated the interactive message
-      Error: ${err}
-      Payload: ${req.body.payloda}
-    `);
-    res.send(
-      'Oh-oh! Something went wrong. Please try again later. :upside_down_face:'
-    );
-  }
+  res.redirect(event.url);
 });
 
 app.listen(port, () => console.log(`listening on port ${port}!`));
