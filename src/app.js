@@ -37,7 +37,8 @@ const {
   getLogsForTeam,
   getSecret,
   getState,
-  getEventsFor
+  getEventsFor,
+  getAllEvents
 } = require('./database/helpers/helpers.js');
 
 const {
@@ -74,7 +75,16 @@ const scheduler = require('./scheduler/scheduler.factory')(
   Job
 );
 
-const status = require('./status/status')(getLogsForTeam, winston);
+getAllEvents()
+  .then(res => {
+    scheduler.add(res);
+  })
+  .catch(err => {
+    winston.error('Could not initialize the scheduler');
+  });
+
+const status = require('./status/status.factory')(getLogsForTeam, winston);
+
 const format = require('./status/formatter');
 
 const app = express();

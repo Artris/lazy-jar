@@ -10,6 +10,8 @@ const expect = chai.expect;
 const statusFactory = require('./status.factory');
 const mockedLogs = require('./mocked-logs.json');
 
+const moment = require('moment');
+
 const occuredWithinCurrentWeek = (date) => {
   return true
 }
@@ -27,7 +29,7 @@ it('should calculate the overall status for each member', function (done) {
     const logger = {
         log: sinon.spy()
     };
-    const status = statusFactory(logProvider, logger, occuredWithinCurrentWeek, occuredWithinCurrentMonth);
+    const status = statusFactory(logProvider, logger, occuredWithinCurrentWeek, occuredWithinCurrentMonth, moment);
     const expected = [{
             id: '@eva',
             notified: 6,
@@ -73,7 +75,7 @@ it('should calculate the overall status for each member', function (done) {
     const logProvider = ({ team_id }) => Promise.reject('Logs not accessible');
     const logSpy = sinon.spy();
     const logger = { log: logSpy };
-    const status = statusFactory(logProvider, logger);
+    const status = statusFactory(logProvider, logger, occuredWithinCurrentWeek, occuredWithinCurrentMonth, moment);
     status(team_id)
       .catch(err => {
         expect(err).to.equal('Logs not accessible');
@@ -85,7 +87,7 @@ it('should calculate the overall status for each member', function (done) {
 
   it('should calculate metrics for specific event (lazy-jar)', function(done) {
     const logger = { log: sinon.spy() };
-    const status = statusFactory(logProvider, logger, occuredWithinCurrentWeek, occuredWithinCurrentMonth);
+    const status = statusFactory(logProvider, logger, occuredWithinCurrentWeek, occuredWithinCurrentMonth, moment);
     const expected = [
       { event_id: 'lazy-jar', notified: 22, participated: 12 },
     ];

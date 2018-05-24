@@ -1,11 +1,10 @@
-const { stripIndent } = require('common-tags');
-
+const { stripIndent } = require('common-tags'); 
 /**
  * Generates a simple status message based the Logs
  * @param {(team_id) -> Notification list} logProvider
  * @param logger responds to `.log` method
  */ 
-module.exports = (logProvider, logger, occuredWithinCurrentWeek, occuredWithinCurrentMonth) => {
+module.exports = (logProvider, logger, occuredWithinCurrentWeek, occuredWithinCurrentMonth, moment) => {
   function getAllMemberIds(notifications) {
     return [...new Set(notifications.map(n => n.user_id))];
   }
@@ -49,16 +48,17 @@ module.exports = (logProvider, logger, occuredWithinCurrentWeek, occuredWithinCu
     const memberStatus = initializeMemberStatus(memberIds);
     notifications.forEach(({ user_id, action, date }) => {
       const status = memberStatus.get(user_id);
+      const now = moment();
       switch(action) {
         case 'Participated':
-          status.participated += 1
-          if (occuredWithinCurrentWeek(date)) status.participatedCurrentWeek += 1
-          if (occuredWithinCurrentMonth(date)) status.participatedCurrentMonth += 1
+          status.participated+= 1;
+          if (occuredWithinCurrentWeek(now, date)) status.participatedCurrentWeek+= 1;
+          if (occuredWithinCurrentMonth(now, date)) status.participatedCurrentMonth+= 1;
           return
         case 'Notified':
-          status.notified += 1
-          if (occuredWithinCurrentWeek(date)) status.notifiedCurrentWeek += 1
-          if (occuredWithinCurrentMonth(date)) status.notifiedCurrentMonth += 1
+          status.notified+= 1;
+          if (occuredWithinCurrentWeek(now, date)) status.notifiedCurrentWeek+= 1;
+          if (occuredWithinCurrentMonth(now, date)) status.notifiedCurrentMonth+= 1;
           return
       }
     });

@@ -1,20 +1,20 @@
-  const moment = require('moment');
+const moment = require('moment');
   
-  function occuredWithinCurrentWeek(date) {
+function occuredWithinCurrentWeek(now, date) {
       /*TODO: add timezone*/
-    const now = moment();
+
     const then = moment(date, "YYYYMMDD");
     return now.format("W") === then.format("W") &&
     (now.format("YY") === then.format("YY"));
- }
+}
  
-  function occuredWithinCurrentMonth(date) {
+function occuredWithinCurrentMonth(now, date) {
     /*TODO: add timezone*/
-    const now = moment();
+
     const then = moment(date, "YYYYMMDD");
     return (now.format("M") === then.format("M")) &&
     (now.format("YY") === then.format("YY"));
- }
+}
  
 module.exports = {
     occuredWithinCurrentWeek,

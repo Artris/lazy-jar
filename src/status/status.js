@@ -1,6 +1,8 @@
 const {
     occuredWithinCurrentWeek,
     occuredWithinCurrentMonth
-} = require('./helpers')
+} = require('./helpers');
 
-module.exports = (logProvider, logger) => require('./status.factory')(logProvider, logger, occuredWithinCurrentWeek, occuredWithinCurrentMonth)
+const moment = require('moment');
+
+module.exports = (logProvider, logger) => require('./status.factory')(logProvider, logger, occuredWithinCurrentWeek, occuredWithinCurrentMonth, moment);
