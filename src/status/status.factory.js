@@ -1,11 +1,10 @@
-const { stripIndent } = require('common-tags');
-
+const { stripIndent } = require('common-tags'); 
 /**
  * Generates a simple status message based the Logs
  * @param {(team_id) -> Notification list} logProvider
  * @param logger responds to `.log` method
- */
-module.exports = (logProvider, logger) => {
+ */ 
+module.exports = (logProvider, logger, occuredWithinCurrentWeek, occuredWithinCurrentMonth, moment) => {
   function getAllMemberIds(notifications) {
     return [...new Set(notifications.map(n => n.user_id))];
   }
@@ -21,7 +20,11 @@ module.exports = (logProvider, logger) => {
         {
           id,
           notified: 0,
-          participated: 0
+          participated: 0,
+          notifiedCurrentWeek: 0,
+          participatedCurrentWeek: 0,
+          notifiedCurrentMonth: 0,
+          participatedCurrentMonth: 0
         }
       ])
     );
@@ -42,15 +45,26 @@ module.exports = (logProvider, logger) => {
 
   function allTimeMemberStatus(notifications) {
     const memberIds = getAllMemberIds(notifications);
-    const memeberStatus = initializeMemberStatus(memberIds);
-    notifications.forEach(({ user_id, action }) => {
-      const status = memeberStatus.get(user_id);
-      if (action === 'Participated') status.participated += 1;
-      if (action === 'Notified') status.notified += 1;
+    const memberStatus = initializeMemberStatus(memberIds);
+    notifications.forEach(({ user_id, action, date }) => {
+      const status = memberStatus.get(user_id);
+      const now = moment();
+      switch(action) {
+        case 'Participated':
+          status.participated+= 1;
+          if (occuredWithinCurrentWeek(now, date)) status.participatedCurrentWeek+= 1;
+          if (occuredWithinCurrentMonth(now, date)) status.participatedCurrentMonth+= 1;
+          return
+        case 'Notified':
+          status.notified+= 1;
+          if (occuredWithinCurrentWeek(now, date)) status.notifiedCurrentWeek+= 1;
+          if (occuredWithinCurrentMonth(now, date)) status.notifiedCurrentMonth+= 1;
+          return
+      }
     });
-    return memeberStatus;
+    return memberStatus;
   }
-
+  
   function allTimeEventStatus(events) {
     const eventIds = getAllEventIds(events);
     const eventStatus = initializeEventStatus(eventIds);

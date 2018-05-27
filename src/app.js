@@ -84,6 +84,7 @@ getAllEvents()
   });
 
 const status = require('./status/status.factory')(getLogsForTeam, winston);
+
 const format = require('./status/formatter');
 
 const app = express();
@@ -208,3 +209,4 @@ async function executeCommand({ team_id, user_id, command, token }) {
 
   return { action, state: nextState };
 }
+

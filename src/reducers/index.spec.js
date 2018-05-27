@@ -579,7 +579,6 @@ it('should correctly update the state given SET action', function() {
       halted: true
     };
     const newState = lazyJar(action, state);
-    console.log(newState)
     assert.deepEqual(expected, newState);
 
   })

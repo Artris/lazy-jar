@@ -4,11 +4,38 @@ const expect = chai.expect;
 const format = require('./formatter');
 
 describe('formatter', function() {
-  const info = new Map([
-    ['@eva_id', { id: '@eva_id', participated: 8, notified: 10 }],
-    ['@grace_id', { id: '@grace_id', participated: 10, notified: 10 }],
-    ['@dt_id', { id: '@dt_id', participated: 9, notified: 10 }]
-  ]);
+ const info = {
+    memberStatus: new Map([
+        ['@eva_id', {
+            id: '@eva_id',
+            participated: 8,
+            notified: 10,
+            notifiedCurrentWeek: 2,
+            participatedCurrentWeek: 2,
+            notifiedCurrentMonth: 8,
+            participatedCurrentMonth: 7
+        }],
+        ['@grace_id', {
+            id: '@grace_id',
+            participated: 10,
+            notified: 10,
+            notifiedCurrentWeek: 2,
+            participatedCurrentWeek: 2,
+            notifiedCurrentMonth: 3,
+            participatedCurrentMonth: 3
+        }],
+        ['@dt_id', {
+            id: '@dt_id',
+            participated: 9,
+            notified: 10,
+            notifiedCurrentWeek: 2,
+            participatedCurrentWeek: 2,
+            notifiedCurrentMonth: 4,
+            participatedCurrentMonth: 3
+        }]
+    ]),
+    eventStatus: new Map()
+}
 
   it('should order members based on their participation rate in an ascending order', function() {
     const userIdToUsername = new Map([
@@ -18,9 +45,21 @@ describe('formatter', function() {
     ]);
 
     const expected = [
-      'eva has missed 2 meetings, 80% participation rate',
-      'dt has missed 1 meetings, 90% participation rate',
-      'grace has missed 0 meetings, 100% participation rate'
+    `eva has missed:
+        This month: 1 meetings
+        This week:  0 meetings
+        In total: 2 meetings
+        Participation rate: 80%`,
+    `dt has missed:
+        This month: 1 meetings
+        This week:  0 meetings
+        In total: 1 meetings
+        Participation rate: 90%`,
+    `grace has missed:
+        This month: 0 meetings
+        This week:  0 meetings
+        In total: 0 meetings
+        Participation rate: 100%`
     ].join('\n');
 
     const result = format(info, userIdToUsername);
@@ -34,8 +73,16 @@ describe('formatter', function() {
     ]);
 
     const expected = [
-      'dt has missed 1 meetings, 90% participation rate',
-      'grace has missed 0 meetings, 100% participation rate'
+    `dt has missed:
+        This month: 1 meetings
+        This week:  0 meetings
+        In total: 1 meetings
+        Participation rate: 90%`,
+    `grace has missed:
+        This month: 0 meetings
+        This week:  0 meetings
+        In total: 0 meetings
+        Participation rate: 100%`
     ].join('\n');
 
     const result = format(info, userIdToUsername);
