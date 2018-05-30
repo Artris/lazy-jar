@@ -91,7 +91,10 @@ module.exports = (
     const userInfo = new Map();
     for (let [name, id] of usernameToId.entries()) {
       if (userIdToImId.has(id)) {
-        userInfo.set(name, { user_id: id, user_im_id: userIdToImId.get(id) });
+        userInfo.set(name, {
+          user_id: id,
+          user_im_id: userIdToImId.get(id)
+        });
       }
     }
     return userInfo;
@@ -118,7 +121,9 @@ module.exports = (
     });
 
     try {
-      const response = await fetch(urlRequest, { method: 'POST' });
+      const response = await fetch(urlRequest, {
+        method: 'POST'
+      });
       const jsonResp = await response.json();
     } catch (err) {
       logger.error(
@@ -137,33 +142,32 @@ module.exports = (
     fireDate
   ) {
     return Promise.all(
-      activeMembers.map(({ user_id, user_im_id }) => {
+      activeMembers.map(({
+        user_id,
+        user_im_id
+      }) => {
         const text = 'Your meeting is about to start';
 
         const value = `${team_id},${eventName},${fireDate},${user_id}`,
           cipher = key.encrypt(value, 'base64'),
           meeting_url = url
-            .format({
-              pathname: notification_url,
-              query: {
-                id: cipher
-              }
-            })
-            .toString();
+          .format({
+            pathname: notification_url,
+            query: {
+              id: cipher
+            }
+          })
+          .toString();
 
-        const attachemnts = [
-          {
-            fallback: `click on the following link to join the meeting ${meeting_url}`,
-            actions: [
-              {
-                type: 'button',
-                style: 'primary',
-                text: 'Join Now',
-                url: meeting_url
-              }
-            ]
-          }
-        ];
+        const attachemnts = [{
+          fallback: `click on the following link to join the meeting ${meeting_url}`,
+          actions: [{
+            type: 'button',
+            style: 'primary',
+            text: 'Join Now',
+            url: meeting_url
+          }]
+        }];
 
         sendMessage(user_im_id, access_token, text, attachemnts).then(res =>
           saveLog({
@@ -203,8 +207,13 @@ module.exports = (
     });
   }
 
-  function confirmationMessage({ action, state }) {
-    const { event_id } = state;
+  function confirmationMessage({
+    action,
+    state
+  }) {
+    const {
+      event_id
+    } = state;
     switch (action.type) {
       case SCHEDULE:
         return `Successfully scheduled ${event_id}. Make sure to specify the URL for the meeting!`;
@@ -231,12 +240,53 @@ module.exports = (
     }
   }
 
+  function formatAttachmentsForStatusMessage({
+    memberStats,
+    eventStats
+  }) {
+    return memberStats.map(({
+      name,
+      meetingsMissedCurrentMonth,
+      meetingsMissedCurrentWeek,
+      totalMeetingsMissed,
+      overall_participation_rate
+    }) => ({
+      "fallback": `${name}'s status`,
+      "color": "#4056F4",
+      "pretext": `${name}\nOverall Total Participation Rate: ${overall_participation_rate}%`,
+      "fields": [{
+          "title": "Meetings Missed:"
+        },
+        {
+          "title": `This Month: ${meetingsMissedCurrentMonth}`
+        },
+        {
+          "title": `This Week: ${meetingsMissedCurrentWeek}`
+        },
+        {
+          "title": `Overall Total Meetings Missed: ${totalMeetingsMissed}`
+        }
+      ]
+    })).concat([{
+      "fallback": "Event Stats",
+      "color": "#CE2D4F",
+      "pretext": "Total Participation Rate of standups%",
+      "fields": eventStats.map(({
+        event_name,
+        event_participation_rate
+      }) => ({
+        "title": `${event_name}: ${event_participation_rate}`
+      }))
+    }])
+  }
+
   return {
     notifyUsers,
     sendMessage,
     getUsersInfo,
     getUsernameToIdMap,
     getSecretsAndSave,
-    confirmationMessage
+    confirmationMessage,
+    formatAttachmentsForStatusMessage
   };
 };
