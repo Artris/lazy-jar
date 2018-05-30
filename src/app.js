@@ -7,7 +7,9 @@ winston.add(winston.transports.File, {
   filename: 'lazyJarLogs.log'
 });
 const url = require('url');
-const { stripIndent } = require('common-tags');
+const {
+  stripIndent
+} = require('common-tags');
 
 const config = require('./config.json');
 const {
@@ -25,7 +27,9 @@ const key = new NodeRSA(rsa_private_key);
 
 const redirect_uri = `${host}/oauth/redirect`;
 const notification_url = `${host}/api/notification/`;
-const { errorMap } = require('./customError/errorMap');
+const {
+  errorMap
+} = require('./customError/errorMap');
 const parser = require('./parser/index');
 const createAction = require('./actions/index');
 const reduce = require('./reducers/index');
@@ -47,7 +51,8 @@ const {
   getSecretsAndSave,
   getUsernameToIdMap,
   getUsersInfo,
-  confirmationMessage
+  confirmationMessage,
+  formatAttachmentsForStatusMessage
 } = require('./helpers')(
   fetch,
   url,
@@ -111,7 +116,10 @@ app.get('/oauth/authorize', (req, res) => {
 });
 
 app.get('/oauth/redirect', async (req, res) => {
-  const { code, state } = req.query;
+  const {
+    code,
+    state
+  } = req.query;
   try {
     await getSecretsAndSave(code);
     res.send('Thank you, you have successfully authenticated your team!');
@@ -141,23 +149,40 @@ app.get('/api/notification', async (req, res) => {
   const notification = key.decrypt(req.query['id'], 'utf8'),
     [team_id, event_id, date, user_id] = notification.split(',');
 
-  saveLog({ team_id, event_id, user_id, date, action: 'participated' });
+  saveLog({
+    team_id,
+    event_id,
+    user_id,
+    date,
+    action: 'participated'
+  });
 
-  const event = await getState({ team_id, event_id });
+  const event = await getState({
+    team_id,
+    event_id
+  });
 
   res.redirect(event.url);
 });
 
 app.listen(port, () => console.log(`listening on port ${port}!`));
 
-async function respond({ team_id, user_id, text, channel_id }) {
-  const secret = await getSecret({ team_id });
+async function respond({
+  team_id,
+  user_id,
+  text,
+  channel_id
+}) {
+  const secret = await getSecret({
+    team_id
+  });
   const token = secret.bot.bot_access_token;
 
   const command = parser(text);
   if (command.type === 'STATUS') {
     const statusFormatted = await readableStatus(team_id, token);
-    await sendMessage(channel_id, token, statusFormatted);
+    const attachments = formatAttachmentsForStatusMessage(statusFormatted)
+    await sendMessage(channel_id, token, statusFormatted, attachments);
   } else {
     const actionAndState = await executeCommand({
       team_id,
@@ -180,13 +205,23 @@ async function readableStatus(team_id, token) {
   return format(info, userIdToUsername);
 }
 
-async function executeCommand({ team_id, user_id, command, token }) {
-  const events = await getEventsFor({ team_id });
+async function executeCommand({
+  team_id,
+  user_id,
+  command,
+  token
+}) {
+  const events = await getEventsFor({
+    team_id
+  });
   const eventIds = new Set(events.map(e => e.event_id));
   const usersInfo = await getUsersInfo(token);
 
   const action = createAction(command, usersInfo, user_id, eventIds);
-  let currState = await getState({ team_id, event_id: action.event });
+  let currState = await getState({
+    team_id,
+    event_id: action.event
+  });
   /*we need to convert the state returned from the db into a js object*/
   currState = currState === null ? currState : currState.toObject();
   const nextState = await reduce(action, currState);
@@ -207,6 +242,8 @@ async function executeCommand({ team_id, user_id, command, token }) {
       break;
   }
 
-  return { action, state: nextState };
+  return {
+    action,
+    state: nextState
+  };
 }
-
