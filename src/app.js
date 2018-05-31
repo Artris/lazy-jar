@@ -88,7 +88,7 @@ getAllEvents()
     winston.error('Could not initialize the scheduler');
   });
 
-const status = require('./status/status.factory')(getLogsForTeam, winston);
+const status = require('./status/status')(getLogsForTeam, winston);
 
 const format = require('./status/formatter');
 
