@@ -7,6 +7,6 @@ services:
 - mongodb
 before_script:
   - sleep 5
-install:
-- npm install
-- npm test
+  - cd app
+script:
+  - npm install && npm test

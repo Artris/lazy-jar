@@ -1,0 +1,14 @@
+version: "3"
+services:
+  mongo:
+    build: ./mongo
+    image: lazyjar/mongo
+    ports:
+      - "27018:27017"
+  app:
+    depends_on:
+      - "mongo"
+    build: ./app
+    image: lazyjar/app
+    ports:
+      - "3030:3030"
