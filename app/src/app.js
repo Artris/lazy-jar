@@ -7,9 +7,7 @@ winston.add(winston.transports.File, {
   filename: 'lazyJarLogs.log'
 });
 const url = require('url');
-const {
-  stripIndent
-} = require('common-tags');
+const { stripIndent } = require('common-tags');
 
 const config = require('./config.json');
 const {
@@ -27,9 +25,7 @@ const key = new NodeRSA(rsa_private_key);
 
 const redirect_uri = `${host}/oauth/redirect`;
 const notification_url = `${host}/api/notification/`;
-const {
-  errorMap
-} = require('./customError/errorMap');
+const { errorMap } = require('./customError/errorMap');
 const parser = require('./parser/index');
 const createAction = require('./actions/index');
 const reduce = require('./reducers/index');
@@ -80,14 +76,6 @@ const scheduler = require('./scheduler/scheduler.factory')(
   Job
 );
 
-getAllEvents()
-  .then(res => {
-    scheduler.add(res);
-  })
-  .catch(err => {
-    winston.error('Could not initialize the scheduler');
-  });
-
 const status = require('./status/status')(getLogsForTeam, winston);
 
 const format = require('./status/formatter');
@@ -99,6 +87,16 @@ app.use(
     extended: true
   })
 );
+
+app.post('/seed', (req, res) => {
+  getAllEvents()
+    .then(res => {
+      scheduler.add(res);
+    })
+    .catch(err => {
+      winston.error('Could not initialize the scheduler');
+    });
+});
 
 app.get('/oauth/authorize', (req, res) => {
   const params = {
@@ -116,10 +114,7 @@ app.get('/oauth/authorize', (req, res) => {
 });
 
 app.get('/oauth/redirect', async (req, res) => {
-  const {
-    code,
-    state
-  } = req.query;
+  const { code, state } = req.query;
   try {
     await getSecretsAndSave(code);
     res.send('Thank you, you have successfully authenticated your team!');
@@ -167,12 +162,7 @@ app.get('/api/notification', async (req, res) => {
 
 app.listen(port, () => console.log(`listening on port ${port}!`));
 
-async function respond({
-  team_id,
-  user_id,
-  text,
-  channel_id
-}) {
+async function respond({ team_id, user_id, text, channel_id }) {
   const secret = await getSecret({
     team_id
   });
@@ -181,7 +171,7 @@ async function respond({
   const command = parser(text);
   if (command.type === 'STATUS') {
     const statusFormatted = await readableStatus(team_id, token);
-    const attachments = formatAttachmentsForStatusMessage(statusFormatted)
+    const attachments = formatAttachmentsForStatusMessage(statusFormatted);
     await sendMessage(channel_id, token, statusFormatted, attachments);
   } else {
     const actionAndState = await executeCommand({
@@ -205,12 +195,7 @@ async function readableStatus(team_id, token) {
   return format(info, userIdToUsername);
 }
 
-async function executeCommand({
-  team_id,
-  user_id,
-  command,
-  token
-}) {
+async function executeCommand({ team_id, user_id, command, token }) {
   const events = await getEventsFor({
     team_id
   });

@@ -5,7 +5,7 @@ services:
     image: lazyjar/mongo
     ports:
       - "27017:27017"
-    command: ["bash", "./opt/seed-database.bash"]
+    command: [./opt/seed-database.bash"]
   app:
     depends_on:
       - "mongo"
@@ -13,3 +13,4 @@ services:
     image: lazyjar/app
     ports:
       - "3030:3030"
+    command: ["bash", "start.sh", "mongo", "27017", "npm", "start"]
