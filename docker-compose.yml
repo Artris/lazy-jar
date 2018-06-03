@@ -4,7 +4,8 @@ services:
     build: ./mongo
     image: lazyjar/mongo
     ports:
-      - "27018:27017"
+      - "27017:27017"
+    command: ["bash", "./opt/seed-database.bash"]
   app:
     depends_on:
       - "mongo"

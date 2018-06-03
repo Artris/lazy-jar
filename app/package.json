@@ -20,7 +20,8 @@
     "sinon-chai": "^3.0.0"
   },
   "scripts": {
-    "test": "mocha  'src/**/*.spec.js' --exit"
+    "test": "mocha  'src/**/*.spec.js' --exit",
+    "start": "node src/app.js"
   },
   "repository": {
     "type": "git",
