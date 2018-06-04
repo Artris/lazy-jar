@@ -1,5 +1,5 @@
 #!/bin/bash
-# wait-for-postgres.sh
+# https://docs.docker.com/compose/startup-order/
 
 set -e
 

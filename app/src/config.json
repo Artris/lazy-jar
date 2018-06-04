@@ -1,0 +1,13 @@
+{
+    "scope": [
+        "bot",
+        "commands"
+    ],
+    "host": "https://lazy-jar.artris.io",
+    "slack_auth_uri": "https://slack.com/oauth/authorize",
+    "slack_access_uri": "https://slack.com/api/oauth.access",
+    "slack_user_list": "https://slack.com/api/users.list",
+    "slack_im_list": "https://slack.com/api/im.list",
+    "slack_message_channel": "https://slack.com/api/chat.postMessage",
+    "port": 3030
+}

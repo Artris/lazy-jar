@@ -8,5 +8,7 @@ services:
 before_script:
   - sleep 5
   - cd app
+env:
+  - MONGO_CONTAINER=localhost MONGO_PORT=27017 DB_NAME=lazyJar
 script:
   - npm install && npm test
