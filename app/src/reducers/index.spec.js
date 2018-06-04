@@ -91,7 +91,7 @@ describe('reducers', function() {
       type: TERMINATE,
       event: 'artris'
     };
-    const expected = {};
+    const expected = {event_id: 'artris'};
     const newState = lazyJar(action, state);
     assert.deepEqual(expected, newState);
   });
