@@ -13,15 +13,18 @@ const config = require('./config.json');
 const {
   host,
   port,
-  client_id,
-  client_secret,
   slack_auth_uri,
   slack_access_uri,
-  scope,
-  rsa_private_key
+  scope
 } = config;
 
-const key = new NodeRSA(rsa_private_key);
+const {
+  client_id,
+  client_secret,
+  rsa_private_key
+} = process.env
+
+const key = new NodeRSA(rsa_private_key || { b: 512 });
 
 const redirect_uri = `${host}/oauth/redirect`;
 const notification_url = `${host}/api/notification/`;
@@ -47,7 +50,8 @@ const {
   getSecretsAndSave,
   getUsernameToIdMap,
   getUsersInfo,
-  confirmationMessage
+  confirmationMessage,
+  formatAttachmentsForStatusMessage
 } = require('./helpers')(
   fetch,
   url,
@@ -75,15 +79,8 @@ const scheduler = require('./scheduler/scheduler.factory')(
   Job
 );
 
-getAllEvents()
-  .then(res => {
-    scheduler.add(res);
-  })
-  .catch(err => {
-    winston.error('Could not initialize the scheduler');
-  });
+const status = require('./status/status')(getLogsForTeam, winston);
 
-const status = require('./status/status.factory')(getLogsForTeam, winston);
 const format = require('./status/formatter');
 
 const app = express();
@@ -93,6 +90,16 @@ app.use(
     extended: true
   })
 );
+
+app.post('/seed', (req, res) => {
+  getAllEvents()
+    .then(res => {
+      scheduler.add(res);
+    })
+    .catch(err => {
+      winston.error('Could not initialize the scheduler');
+    });
+});
 
 app.get('/oauth/authorize', (req, res) => {
   const params = {
@@ -140,9 +147,18 @@ app.get('/api/notification', async (req, res) => {
   const notification = key.decrypt(req.query['id'], 'utf8'),
     [team_id, event_id, date, user_id] = notification.split(',');
 
-  saveLog({ team_id, event_id, user_id, date, action: 'participated' });
+  saveLog({
+    team_id,
+    event_id,
+    user_id,
+    date,
+    action: 'participated'
+  });
 
-  const event = await getState({ team_id, event_id });
+  const event = await getState({
+    team_id,
+    event_id
+  });
 
   res.redirect(event.url);
 });
@@ -150,13 +166,16 @@ app.get('/api/notification', async (req, res) => {
 app.listen(port, () => console.log(`listening on port ${port}!`));
 
 async function respond({ team_id, user_id, text, channel_id }) {
-  const secret = await getSecret({ team_id });
+  const secret = await getSecret({
+    team_id
+  });
   const token = secret.bot.bot_access_token;
 
   const command = parser(text);
   if (command.type === 'STATUS') {
     const statusFormatted = await readableStatus(team_id, token);
-    await sendMessage(channel_id, token, statusFormatted);
+    const attachments = formatAttachmentsForStatusMessage(statusFormatted);
+    await sendMessage(channel_id, token, statusFormatted, attachments);
   } else {
     const actionAndState = await executeCommand({
       team_id,
@@ -180,12 +199,17 @@ async function readableStatus(team_id, token) {
 }
 
 async function executeCommand({ team_id, user_id, command, token }) {
-  const events = await getEventsFor({ team_id });
+  const events = await getEventsFor({
+    team_id
+  });
   const eventIds = new Set(events.map(e => e.event_id));
   const usersInfo = await getUsersInfo(token);
 
   const action = createAction(command, usersInfo, user_id, eventIds);
-  let currState = await getState({ team_id, event_id: action.event });
+  let currState = await getState({
+    team_id,
+    event_id: action.event
+  });
   /*we need to convert the state returned from the db into a js object*/
   currState = currState === null ? currState : currState.toObject();
   const nextState = await reduce(action, currState);
@@ -206,5 +230,8 @@ async function executeCommand({ team_id, user_id, command, token }) {
       break;
   }
 
-  return { action, state: nextState };
+  return {
+    action,
+    state: nextState
+  };
 }

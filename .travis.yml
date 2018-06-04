@@ -7,6 +7,10 @@ services:
 - mongodb
 before_script:
   - sleep 5
-install:
-- npm install
-- npm test
+  - cd app
+env:
+  - MONGO_CONTAINER=localhost
+  - MONGO_PORT=27017
+  - DB_NAME=lazyJar
+script:
+  - npm install && npm test

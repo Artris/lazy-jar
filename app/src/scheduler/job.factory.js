@@ -1,4 +1,4 @@
-const { stripIndent } = require('common-tags');
+const { stripIndent } = require('common-tags'); 
 const moment = require('moment');
 
 module.exports = (getEvent, getSecret, notifyUsers, isBefore, logger) => (
