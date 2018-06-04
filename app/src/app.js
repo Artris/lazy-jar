@@ -13,15 +13,18 @@ const config = require('./config.json');
 const {
   host,
   port,
-  client_id,
-  client_secret,
   slack_auth_uri,
   slack_access_uri,
-  scope,
-  rsa_private_key
+  scope
 } = config;
 
-const key = new NodeRSA(rsa_private_key);
+const {
+  client_id,
+  client_secret,
+  rsa_private_key
+} = process.env
+
+const key = new NodeRSA(rsa_private_key || { b: 512 });
 
 const redirect_uri = `${host}/oauth/redirect`;
 const notification_url = `${host}/api/notification/`;
