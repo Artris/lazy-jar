@@ -31,6 +31,9 @@ module.exports = ({ State, Secret, Notification, Log }) => {
     return State.findOne({ team_id, event_id });
   }
 
+  function deleteEvent({ team_id, event_id }) {
+    return State.findOneAndRemove({ team_id, event_id });
+  }
   function getLogsForEvent({ team_id, event_id }) {
     return Notification.find({ team_id, event_id });
   }
@@ -53,6 +56,7 @@ module.exports = ({ State, Secret, Notification, Log }) => {
     saveLog,
     getSecret,
     getState,
+    deleteEvent,
     getLogsForTeam,
     getLogsForEvent,
     getEventsFor,
