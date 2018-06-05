@@ -29,7 +29,7 @@ RUN apt-get update && \
 RUN mkdir -p /home/keys
 
 # Copy files to image
-COPY service.key.json /home/keys/service.key.json
+COPY service.key.json /home/keys/
 COPY seed-database.bash /opt/seed-database.bash
 RUN chmod +x /opt/seed-database.bash
 
