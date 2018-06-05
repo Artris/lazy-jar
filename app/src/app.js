@@ -41,6 +41,7 @@ const {
   getLogsForTeam,
   getSecret,
   getState,
+  deleteEvent,
   getEventsFor,
   getAllEvents
 } = require('./database/helpers/helpers.js');
@@ -232,6 +233,7 @@ async function executeCommand({
   switch (action.type) {
     case 'SCHEDULE':
       scheduler.add([nextState]);
+      let deletedEvent = await deleteEvent(nextState);
       break;
     case 'HALT':
     case 'TERMINATE':
