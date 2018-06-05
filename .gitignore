@@ -1,1 +1,5 @@
 config/
+deploy.key.json
+mongo.key.json
+cloudbuild.yml
+secrets.tar

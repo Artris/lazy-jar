@@ -26,16 +26,16 @@ RUN apt-get update && \
 	&& apt-get clean
 
 # Make folder path for dump
-RUN mkdir -p /home/keys
+RUN mkdir -p /home/mongo
 
 # Copy files to image
-COPY service.key.json /home/keys/
+ADD ./ /home/mongo
 COPY seed-database.bash /opt/seed-database.bash
 RUN chmod +x /opt/seed-database.bash
 
 # Download a database dump
 # Make sure you recursively zip the database dump.
-RUN gcloud auth activate-service-account --key-file /home/keys/service.key.json
+RUN gcloud auth activate-service-account --key-file /home/mongo/mongo.key.json
 RUN gsutil cp gs://lazyjar-backup/lazyJar.zip /home/
 
 

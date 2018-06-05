@@ -4,7 +4,7 @@ services:
     build: ./mongo
     image: lazyjar/mongo
     env_file:
-      - config/mongo/prod.env
+      - secrets/config/mongo/prod.env
     ports:
       - "27017:27017"
     command: [./opt/seed-database.bash"]
@@ -14,7 +14,7 @@ services:
     build: ./app
     image: lazyjar/app
     env_file:
-      - config/app/prod.env
+      - secrets/config/app/prod.env
     ports:
       - "3030:3030"
     command: ["bash", "start.sh", "mongo", "27017", "npm", "start"]
