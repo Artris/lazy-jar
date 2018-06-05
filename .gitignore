@@ -1,1 +1,3 @@
 config/
+key.deploy.json
+cloudbuild.yml

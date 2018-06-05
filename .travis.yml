@@ -2,13 +2,34 @@ sudo: enabled
 dist: trusty
 language: node_js
 node_js:
-- "lts/*"
+- lts/*
+
 services:
 - mongodb
+
 before_script:
-  - sleep 5
-  - cd app
+- sleep 5
+- cd app
+
 env:
-  - MONGO_CONTAINER=localhost MONGO_PORT=27017 DB_NAME=lazyJar
+- MONGO_CONTAINER=localhost MONGO_PORT=27017 DB_NAME=lazyJar
+
 script:
-  - npm install && npm test
+- npm install && npm test
+
+before_install:
+- openssl aes-256-cbc -K $encrypted_6e331f993a5e_key -iv $encrypted_6e331f993a5e_iv
+  -in ${TRAVIS_BUILD_DIR}/mongo/service.key.json.enc -out ${TRAVIS_BUILD_DIR}/mongo/service.key.json -d
+- openssl aes-256-cbc -K $encrypted_6e331f993a5e_key -iv $encrypted_6e331f993a5e_iv
+  -in ${TRAVIS_BUILD_DIR}/deploy.json.enc -out ${TRAVIS_BUILD_DIR}/deploy.json -d
+
+before_deploy:
+  - if [ ! -d "$HOME/google-cloud-sdk/bin" ]; then rm -rf $HOME/google-cloud-sdk; export CLOUDSDK_CORE_DISABLE_PROMPTS=1; curl https://sdk.cloud.google.com | bash; fi
+  - source /home/travis/google-cloud-sdk/path.bash.inc
+
+deploy:
+- provider: script
+  script: ${TRAVIS_BUILD_DIR}/scripts/deploy.sh
+  skip_cleanup: true
+  on:
+    branch: master
