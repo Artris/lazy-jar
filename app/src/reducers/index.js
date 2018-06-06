@@ -27,7 +27,7 @@ function lazyJar(action, state = {}) {
         halted: false
       });
     case TERMINATE:
-      return {};
+      return {event_id: event};
     case ADD:
     case REMOVE:
     case MOVE:
