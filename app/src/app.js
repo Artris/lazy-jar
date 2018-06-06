@@ -49,6 +49,7 @@ const {
   notifyUsers,
   sendMessage,
   getSecretsAndSave,
+  requestAccessFromSlack,
   getUsernameToIdMap,
   getUsersInfo,
   confirmationMessage,
@@ -120,8 +121,24 @@ app.get('/oauth/authorize', (req, res) => {
 app.get('/oauth/redirect', async (req, res) => {
   const { code, state } = req.query;
   try {
-    await getSecretsAndSave(code);
-    res.send('Thank you, you have successfully authenticated your team!');
+    let foundId = false;
+    await requestAccessFromSlack(code).then(async (secret) => { 
+      let team_id = secret.team_id;
+      let checkingteamID = await getSecret({ team_id }).then(res => {if (res == null) return false;});
+      console.log(checkingteamID);
+      console.log(team_id);
+      if(checkingteamID == false) {
+        await saveSecret(secret);
+        foundId = true;
+      }
+    });
+    
+    if(foundId) {
+      res.send('Thank you, you have successfully authenticated your team!');
+    }
+    else {
+      res.send('Oops, It looks like your team has already authenticated!');
+    }
   } catch (err) {
     winston.error(`Team authencation failed, ${err}`);
     res.send(
