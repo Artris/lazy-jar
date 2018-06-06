@@ -286,6 +286,7 @@ module.exports = (
     getUsersInfo,
     getUsernameToIdMap,
     getSecretsAndSave,
+    requestAccessFromSlack,
     confirmationMessage,
     formatAttachmentsForStatusMessage
   };
