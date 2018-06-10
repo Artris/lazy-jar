@@ -10,16 +10,20 @@ A slack app for scheduling remote stand-ups and tracking participation
 * `when` identifies when and how often an event should happen such as "everyday at 6:00 pm", or "every workday at 4:30 pm"
 * `time range` identifies a period of time such as "1 week", or "3 days"
 * `time zone` identifies the timezone corresponding to the `when` input
+* `url` the url that the user is redirected to after acknowledging a notification in Slack
 
 ### Slash Commands
 
 * #### Schedule a new stand-up with a group of hackers
     `/lj schedule [name] with [list of @hacker] [when] [time zone]`
   * e.g. "schedule artris with @dtoki and @alireza everyday at 6:00 am America/Vancouver"
-  * When there is a conflict, the hacker will not be added to the new stand-up and a warning will be displayed
+  * When there is a conflict, the an error message will be displayed and the stand-up will not be scheduled
   * If a stand-up with the same name already exists, the user will get asked to provide a different name
-  
 
+* #### Set a url for an existing stand-up
+    `/lj set url for [name] to [url]`
+  * e.g. "set url for artris to hangouts.google.com/call"
+  
 * #### Add hackers to an existing stand-up
     `/lj add [me or list of @hacker] to [name]` 
   * e.g. "add @dtoki and @alireza to artris"
@@ -33,20 +37,18 @@ A slack app for scheduling remote stand-ups and tracking participation
 * #### Reschedule a stand-up
     `/lj move [name] to [when] [time zone]`
   * e.g. "move artris to everyday at 7:00 am America/Vancouver"
-  * A warning will be displayed if the new schedule results in conflicts among participant hacker schedules
 
 * #### Temporarily halt a stand-up
-    `lj halt [name]`
+    `/lj halt [name]`
   * e.g. "halt artris"
 
 * #### resume a currently halted stand-up
-    `lj resume [name]`
+    `/lj resume [name]`
   * e.g. "resume artris"
 
 * #### Terminate a stand-up
     `/lj terminate [name]`
   * e.g. "terminate artris"
-
 
 * #### Notify an individual's timed break for a stand-up
     `/lj [I or @hacker] will skip [name] [time range]`
@@ -139,5 +141,5 @@ A slash command goes through the following steps
   }
 }
 ```
-comment :logs are used to track events
+## *logs are used to track events
 
