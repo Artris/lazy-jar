@@ -52,7 +52,8 @@ const {
   getUsernameToIdMap,
   getUsersInfo,
   confirmationMessage,
-  formatAttachmentsForStatusMessage
+  formatAttachmentsForStatusMessage,
+  membersHaveScheduleConflict
 } = require('./helpers')(
   fetch,
   url,
@@ -217,9 +218,10 @@ async function executeCommand({ team_id, user_id, command, token }) {
   // TODO: a new state out of the reducer should already include the team_id
   nextState.team_id = team_id;
 
-  await saveState(nextState);
   switch (action.type) {
     case 'SCHEDULE':
+      const allEvents = getEventsFor({ team_id })
+      membersHaveScheduleConflict(allEvents, action)
       scheduler.add([nextState]);
       break;
     case 'HALT':
@@ -231,6 +233,7 @@ async function executeCommand({ team_id, user_id, command, token }) {
       scheduler.reschedule([nextState]);
       break;
   }
+  await saveState(nextState);
 
   return {
     action,

@@ -279,6 +279,38 @@ module.exports = (
       }))
     }])
   }
+  
+function membersHaveScheduleConflict(events, { userInfos, time, frequency}, standupTimeInMinutes = 15) {
+  let weekends = new Set(["SATERDAYS", "SUNDAYS", "WEEKENDS"])
+  let weekdays = new Set(["MONDAYS", "TUESDAYS", "WEDNESDAYS", "THURSDAYS", "FRIDAYS"])
+  
+  const membersOfNextEvent = new Set(userInfos.map((user) => user.user_id))
+  let timeOfNextEvent = (time.hh * 100) + time.mm;
+  events.forEach(event => {
+      let timeOfScheduledEvent = (event.time.hh * 100) + event.time.mm;
+      event.members.forEach(member => {
+          if (Math.abs(timeOfScheduledEvent - timeOfNextEvent) <= standupTimeInMinutes) {
+              if (membersOfNextEvent.has(member.user_id)) {
+                  if (frequency === event.frequency) {
+                      throw new customError('schedule conflict', EH1000)
+                  }
+                  switch (event.frequency) {
+                      case 'EVERYDAY':
+                          throw new customError('schedule conflict', EH1000)
+                      case 'WEEKENDS':
+                          if (weekends.has(frequency)) {
+                              throw new customError('schedule conflict', EH1000)
+                          }
+                      case 'WEEKDAYS':
+                          if (weekdays.has(frequency)) {
+                              throw new customError('schedule conflict', EH1000)
+                          }
+                  }
+              }
+          }
+      })
+  })
+}
 
   return {
     notifyUsers,
@@ -287,6 +319,7 @@ module.exports = (
     getUsernameToIdMap,
     getSecretsAndSave,
     confirmationMessage,
-    formatAttachmentsForStatusMessage
+    formatAttachmentsForStatusMessage,
+    membersHaveScheduleConflict
   };
 };
